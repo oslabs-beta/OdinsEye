@@ -1,0 +1,35 @@
+{
+  "name": "odinseye",
+  "version": "1.0.0",
+  "description": "application to monitor kubernetes statefulset pods",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server/server.js",
+    "build": "NODE_ENV=production webpack",
+    "dev": "NODE_ENV=development webpack serve --open & nodemon server/server.js"
+  },
+  "author": "Chris, Emily, Peter, Wendy",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "node": "^19.0.1",
+    "nodemon": "^2.0.20",
+    "react": "^18.2.0",
+    "sass": "^1.56.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "sass-loader": "^13.1.0",
+    "style-loader": "^3.3.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
