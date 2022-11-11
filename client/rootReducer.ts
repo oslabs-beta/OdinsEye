@@ -2,33 +2,36 @@ import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
 import test from 'node:test';
 
 //ACTIONS
-const action1 = createAction<number, 'action1'>('action1');
+const darkMode = createAction<number, 'darkMode'>('darkMode');
 const action2 = createAction<number, 'action2'>('action2');
 
 interface TestState {
-  test1: boolean;
+  dark: boolean;
   test2: number;
   data: null | [];
 }
 
 const initialState: TestState = {
-  test1: false,
+  dark: false,
   test2: 1,
   data: null,
 };
 
 //REDUCER
 
-const rootReducer = createReducer(0, (builder) =>
+const rootReducer = createReducer(initialState, (builder) =>
   builder
-    .addCase(action1, (state, action) => {
-      return state + action.payload;
+    .addCase(darkMode, (state, action) => {
+      let dark: boolean;
+      state.dark ? (dark = false) : (dark = true);
+      return { ...state, dark };
     })
     .addCase(action2, (state, action) => {
-      return state + action.payload;
+      const test2 = state.test2 + action.payload;
+      return { ...state, test2 };
     })
 );
 
 export default rootReducer;
 
-export { action1, action2 };
+export { darkMode, action2 };

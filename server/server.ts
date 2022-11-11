@@ -14,7 +14,11 @@ if (process.env.NODE_ENV) {
   app.use('/', express.static(path.join(__dirname, '../dist')));
 }
 
-app.use('api/dashboard', dashboardRouter);
+app.use('/api/dashboard', dashboardRouter);
+
+// app.get('/dashboard', (req: Request, res: Response) => {
+//   return res.status(200).send('hi')
+// })
 
 
 //redirect to page 404 when endpoint does not exist

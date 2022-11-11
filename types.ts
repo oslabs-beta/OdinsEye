@@ -1,5 +1,6 @@
 //request handle is a function that will be executed every time the server receives a particular request
 import { RequestHandler } from "express"
+//type alias
 export type DashboardController = {
     totalMem: RequestHandler,
     totalCpu: RequestHandler,
@@ -7,3 +8,4 @@ export type DashboardController = {
     totalReceive: RequestHandler,
     totalPods: RequestHandler,
 }
+

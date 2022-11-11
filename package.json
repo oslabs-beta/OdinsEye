@@ -4,9 +4,9 @@
   "description": "application to monitor kubernetes statefulset pods",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "NODE_ENV=production nodemon server/server.ts",
+    "start": "NODE_ENV=production tsc nodemon server/server.ts & nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack serve --open & nodemon server/server.ts"
+    "dev": "NODE_ENV=development webpack serve --open & tsc server/server.ts & nodemon server/server.js"
   },
   "author": "Chris, Emily, Peter, Wendy",
   "license": "ISC",
@@ -14,6 +14,8 @@
     "@kubernetes/client-node": "^0.17.1",
     "@reduxjs/toolkit": "^1.9.0",
     "@types/react-redux": "^7.1.24",
+    "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.1.3",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "node": "^19.0.1",
@@ -22,8 +24,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
-    "sass": "^1.56.1",
-    "ts-node": "^10.9.1"
+    "react-router-dom": "^6.4.3",
+    "sass": "^1.56.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
