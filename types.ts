@@ -9,4 +9,12 @@ export type DashboardController = {
     totalPods: RequestHandler,
 }
 
+export type KubernetesController = {
+    totalMem: RequestHandler,
+    totalCpu: RequestHandler,
+    totalTransmit: RequestHandler,
+    totalReceive: RequestHandler,
+    totalPods: RequestHandler,
+}
+
 

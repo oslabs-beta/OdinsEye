@@ -50,7 +50,7 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 //to collect default metrics directly from prometheus client 
 //https://github.com/siimon/prom-client
 client.collectDefaultMetrics();
-var dashboardController = {
+var kubernetesController = {
     totalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var response, _a, err_1;
         return __generator(this, function (_b) {
@@ -69,7 +69,7 @@ var dashboardController = {
                 case 3:
                     err_1 = _b.sent();
                     return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_1),
+                            log: "Error in kuberenetesController.getTotalCpu: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving dashboard cpu data'
                         })];
@@ -83,7 +83,7 @@ var dashboardController = {
             }
             catch (err) {
                 return [2 /*return*/, next({
-                        log: "Error in dashboardController.getTotalCpu: ".concat(err),
+                        log: "Error in kuberenetesController.getTotalCpu: ".concat(err),
                         status: 500,
                         message: 'Error occured while retrieving dashboard mem data'
                     })];
@@ -97,7 +97,7 @@ var dashboardController = {
             }
             catch (err) {
                 return [2 /*return*/, next({
-                        log: "Error in dashboardController.getTotalCpu: ".concat(err),
+                        log: "Error in kuberenetesController.getTotalCpu: ".concat(err),
                         status: 500,
                         message: 'Error occured while retrieving dashboard pods data'
                     })];
@@ -111,7 +111,7 @@ var dashboardController = {
             }
             catch (err) {
                 return [2 /*return*/, next({
-                        log: "Error in dashboardController.getTotalCpu: ".concat(err),
+                        log: "Error in kuberenetesController.getTotalCpu: ".concat(err),
                         status: 500,
                         message: 'Error occured while retrieving dashboard receive data'
                     })];
@@ -125,7 +125,7 @@ var dashboardController = {
             }
             catch (err) {
                 return [2 /*return*/, next({
-                        log: "Error in dashboardController.getTotalCpu: ".concat(err),
+                        log: "Error in kuberenetesController.getTotalCpu: ".concat(err),
                         status: 500,
                         message: 'Error occured while retrieving dashboard transmit data'
                     })];
@@ -134,4 +134,4 @@ var dashboardController = {
         });
     }); }
 };
-exports["default"] = dashboardController;
+exports["default"] = kubernetesController;
