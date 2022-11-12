@@ -47,6 +47,8 @@ kc.loadFromDefault();
 var k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 var k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
 var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
+//to collect default metrics directly from prometheus client 
+//https://github.com/siimon/prom-client
 client.collectDefaultMetrics();
 var dashboardController = {
     totalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {

@@ -8,7 +8,7 @@ module.exports = {
   entry: './client/index.tsx',
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 7070,
     historyApiFallback: true,
     // proxy: {
     //   '/users': {
@@ -54,6 +54,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
 };

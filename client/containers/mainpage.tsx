@@ -1,5 +1,6 @@
 const React = require('react');
 import NavBar from '../components/navbar';
+const styles = require('../styles/index.scss');
 
 type AppProps = {
   name: string;

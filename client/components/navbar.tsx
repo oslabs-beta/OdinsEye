@@ -9,9 +9,21 @@ const NavBar = () => {
       <br />
       <Link to='/kubernetes'>WENDY</Link>
       <br />
-      <Link to='/mongo'>PETER</Link>
-      <br />
-      <Link to='/alert'>EMILY</Link>
+      {/* <Link to='/mongo'>PETER</Link> */}
+      {/* <br /> */}
+      {/* <Link to='/alert'>EMILY</Link> */}
+      <button
+        id='eyepatch'
+        onClick={(e) => {
+          let eye = document.getElementById('eyepatch') as HTMLInputElement;
+          eye.innerHTML === 'eye'
+            ? (eye.innerHTML = 'eyepatch')
+            : (eye.innerHTML = 'eye');
+          console.log(eye);
+        }}
+      >
+        eye
+      </button>
     </nav>
   );
 };

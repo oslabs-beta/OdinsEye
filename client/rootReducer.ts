@@ -2,14 +2,14 @@ import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
 import test from 'node:test';
 
 //ACTIONS
-const darkMode = createAction<number, 'darkMode'>('darkMode');
+const darkMode = createAction<boolean, 'darkMode'>('darkMode');
 const action2 = createAction<number, 'action2'>('action2');
 
-interface TestState {
+type TestState = {
   dark: boolean;
   test2: number;
   data: null | [];
-}
+};
 
 const initialState: TestState = {
   dark: false,
