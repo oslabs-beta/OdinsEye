@@ -7,6 +7,7 @@ export type DashboardController = {
     totalTransmit: RequestHandler,
     totalReceive: RequestHandler,
     totalPods: RequestHandler,
+    totalNamespaces: RequestHandler
 }
 
 
