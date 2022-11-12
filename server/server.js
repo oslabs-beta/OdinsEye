@@ -4,7 +4,6 @@ var path = require('path');
 var express = require('express');
 var dashboard_1 = require("./routes/dashboard");
 var kubernetes_1 = require("./routes/kubernetes");
-// import { resourceLimits } from 'worker_threads';
 var cors = require('cors');
 var app = express();
 var PORT = 3030;

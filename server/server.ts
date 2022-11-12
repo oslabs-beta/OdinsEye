@@ -3,7 +3,7 @@ const express = require('express');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard'
 import kubernetesRouter from './routes/kubernetes';
-// import { resourceLimits } from 'worker_threads';
+import { resourceLimits } from 'worker_threads';
 const cors = require('cors');
 const app = express();
 const PORT = 3030;
@@ -22,6 +22,7 @@ app.use('/api/kubernetesMetrics', kubernetesRouter);
 app.get('/dashboard', (req: Request, res: Response) => {
   return res.status(200).send('hi')
 })
+
 
 
 //redirect to page 404 when endpoint does not exist

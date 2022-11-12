@@ -4,24 +4,14 @@ import kubernetesController from '../controllers/kubernetesController';
 
 const kubernetesRouter = express.Router();
 
-kubernetesRouter.get('/totalMem', kubernetesController.totalMem, (req: Request, res: Response) => {
-    return res.status(200).send('hi');
+kubernetesRouter.get('/totalRestarts', kubernetesController.totalRestarts, (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.restarts);
 })
-
-kubernetesRouter.get('/totalCpu', kubernetesController.totalCpu, (req: Request, res: Response) => {
-    return res.status(200).json(res.locals.cpu.data);
+kubernetesRouter.get('/namespaceNames', kubernetesController.namespaceNames, (eq: Request, res: Response) => {
+    return res.status(200).json(res.locals.namespaceNames)
 })
-
-kubernetesRouter.get('/totalTransmit', kubernetesController.totalTransmit, (req: Request, res: Response) => {
-    return res.status(200).send('hi');
-})
-
-kubernetesRouter.get('/totalReceive', kubernetesController.totalReceive, (req: Request, res: Response) => {
-    return res.status(200).send('hi');
-})
-
-kubernetesRouter.get('/totalPods', kubernetesController.totalPods, (req: Request, res: Response) => {
-    return res.status(200).send('hi');
+kubernetesRouter.get('/podNames', kubernetesController.podNames, (eq: Request, res: Response) => {
+    return res.status(200).json(res.locals.names)
 })
 
 
