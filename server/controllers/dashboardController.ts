@@ -9,9 +9,12 @@ const end = new Date(Date.now()).toISOString();
 
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
-
+//CoreV1Api: it allows access to core k8 resources such as services
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+//AppsV1Api: it allows access to app/v1 resources such as deployments and k8s
 const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
+//NetworkV1Api: (ingress) - Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc.
+//https://docs.okd.io/latest/rest_api/network_apis/ingress-networking-k8s-io-v1.html
 const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 //to collect default metrics directly from prometheus client 
 //https://github.com/siimon/prom-client
@@ -31,7 +34,7 @@ const dashboardController: DashboardController = {
             // const json = await res.json();
             // console.log(json);
             const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`);
-            res.locals.cpu = await response.data;
+            res.locals.totalCpu = await response.data;
             console.log(res.locals.cpu);
             return next();
         }
@@ -46,7 +49,9 @@ const dashboardController: DashboardController = {
 
     totalMem: async (req: Request, res: Response, next: NextFunction) => {
         try{
-
+            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=${start}&end=${end}&step=5m`);
+            res.locals.totalMem = await response.data;
+            return next();
         }
         catch(err){
             return next({
@@ -59,8 +64,10 @@ const dashboardController: DashboardController = {
 
     totalPods: async (req: Request, res: Response, next: NextFunction) => {
         try{
-
-
+            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`);
+            res.locals.totalPods = await response
+            console.log(res.locals.totalPods)
+            return next();
         }
         catch(err){
             return next({
@@ -73,7 +80,11 @@ const dashboardController: DashboardController = {
 
     totalReceive: async (req: Request, res: Response, next: NextFunction) => {
         try{
-
+            const data = await axios.get(
+                `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
+              );
+              res.locals.totalReceive = await data;
+              return next();
         }
         catch(err){
             return next({
@@ -86,7 +97,24 @@ const dashboardController: DashboardController = {
     
     totalTransmit: async (req: Request, res: Response, next: NextFunction) => {
         try{
+            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`);
+            res.locals.totalTransmit = await response
+            return next();
+        }
+        catch(err){
+            return next({
+                log: `Error in dashboardController.getTotalCpu: ${err}`,
+                status: 500,
+                message: 'Error occured while retrieving dashboard transmit data',
+            });
+        }
+    },
 
+    totalNamespaces: async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`);
+            res.locals.totalNamespaces = await response
+            return next();
         }
         catch(err){
             return next({
