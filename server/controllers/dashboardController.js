@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var axios_1 = require("axios");
 var k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 var client = require('prom-client');
@@ -49,26 +50,22 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 var dashboardController = {
     totalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var res_1, json, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var response, _a, err_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch("http://localhost:9090/api/v1/range?query=up&time=2022-11-10T20:10:51.781Z", {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        })];
+                    _b.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
-                    res_1 = _a.sent();
-                    return [4 /*yield*/, res_1.json()];
+                    response = _b.sent();
+                    _a = res.locals;
+                    return [4 /*yield*/, response.data];
                 case 2:
-                    json = _a.sent();
-                    console.log(json);
+                    _a.cpu = _b.sent();
+                    console.log(res.locals.cpu);
                     return [2 /*return*/, next()];
                 case 3:
-                    err_1 = _a.sent();
+                    err_1 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getTotalCpu: ".concat(err_1),
                             status: 500,

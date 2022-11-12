@@ -3,10 +3,11 @@ const express = require('express');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard'
 // import { resourceLimits } from 'worker_threads';
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 
@@ -16,9 +17,9 @@ if (process.env.NODE_ENV) {
 
 app.use('/api/dashboard', dashboardRouter);
 
-// app.get('/dashboard', (req: Request, res: Response) => {
-//   return res.status(200).send('hi')
-// })
+app.get('/dashboard', (req: Request, res: Response) => {
+  return res.status(200).send('hi')
+})
 
 
 //redirect to page 404 when endpoint does not exist

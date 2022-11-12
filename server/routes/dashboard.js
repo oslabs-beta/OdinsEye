@@ -7,7 +7,7 @@ dashboardRouter.get('/totalMem', dashboardController_1["default"].totalMem, func
     return res.status(200).send('hi');
 });
 dashboardRouter.get('/totalCpu', dashboardController_1["default"].totalCpu, function (req, res) {
-    return res.status(200).send('hi');
+    return res.status(200).json(res.locals.cpu.data);
 });
 dashboardRouter.get('/totalTransmit', dashboardController_1["default"].totalTransmit, function (req, res) {
     return res.status(200).send('hi');

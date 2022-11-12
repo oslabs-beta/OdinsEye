@@ -4,17 +4,19 @@ var path = require('path');
 var express = require('express');
 var dashboard_1 = require("./routes/dashboard");
 // import { resourceLimits } from 'worker_threads';
+var cors = require('cors');
 var app = express();
 var PORT = 3000;
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV) {
     app.use('/', express.static(path.join(__dirname, '../dist')));
 }
 app.use('/api/dashboard', dashboard_1["default"]);
-// app.get('/dashboard', (req: Request, res: Response) => {
-//   return res.status(200).send('hi')
-// })
+app.get('/dashboard', function (req, res) {
+    return res.status(200).send('hi');
+});
 //redirect to page 404 when endpoint does not exist
 app.use('*', function (req, res) {
     return res.status(404).send('404 Page Not Found');
