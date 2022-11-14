@@ -1,19 +1,26 @@
 const React = require('react');
 import NavBar from '../components/navbar';
 const styles = require('../styles/index.scss');
-import axios from 'axios';
 import { getData } from '../getData';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { TestState } from '../../types';
+import { addNamespaces } from '../getData';
+import { AppDispatch } from '../store';
 
 type AppProps = {
   name?: string;
 };
 
 const MainPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     getData();
+    dispatch(addNamespaces());
     //list other metrics below
-  });
+  }, []);
+  const namespaces = useSelector((state: TestState) => state.namespaces);
+  console.log(namespaces);
   return (
     <div className='main-container'>
       <h1 className='header'>Odin's Eye</h1>
