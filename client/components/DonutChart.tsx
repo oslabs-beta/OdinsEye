@@ -46,6 +46,7 @@ const DoughnutChart = (props: any) => {
     });
     initialData.datasets[0] = recData;
     setData(initialData);
+    console.log('doughnut', props.data)
   });
   const options: ChartOptions<'doughnut'> = {
     responsive: true,

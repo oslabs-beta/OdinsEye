@@ -41,7 +41,7 @@ const MainPage = () => {
         </div>
         <div id='net-rec'>net rec</div>
         <div id='net-trans'>net-trans</div>
-        <LineChart label='CPU Usage' yAxis='percent'/>
+        <LineChart data={data.totalCpu} label='CPU Usage' yAxis='percent'/>
         <div id='test'>
           <DoughnutChart data={data.totalPods} />
         </div>
