@@ -11,6 +11,7 @@ export type DashboardController = {
 };
 
 export type KubernetesController = {
+
     totalRestarts: RequestHandler,
     namespaceNames: RequestHandler,
     podNames: RequestHandler,
@@ -18,15 +19,18 @@ export type KubernetesController = {
     getMetrics: RequestHandler
 }
 
+
 export type TestState = {
   dark: boolean;
-  test2: number;
+  namespaces: string[] | null;
   data: null | [];
 };
 
-export type GetDataType = {
-  (path: string, elementId: string): Promise<any>;
-};
+export type GetDataType = (page?: string) => AllDataType;
+
+// {
+//   (path: string, elementId: string): Promise<any>;
+// };
 
 export type ErrorType = {
   log: string;
@@ -34,6 +38,3 @@ export type ErrorType = {
   message: { err: string };
 };
 
-export type ObjectData = {
-  restarts: [][]
-}

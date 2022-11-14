@@ -2,33 +2,34 @@ const React = require('react');
 import { useState, useEffect } from 'react';
 
 type DropDownType = {
-  nameSpaces: string[];
+  namespaces: string[] | null;
   current: string;
   handleChange: (name: string) => void;
 };
 
-const DropDown = ({ nameSpaces, current, handleChange }: DropDownType) => {
+const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
   const [open, setOpen] = useState(false);
   const handleOpen = (): void => {
     setOpen(!open);
   };
   const nameSpaceArr: any = [];
-  nameSpaces.forEach((name) => {
-    nameSpaceArr.push(
-      <li key={`li` + name} className='menu-item'>
-        <button
-          key={'li-but' + name}
-          onClick={() => {
-            handleMenu(name);
-            handleChange(name);
-          }}
-        >
-          {name}
-        </button>
-      </li>
-    );
-  });
-
+  if (namespaces) {
+    namespaces.forEach((name) => {
+      nameSpaceArr.push(
+        <li key={`li` + name} className='menu-item'>
+          <button
+            key={'li-but' + name}
+            onClick={() => {
+              handleMenu(name);
+              handleChange(name);
+            }}
+          >
+            {name}
+          </button>
+        </li>
+      );
+    });
+  }
   const handleMenu = (name: string) => {
     setOpen(false);
   };

@@ -37,7 +37,7 @@ const dashboardController: DashboardController = {
         `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`
       );
       res.locals.totalCpu = await response.data;
-      console.log(res.locals.cpu);
+      // console.log(res.locals.cpu);
       return next();
     } catch (err) {
       return next({
@@ -70,7 +70,7 @@ const dashboardController: DashboardController = {
         `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
       );
       res.locals.totalPods = await response;
-      console.log(res.locals.totalPods);
+      // console.log(res.locals.totalPods);
       return next();
     } catch (err) {
       return next({

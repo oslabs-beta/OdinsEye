@@ -47,7 +47,7 @@ var end = new Date(Date.now()).toISOString();
 // const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 // const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
 // const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client 
+//to collect default metrics directly from prometheus client
 //https://github.com/siimon/prom-client
 // client.collectDefaultMetrics();
 var kubernetesController = {
@@ -59,6 +59,7 @@ var kubernetesController = {
                     restartQuery = 'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
                     _a.label = 1;
                 case 1:
+
                     _a.trys.push([1, 3, , 4]);
                     console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
@@ -67,6 +68,7 @@ var kubernetesController = {
                     console.log(response.data.data.result);
                     res.locals.restarts = response.data;
                     console.log(res.locals.restarts);
+
                     return [2 /*return*/, next()];
                 case 3:
                     err_1 = _a.sent();
@@ -88,7 +90,6 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
@@ -98,7 +99,9 @@ var kubernetesController = {
                         namespaceArray_1.push(element.metric.namespace);
                     });
                     res.locals.namespaceNames = namespaceArray_1;
+
                     console.log(res.locals.namespaceNames);
+
                     return [2 /*return*/, next()];
                 case 3:
                     err_2 = _a.sent();
@@ -120,18 +123,15 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
-                    console.log(response.data.data.result);
                     array = response.data.data.result;
                     podNameArray_1 = [];
                     array.forEach(function (element) {
                         podNameArray_1.push(element.metric.pod);
                     });
                     res.locals.names = podNameArray_1;
-                    console.log(res.locals.names);
                     // res.locals.restarts = await response.data;
                     // console.log(res.locals.restarts);
                     return [2 /*return*/, next()];
