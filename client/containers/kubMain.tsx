@@ -40,7 +40,7 @@ const KubPage = ({ namespaces }: KubType) => {
           <div id='total-memory-use'>total mem use</div>
           <div id='net-rec'>net rec</div>
           <div id='net-trans'>net-trans</div>
-          <div id='extra'>extra</div>
+          {/* <div id='extra'>extra</div> */}
         </div>
         <div id='logs'>logs</div>
       </div>
