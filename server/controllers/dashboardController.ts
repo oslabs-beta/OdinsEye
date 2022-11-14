@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import { DashboardController } from "../../types";
+import { Request, Response, NextFunction } from 'express';
+import { DashboardController } from '../../types';
 import axios from 'axios';
 const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
@@ -16,114 +16,118 @@ const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
 //NetworkV1Api: (ingress) - Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc.
 //https://docs.okd.io/latest/rest_api/network_apis/ingress-networking-k8s-io-v1.html
 const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client 
+//to collect default metrics directly from prometheus client
 //https://github.com/siimon/prom-client
 client.collectDefaultMetrics();
 
 const dashboardController: DashboardController = {
-    totalCpu: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            //error: The Fetch API is an experimental feature. This feature could change at any time
-            //if i use axios to make a fetch request, I get the error cannot read 'get' ...
-            // const res = await fetch(`http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // })
-            // const json = await res.json();
-            // console.log(json);
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`);
-            res.locals.totalCpu = await response.data;
-            console.log(res.locals.cpu);
-            return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard cpu data',
-            });
-        }
-    },
-
-    totalMem: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=${start}&end=${end}&step=5m`);
-            res.locals.totalMem = await response.data;
-            return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard mem data',
-            });
-        } 
-    },
-
-    totalPods: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`);
-            res.locals.totalPods = await response
-            console.log(res.locals.totalPods)
-            return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard pods data',
-            });
-        }
-    },
-
-    totalReceive: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const data = await axios.get(
-                `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
-              );
-              res.locals.totalReceive = await data;
-              return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard receive data',
-            });
-        }
-    },
-    
-    totalTransmit: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`);
-            res.locals.totalTransmit = await response
-            return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard transmit data',
-            });
-        }
-    },
-
-    totalNamespaces: async (req: Request, res: Response, next: NextFunction) => {
-        try{
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`);
-            res.locals.totalNamespaces = await response
-            return next();
-        }
-        catch(err){
-            return next({
-                log: `Error in dashboardController.getTotalCpu: ${err}`,
-                status: 500,
-                message: 'Error occured while retrieving dashboard transmit data',
-            });
-        }
+  totalCpu: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      //error: The Fetch API is an experimental feature. This feature could change at any time
+      //if i use axios to make a fetch request, I get the error cannot read 'get' ...
+      // const res = await fetch(`http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`, {
+      //     method: 'GET',
+      //     headers: {
+      //         'Content-Type': 'application/json'
+      //     }
+      // })
+      // const json = await res.json();
+      // console.log(json);
+      const response = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`
+      );
+      res.locals.totalCpu = await response.data;
+      console.log(res.locals.cpu);
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard cpu data',
+      });
     }
-}
+  },
+
+  totalMem: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=${start}&end=${end}&step=5m`
+      );
+      res.locals.totalMem = await response.data;
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard mem data',
+      });
+    }
+  },
+
+  totalPods: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
+      );
+      res.locals.totalPods = await response;
+      console.log(res.locals.totalPods);
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard pods data',
+      });
+    }
+  },
+
+  totalReceive: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
+      );
+      res.locals.totalReceive = await data;
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard receive data',
+      });
+    }
+  },
+
+  totalTransmit: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
+      );
+      res.locals.totalTransmit = await response;
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard transmit data',
+      });
+    }
+  },
+
+  totalNamespaces: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`
+      );
+      res.locals.totalNamespaces = await response;
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard transmit data',
+      });
+    }
+  },
+};
 
 export default dashboardController;

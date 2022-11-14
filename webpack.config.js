@@ -8,18 +8,18 @@ module.exports = {
   entry: './client/index.tsx',
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 7070,
     historyApiFallback: true,
-    // proxy: {
-    //   '/users': {
-    //     target: 'http://localhost:8080/',
-    //     router: () => 'http://localhost:3000',
-    //   },
-    //   '/transactions': {
-    //     target: 'http://localhost:8080/',
-    //     router: () => 'http://localhost:3000',
-    //   },
-    // },
+    proxy: {
+      '/': {
+        target: 'http://localhost:7070/',
+        router: () => 'http://localhost:3000',
+      },
+      '/api': {
+        target: 'http://localhost:7070/',
+        router: () => 'http://localhost:3000',
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -54,6 +54,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
 };
