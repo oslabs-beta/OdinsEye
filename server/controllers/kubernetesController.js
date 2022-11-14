@@ -183,12 +183,12 @@ var kubernetesController = {
                     ccPodName = podName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
                     console.log(ccPodName);
                     console.log(podName);
-                    restartQuery = "sum+by+(".concat(ccPodName, ")(changes(kube_pod_status_ready{condition=\"true\"}[5m]))");
-                    readyQuery = "sum+by+(".concat(ccPodName, ")+(kube_pod_status_ready{condition=\"false\"})");
-                    cpuQuery = "sum+by+(".concat(ccPodName, ")+(rate(container_cpu_usage_seconds_total[10m]))");
-                    memQuery = "sum+by+(".concat(ccPodName, ")+(container_memory_usage_bytes)");
-                    receiveQuery = "sum+by+(".concat(ccPodName, ")+(rate(node_network_receive_bytes_total[10m]))");
-                    transmitQuery = "sum+by+(".concat(ccPodName, ")+(rate(node_network_transmit_bytes_total[10m]))");
+                    restartQuery = "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(ccPodName, "\"}[5m]))");
+                    readyQuery = "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(ccPodName, "\"})");
+                    cpuQuery = "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(ccPodName, "\"}[10m]))");
+                    memQuery = "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(ccPodName, "\"}[10m]))");
+                    receiveQuery = "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(ccPodName, "\"}[10m]))");
+                    transmitQuery = "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(ccPodName, "\"}[10m]))");
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 8, , 9]);

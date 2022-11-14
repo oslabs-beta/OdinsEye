@@ -34,6 +34,4 @@ export type ErrorType = {
   message: { err: string };
 };
 
-export type ObjectData = {
-  restarts: [][]
-}
+

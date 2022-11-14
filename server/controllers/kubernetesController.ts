@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { KubernetesController, ObjectData } from "../../types";
+import { KubernetesController } from "../../types";
 import axios from 'axios';
 //const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
@@ -110,12 +110,13 @@ const kubernetesController: KubernetesController = {
         const ccPodName = podName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
         console.log(ccPodName)
         console.log(podName)
-        const restartQuery = `sum+by+(${ccPodName})(changes(kube_pod_status_ready{condition="true"}[5m]))`
-        const readyQuery = `sum+by+(${ccPodName})+(kube_pod_status_ready{condition="false"})`
-        const cpuQuery = `sum+by+(${ccPodName})+(rate(container_cpu_usage_seconds_total[10m]))`
-        const memQuery = `sum+by+(${ccPodName})+(container_memory_usage_bytes)`
-        const receiveQuery = `sum+by+(${ccPodName})+(rate(node_network_receive_bytes_total[10m]))`
-        const transmitQuery = `sum+by+(${ccPodName})+(rate(node_network_transmit_bytes_total[10m]))`
+        const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${ccPodName}"}[5m]))`
+        const readyQuery = `sum(kube_pod_status_ready{condition="false", namespace = "${ccPodName}"})`
+        // const cpuQuery = `sum+by+(${ccPodName})+(rate(container_cpu_usage_seconds_total[10m]))`
+        const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${ccPodName}"}[10m]))`
+        const memQuery = `sum(rate(container_memory_usage_bytes{container="", namespace=~"${ccPodName}"}[10m]))`
+        const receiveQuery = `sum(rate(node_network_receive_bytes_total{namespace = "${ccPodName}"}[10m]))`
+        const transmitQuery = `sum(rate(node_network_transmit_bytes_total{namespace = "${ccPodName}"}[10m]))`
         try {
             //restarts per namespace
             const restartResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`)
@@ -148,6 +149,7 @@ const kubernetesController: KubernetesController = {
             objectData.memory = memArray;
 
             //total network received per pod
+            //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
             const receiveResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
             const array5 = receiveResponse.data.data.result
             //console.log(array5)
@@ -156,6 +158,7 @@ const kubernetesController: KubernetesController = {
             objectData.reception = receiveArray;
 
             //total transmitted data per pod
+            //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
             const transmitResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
             const array6 = transmitResponse.data.data.result
             //console.log(array6)
