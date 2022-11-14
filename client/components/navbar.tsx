@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { darkMode } from '../rootReducer';
 import { TestState } from '../../types';
+import { addNamespaces } from '../getData';
+import { AppDispatch } from '../store';
 
 const NavBar = (props: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  dispatch(addNamespaces());
   const darkTest = useSelector((state: TestState) => state.dark);
   return (
     <nav id='nav-bar'>

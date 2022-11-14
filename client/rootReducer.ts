@@ -1,13 +1,15 @@
 import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
 import { TestState } from '../types';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { addNamespaces } from './getData';
 
 //ACTIONS
 const darkMode = createAction<boolean, 'darkMode'>('darkMode');
-const action2 = createAction<number, 'action2'>('action2');
+// const addNamespaces = createAsyncThunk<any>('addNamespace', getNamespaces);
 
 const initialState: TestState = {
   dark: false,
-  test2: 1,
+  namespaces: [],
   data: null,
   //possible global state values: user, total pods, namespaces?
 };
@@ -16,18 +18,25 @@ const initialState: TestState = {
 
 const rootReducer = createReducer(initialState, (builder) =>
   builder
-    .addCase(darkMode, (state, action) => {
-      console.log('reducer', action.payload);
+    .addCase(darkMode, (state) => {
       let dark: boolean;
       state.dark ? (dark = false) : (dark = true);
       return { ...state, dark };
     })
-    .addCase(action2, (state, action) => {
-      const test2 = state.test2 + action.payload;
-      return { ...state, test2 };
+    .addCase(addNamespaces.pending, (state, action) => {
+      console.log('pending');
+      return { ...state };
+    })
+    .addCase(addNamespaces.fulfilled, (state, action) => {
+      console.log(action.payload);
+      return { ...state };
+    })
+    .addCase(addNamespaces.rejected, (state, action) => {
+      console.log('rejected');
+      return { ...state };
     })
 );
 
 export default rootReducer;
 
-export { darkMode, action2 };
+export { darkMode, addNamespaces };

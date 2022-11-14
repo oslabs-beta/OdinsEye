@@ -12,13 +12,15 @@ export type DashboardController = {
 
 export type TestState = {
   dark: boolean;
-  test2: number;
+  namespaces: string[] | null;
   data: null | [];
 };
 
-export type GetDataType = {
-  (path: string, elementId: string): Promise<any>;
-};
+export type GetDataType = (page?: string) => void;
+
+// {
+//   (path: string, elementId: string): Promise<any>;
+// };
 
 export type ErrorType = {
   log: string;
