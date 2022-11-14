@@ -40,7 +40,7 @@ var axios_1 = require("axios");
 //const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 //const client = require('prom-client');
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
+var start = new Date(Date.now() - 60 * 60000).toISOString();
 var end = new Date(Date.now()).toISOString();
 // const kc = new k8s.KubeConfig();
 // kc.loadFromDefault();
@@ -52,33 +52,30 @@ var end = new Date(Date.now()).toISOString();
 // client.collectDefaultMetrics();
 var kubernetesController = {
     totalRestarts: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var restartQuery, response, _a, err_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var restartQuery, response, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
                     restartQuery = 'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
-                    _b.label = 1;
+                    _a.label = 1;
                 case 1:
-                    _b.trys.push([1, 4, , 5]);
+                    _a.trys.push([1, 3, , 4]);
                     console.log('into try block');
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum+by(namespace)(changes(kube_pod_status_ready{condition=\"true\"}[5m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
-                    response = _b.sent();
-                    console.log(response.data);
-                    _a = res.locals;
-                    return [4 /*yield*/, response.data];
-                case 3:
-                    _a.restarts = _b.sent();
+                    response = _a.sent();
+                    console.log(response.data.data.result);
+                    res.locals.restarts = response.data;
                     console.log(res.locals.restarts);
                     return [2 /*return*/, next()];
-                case 4:
-                    err_1 = _b.sent();
+                case 3:
+                    err_1 = _a.sent();
                     return [2 /*return*/, next({
                             log: "Error in kuberenetesController.getTotalRestarts: ".concat(err_1),
                             status: 500,
-                            message: 'Error occured while retrieving dashboard cpu data'
+                            message: 'Error occured while retrieving total restarts data'
                         })];
-                case 5: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); },
@@ -102,15 +99,13 @@ var kubernetesController = {
                     });
                     res.locals.namespaceNames = namespaceArray_1;
                     console.log(res.locals.namespaceNames);
-                    // res.locals.restarts = await response.data;
-                    // console.log(res.locals.restarts);
                     return [2 /*return*/, next()];
                 case 3:
                     err_2 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getTotalRestarts: ".concat(err_2),
+                            log: "Error in kuberenetesController.nameSpaceNames: ".concat(err_2),
                             status: 500,
-                            message: 'Error occured while retrieving dashboard cpu data'
+                            message: 'Error occured while retrieving namespace names data'
                         })];
                 case 4: return [2 /*return*/];
             }
@@ -143,9 +138,80 @@ var kubernetesController = {
                 case 3:
                     err_3 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getTotalRestarts: ".concat(err_3),
+                            log: "Error in kuberenetesController.podNames: ".concat(err_3),
                             status: 500,
-                            message: 'Error occured while retrieving dashboard cpu data'
+                            message: 'Error occured while retrieving pod names'
+                        })];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); },
+    podsNotReady: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var readyQuery, response, err_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    readyQuery = 'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    console.log('into try block');
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                case 2:
+                    response = _a.sent();
+                    console.log(response.data.data.result);
+                    res.locals.ready = response.data;
+                    return [2 /*return*/, next()];
+                case 3:
+                    err_4 = _a.sent();
+                    return [2 /*return*/, next({
+                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_4),
+                            status: 500,
+                            message: 'Error occured while retrieving pods not ready data'
+                        })];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); },
+    getMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var objectData, podName, restartQuery, readyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, response, array, newArray, i, err_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    objectData = {};
+                    podName = req.params.podName;
+                    restartQuery = "sum+by+(".concat(podName, ")(changes(kube_pod_status_ready{condition=\"true\"}[5m]))");
+                    readyQuery = "sum+by+(".concat(podName, ")+(kube_pod_status_ready{condition=\"false\"})");
+                    cpuQuery = "sum+by+(".concat(podName, ")+rate(container_cpu_usage_seconds_total[10m])");
+                    memQuery = "sum+by+(".concat(podName, ")(container_memory_usage_bytes)");
+                    receiveQuery = "sum+by+(".concat(podName, ")(rate(node_network_receive_bytes_total[10m]))");
+                    transmitQuery = "sum+by+(".concat(podName, ")(rate(node_network_transmit_bytes_total[10m]))");
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                case 2:
+                    response = _a.sent();
+                    array = response.data.data.result;
+                    newArray = [];
+                    for (i = 0; i < array.length; i++) {
+                        newArray.push(array[0].values);
+                    }
+                    console.log(newArray);
+                    objectData.restarts = newArray;
+                    // const response1 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`)
+                    // const response2 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`)
+                    // const response3 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${memQuery}&start=${start}&end=${end}&step=5m`)
+                    // const response4 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
+                    // const response5 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
+                    res.locals.data = objectData;
+                    return [2 /*return*/, next()];
+                case 3:
+                    err_5 = _a.sent();
+                    return [2 /*return*/, next({
+                            log: "Error in kuberenetesController.getMetrics: ".concat(err_5),
+                            status: 500,
+                            message: 'Error occured while retrieving getMetrics data'
                         })];
                 case 4: return [2 /*return*/];
             }

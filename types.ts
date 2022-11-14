@@ -13,7 +13,9 @@ export type DashboardController = {
 export type KubernetesController = {
     totalRestarts: RequestHandler,
     namespaceNames: RequestHandler,
-    podNames: RequestHandler
+    podNames: RequestHandler,
+    podsNotReady: RequestHandler,
+    getMetrics: RequestHandler
 }
 
 export type TestState = {
@@ -31,3 +33,7 @@ export type ErrorType = {
   status: number;
   message: { err: string };
 };
+
+export type ObjectData = {
+  restarts: [][]
+}

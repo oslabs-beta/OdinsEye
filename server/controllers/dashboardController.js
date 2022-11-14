@@ -51,7 +51,7 @@ var k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
 //NetworkV1Api: (ingress) - Ingress is a collection of rules that allow inbound connections to reach the endpoints defined by a backend. An Ingress can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc.
 //https://docs.okd.io/latest/rest_api/network_apis/ingress-networking-k8s-io-v1.html
 var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client 
+//to collect default metrics directly from prometheus client
 //https://github.com/siimon/prom-client
 client.collectDefaultMetrics();
 var dashboardController = {
