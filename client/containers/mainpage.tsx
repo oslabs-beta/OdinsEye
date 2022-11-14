@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TestState } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
+import LineChart from '../components/LineChart';
 
 type AppProps = {
   name?: string;
@@ -36,6 +37,7 @@ const MainPage = () => {
         </div>
         <div id='net-rec'>net rec</div>
         <div id='net-trans'>net-trans</div>
+        <LineChart label='CPU Usage' yAxis='percent'/>
       </div>
     </div>
   );
