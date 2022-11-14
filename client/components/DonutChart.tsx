@@ -12,41 +12,42 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const initialData: ChartData<'doughnut'> = {
-  datasets: [
-    {
-      label: 'Total Pods',
-      data: [],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 206, 86)',
-        'rgb(75, 192, 192)',
-        'rgb(153, 102, 255)',
-        'rgb(255, 159, 64)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
+type DoughnutType = {
+  data: number[] | undefined;
 };
 
-const DoughnutChart = (props: any) => {
-  const [data, setData] = useState(initialData);
+const DoughnutChart = ({ data }: DoughnutType) => {
+  const [chartData, setChartData] = useState<number[]>([]);
+  const initialData: ChartData<'doughnut'> = {
+    datasets: [
+      {
+        label: 'Total Pods',
+        data: chartData,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 206, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(153, 102, 255)',
+          'rgb(255, 159, 64)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   useEffect(() => {
-    const recData = Object.assign({}, initialData.datasets[0], {
-      data: [parseInt(props.data), 10, 20],
-    });
-    initialData.datasets[0] = recData;
-    setData(initialData);
-  });
+    if (data) {
+      setChartData(data);
+    }
+  }, [data]);
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
     interaction: {
@@ -67,7 +68,7 @@ const DoughnutChart = (props: any) => {
       // }
     },
   };
-  console.log(data);
+
   return (
     <div>
       <h2
@@ -81,7 +82,7 @@ const DoughnutChart = (props: any) => {
         Doughnut Chart Display
       </h2>
       <Doughnut
-        data={data}
+        data={initialData}
         options={options}
         style={{ width: '500px', margin: 'auto auto' }}
       />

@@ -5,7 +5,6 @@ import { addNamespaces } from './getData';
 
 //ACTIONS
 const darkMode = createAction<boolean, 'darkMode'>('darkMode');
-// const addNamespaces = createAsyncThunk<any>('addNamespace', getNamespaces);
 
 const initialState: TestState = {
   dark: false,

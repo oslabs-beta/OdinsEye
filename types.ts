@@ -24,10 +24,6 @@ export type TestState = {
 
 export type GetDataType = (page?: string) => AllDataType;
 
-// {
-//   (path: string, elementId: string): Promise<any>;
-// };
-
 export type ErrorType = {
   log: string;
   status: number;
@@ -38,7 +34,7 @@ export type AllDataType = {
   totalCpu?: any[];
   totalNames?: number;
   totalMem?: any[];
-  totalPods?: number;
+  totalPods?: number[];
   totalRec?: any[];
   totalTrans?: any[];
   logs?: any[];

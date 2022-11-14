@@ -4,15 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { addNamespaces } from './rootReducer';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AllDataType } from '../types';
-import { totalmem } from 'os';
 
 type PathArray = string[][];
 
 let paths: PathArray = [
-  ['/api/dashboard/totalCpu', 'total-cpu', 'one'],
-  ['/api/dashboard/totalNamespaces', 'total-names', 'two'],
-  ['/api/dashboard/totalMem', 'total-memory-use', 'one'],
-  ['/api/dashboard/totalPods', 'total-pods', 'two'],
+  ['/api/dashboard/totalCpu', 'total-cpu'],
+  ['/api/dashboard/totalNamespaces', 'total-names'],
+  ['/api/dashboard/totalMem', 'total-memory-use'],
+  ['/api/dashboard/totalPods', 'total-pods'],
   ['/api/dashboard/totalReceive', 'net-rec', 'three'],
   ['/api/dashboard/totalTransmit', 'net-trans', 'three'],
 ];
@@ -33,13 +32,15 @@ const getData: GetDataType = (page): AllDataType => {
             allData.totalCpu = response.data.result[0].values;
             return;
           case 'total-memory-use':
-            allData.totalCpu = response.data.result[0].values;
+            allData.totalMem = response.data.result[0].values;
             return;
           case 'total-names':
             allData.totalNames = response.data.data.result[0].values[0][1];
             return;
           case 'total-pods':
-            allData.totalPods = response.data.data.result[0].values[0][1];
+            allData.totalPods = [
+              parseInt(response.data.data.result[0].values[0][1]),
+            ];
             return;
           case 'net-rec':
             allData.totalRec = response.data.data.result[0].values;
@@ -52,17 +53,6 @@ const getData: GetDataType = (page): AllDataType => {
             return;
         }
       }
-
-      // if (response.data.data.result[0].values) {
-      //   console.log(path[1], response.data.data.result[0].values);
-
-      // } else if (response.data.result[0].values) {
-      //   console.log(path[1], response.data.result[0].values);
-      //   element.innerText = JSON.stringify(response.data.result[0].values);
-      // } else {
-      //   console.log(path[1], response.data.result[0]);
-      //   element.innerText = JSON.stringify(response.data.result[0]);
-      // }
     } catch (err) {
       const frontErr: ErrorType = {
         log: 'error in getData',
