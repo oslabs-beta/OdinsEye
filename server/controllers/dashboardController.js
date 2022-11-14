@@ -68,7 +68,7 @@ var dashboardController = {
                     return [4 /*yield*/, response.data];
                 case 2:
                     _a.totalCpu = _b.sent();
-                    console.log(res.locals.cpu);
+                    // console.log(res.locals.cpu);
                     return [2 /*return*/, next()];
                 case 3:
                     err_1 = _b.sent();
@@ -119,7 +119,7 @@ var dashboardController = {
                     return [4 /*yield*/, response];
                 case 2:
                     _a.totalPods = _b.sent();
-                    console.log(res.locals.totalPods);
+                    // console.log(res.locals.totalPods);
                     return [2 /*return*/, next()];
                 case 3:
                     err_3 = _b.sent();
