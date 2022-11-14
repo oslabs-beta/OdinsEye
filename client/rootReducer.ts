@@ -28,11 +28,11 @@ const rootReducer = createReducer(initialState, (builder) =>
       return { ...state };
     })
     .addCase(addNamespaces.fulfilled, (state, action) => {
-      console.log(action.payload);
-      return { ...state };
+      const namespaces = action.payload;
+      return { ...state, namespaces };
     })
     .addCase(addNamespaces.rejected, (state, action) => {
-      console.log('rejected');
+      console.log('Error, rejected');
       return { ...state };
     })
 );
