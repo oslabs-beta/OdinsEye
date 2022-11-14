@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TestState } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
+import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
 import { AllDataType } from '../../types';
+
 
 // type AppProps = {
 //   name?: string;
@@ -39,6 +41,7 @@ const MainPage = () => {
         </div>
         <div id='net-rec'>net rec</div>
         <div id='net-trans'>net-trans</div>
+        <LineChart data={data.totalCpu} label='CPU Usage' yAxis='percent'/>
         <div id='test'>
           <DoughnutChart data={data.totalPods} />
         </div>
