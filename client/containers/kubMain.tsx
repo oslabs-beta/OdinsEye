@@ -7,8 +7,11 @@ import DropDown from '../components/Dropdown';
 
 //passdown namespaces, then render conditionally based on the current namespace selected
 
-const KubPage = () => {
-  const testNamespace = ['one', 'two'];
+type KubType = {
+  namespaces: string[] | null;
+};
+
+const KubPage = ({ namespaces }: KubType) => {
   const [page, setCurrentPage] = useState('default'); //need to set to current namespace
   //will need to update get request to include namespace within the function
   useEffect(() => {
@@ -22,7 +25,7 @@ const KubPage = () => {
   return (
     <div className='main-container'>
       <DropDown
-        nameSpaces={testNamespace}
+        namespaces={namespaces}
         current={page}
         handleChange={handleChange}
       />
