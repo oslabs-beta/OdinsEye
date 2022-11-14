@@ -107,26 +107,62 @@ const kubernetesController: KubernetesController = {
         const objectData: any = {
         };
         const { podName } = req.params
-        const restartQuery = `sum+by+(${podName})(changes(kube_pod_status_ready{condition="true"}[5m]))`
-        const readyQuery = `sum+by+(${podName})+(kube_pod_status_ready{condition="false"})`
-        const cpuQuery = `sum+by+(${podName})+rate(container_cpu_usage_seconds_total[10m])`
-        const memQuery = `sum+by+(${podName})(container_memory_usage_bytes)`
-        const receiveQuery = `sum+by+(${podName})(rate(node_network_receive_bytes_total[10m]))`
-        const transmitQuery = `sum+by+(${podName})(rate(node_network_transmit_bytes_total[10m]))`
+        const ccPodName = podName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        console.log(ccPodName)
+        console.log(podName)
+        const restartQuery = `sum+by+(${ccPodName})(changes(kube_pod_status_ready{condition="true"}[5m]))`
+        const readyQuery = `sum+by+(${ccPodName})+(kube_pod_status_ready{condition="false"})`
+        const cpuQuery = `sum+by+(${ccPodName})+(rate(container_cpu_usage_seconds_total[10m]))`
+        const memQuery = `sum+by+(${ccPodName})+(container_memory_usage_bytes)`
+        const receiveQuery = `sum+by+(${ccPodName})+(rate(node_network_receive_bytes_total[10m]))`
+        const transmitQuery = `sum+by+(${ccPodName})+(rate(node_network_transmit_bytes_total[10m]))`
         try {
-            const response = await axios.get(`http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`)
-            const array = response.data.data.result
-            const newArray = [];
-            for (let i=0; i<array.length; i++){
-                newArray.push(array[0].values)
-            }
-            console.log(newArray)
-            objectData.restarts = newArray
-            // const response1 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`)
-            // const response2 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`)
-            // const response3 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${memQuery}&start=${start}&end=${end}&step=5m`)
-            // const response4 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
-            // const response5 = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
+            //restarts per namespace
+            const restartResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`)
+            const array1= restartResponse.data.data.result
+            const restartArray = [];
+            restartArray.push(array1[0].values)
+            //console.log(restartArray)
+            objectData.restarts = restartArray
+
+            //pods that are unavailable within namespace
+            const readyResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`);
+            const array2 = readyResponse.data.data.result
+            //console.log(array2)
+            const readyArray = []
+            readyArray.push(array2[0].values)
+            objectData.ready = readyArray;
+
+            //total cpu within namespaces/pods
+            const cpuResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`)
+            const array3 = cpuResponse.data.data.result
+            const cpuArray = []
+            cpuArray.push(array3[0].values)
+            objectData.cpu = cpuArray;
+            
+            //total memory per pod
+            const memResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${memQuery}&start=${start}&end=${end}&step=5m`)
+            const array4 = memResponse.data.data.result
+            const memArray = []
+            memArray.push(array4[0].values)
+            objectData.memory = memArray;
+
+            //total network received per pod
+            const receiveResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
+            const array5 = receiveResponse.data.data.result
+            //console.log(array5)
+            const receiveArray = []
+            receiveArray.push(array5[0].values)
+            objectData.reception = receiveArray;
+
+            //total transmitted data per pod
+            const transmitResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
+            const array6 = transmitResponse.data.data.result
+            //console.log(array6)
+            const transmitArray = []
+            transmitArray.push(array6[0].values)
+            objectData.transmission = transmitArray;
+
             res.locals.data = objectData;
             return next();
         } catch (err) {
