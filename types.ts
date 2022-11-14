@@ -10,6 +10,12 @@ export type DashboardController = {
   totalNamespaces: RequestHandler;
 };
 
+export type KubernetesController = {
+    totalRestarts: RequestHandler,
+    namespaceNames: RequestHandler,
+    podNames: RequestHandler
+}
+
 export type TestState = {
   dark: boolean;
   test2: number;

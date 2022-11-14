@@ -1,12 +1,14 @@
 const path = require('path');
 const express = require('express');
 import { Request, Response, NextFunction } from 'express';
-import dashboardRouter from './routes/dashboard';
+import dashboardRouter from './routes/dashboard'
+import kubernetesRouter from './routes/kubernetes';
+import { resourceLimits } from 'worker_threads';
 import { ErrorType } from '../types';
-// import { resourceLimits } from 'worker_threads';
+
 const cors = require('cors');
 const app = express();
-const PORT = 3000;
+const PORT = 3030;
 
 app.use(cors());
 app.use(express.json());
@@ -17,10 +19,12 @@ if (process.env.NODE_ENV) {
 }
 
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/kubernetesMetrics', kubernetesRouter);
 
 app.get('/dashboard', (req: Request, res: Response) => {
   return res.status(200).send('hi');
 });
+
 
 //redirect to page 404 when endpoint does not exist
 app.use('*', (req: Request, res: Response) => {

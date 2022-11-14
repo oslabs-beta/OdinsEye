@@ -3,10 +3,10 @@ exports.__esModule = true;
 var path = require('path');
 var express = require('express');
 var dashboard_1 = require("./routes/dashboard");
-// import { resourceLimits } from 'worker_threads';
+var kubernetes_1 = require("./routes/kubernetes");
 var cors = require('cors');
 var app = express();
-var PORT = 3000;
+var PORT = 3030;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,6 +14,7 @@ if (process.env.NODE_ENV) {
     app.use('/', express.static(path.join(__dirname, '../dist')));
 }
 app.use('/api/dashboard', dashboard_1["default"]);
+app.use('/api/kubernetesMetrics', kubernetes_1["default"]);
 app.get('/dashboard', function (req, res) {
     return res.status(200).send('hi');
 });
