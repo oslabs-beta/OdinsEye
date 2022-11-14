@@ -1,3 +1,140 @@
 body {
   background-color: rgb(173, 173, 215);
 }
+
+.main-container {
+  display: grid;
+  grid-template-areas:
+    'head head'
+    'navb drop'
+    'navb main'
+    'navb main';
+  grid-template-columns: 300px 1fr;
+
+  .header {
+    font-size: 100px;
+    text-align: center;
+    grid-area: head;
+    min-height: 150px;
+    margin-top: 50px;
+    margin-bottom: 0px;
+  }
+
+  #dropdown {
+    grid-area: drop;
+    padding-bottom: 20px;
+    .menu {
+      position: absolute;
+
+      list-style-type: none;
+      margin: 5px 0;
+      padding: 0;
+
+      border: 1px solid grey;
+      width: 150px;
+    }
+
+    .menu > li {
+      margin: 0;
+
+      background-color: white;
+    }
+
+    .menu > li:hover {
+      background-color: lightgray;
+    }
+
+    .menu > li > button {
+      width: 100%;
+      height: 100%;
+      text-align: left;
+
+      background: none;
+      color: inherit;
+      border: none;
+      padding: 5px;
+      margin: 0;
+      font: inherit;
+      cursor: pointer;
+    }
+  }
+
+  #nav-bar {
+    min-width: 300px;
+    align-items: center;
+    top: 200px;
+    grid-area: navb;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+
+    .link {
+      // font-family
+      color: rgb(20, 6, 66);
+    }
+  }
+}
+
+.data-container {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  #small-graphs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+  //   grid-template-areas: ;
+  //     'cpu mem'
+  //     'pod nr'
+  //     'nt nt'
+  //     'log log';
+
+  #total-cpu {
+    // grid-area: cpu;
+    background-color: aliceblue;
+    // width: 400px;
+    height: 400px;
+  }
+
+  #total-memory-use {
+    // grid-area: mem;
+    background-color: beige;
+    // width: 400px;
+    height: 400px;
+  }
+
+  #total-pods {
+    // grid-area: pod;
+    background-color: aquamarine;
+    // width: 400px;
+    height: 400px;
+  }
+
+  #net-rec {
+    // grid-area: nr;
+    background-color: burlywood;
+    // width: 400px;
+    height: 400px;
+  }
+
+  #net-trans {
+    // grid-area: nt;
+    background-color: rgb(242, 165, 199);
+    // width: 400px;
+    height: 400px;
+  }
+  #extra {
+    // grid-area: nt;
+    background-color: rgb(96, 45, 67);
+    // width: 400px;
+    height: 400px;
+  }
+
+  #logs {
+    // grid-area: log;
+    background-color: rgb(218, 178, 246);
+    min-width: 800px;
+    width: 100%;
+    height: 400px;
+  }
+}
