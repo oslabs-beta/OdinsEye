@@ -1,20 +1,15 @@
 import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
-import test from 'node:test';
+import { TestState } from '../types';
 
 //ACTIONS
-const darkMode = createAction<number, 'darkMode'>('darkMode');
+const darkMode = createAction<boolean, 'darkMode'>('darkMode');
 const action2 = createAction<number, 'action2'>('action2');
-
-interface TestState {
-  dark: boolean;
-  test2: number;
-  data: null | [];
-}
 
 const initialState: TestState = {
   dark: false,
   test2: 1,
   data: null,
+  //possible global state values: user, total pods, namespaces?
 };
 
 //REDUCER
@@ -22,6 +17,7 @@ const initialState: TestState = {
 const rootReducer = createReducer(initialState, (builder) =>
   builder
     .addCase(darkMode, (state, action) => {
+      console.log('reducer', action.payload);
       let dark: boolean;
       state.dark ? (dark = false) : (dark = true);
       return { ...state, dark };
