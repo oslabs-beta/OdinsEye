@@ -3,6 +3,8 @@ import { GetDataType, ErrorType } from '../types';
 import { useDispatch, useSelector } from 'react-redux';
 // import { addNamespaces } from './rootReducer';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AllDataType } from '../types';
+import { totalmem } from 'os';
 
 type PathArray = string[][];
 
@@ -16,27 +18,34 @@ let paths: PathArray = [
 ];
 const kPaths: PathArray = [['/api/dashboard/logs', 'logs']];
 
-const getData: GetDataType = (page) => {
+const getData: GetDataType = (page): AllDataType => {
   if (page) {
     paths = paths.concat(kPaths);
   }
+  const allData: AllDataType = {};
   paths.forEach(async (path) => {
     try {
       const response = await axios.get(path[0]);
-
       let element = document.getElementById(path[1]);
       if (element) {
-        switch (path[2]) {
-          case 'one':
-            element.innerText = JSON.stringify(response.data.result[0].values);
+        switch (path[1]) {
+          case 'total-cpu':
+            allData.totalCpu = response.data.result[0].values;
             return;
-          case 'two':
-            element.innerText = response.data.data.result[0].values[0][1];
+          case 'total-memory-use':
+            allData.totalCpu = response.data.result[0].values;
             return;
-          case 'three':
-            element.innerText = JSON.stringify(
-              response.data.data.result[0].values
-            );
+          case 'total-names':
+            allData.totalNames = response.data.data.result[0].values[0][1];
+            return;
+          case 'total-pods':
+            allData.totalPods = response.data.data.result[0].values[0][1];
+            return;
+          case 'net-rec':
+            allData.totalRec = response.data.data.result[0].values;
+            return;
+          case 'net-trans':
+            allData.totalTrans = response.data.data.result[0].values;
             return;
           default:
             console.log(path[1], response);
@@ -64,6 +73,7 @@ const getData: GetDataType = (page) => {
       return;
     }
   });
+  return allData;
 };
 
 const addNamespaces = createAsyncThunk(

@@ -8,20 +8,24 @@ import { TestState } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
+import DoughnutChart from '../components/DonutChart';
+import { AllDataType } from '../../types';
 
-type AppProps = {
-  name?: string;
-};
+
+// type AppProps = {
+//   name?: string;
+// };
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const initialData: AllDataType = {};
+  const [data, setData] = useState(initialData);
   useEffect(() => {
-    getData();
+    setData(getData());
     dispatch(addNamespaces());
     //list other metrics below
   }, []);
   const namespaces = useSelector((state: TestState) => state.namespaces);
-  console.log(namespaces);
   return (
     <div className='main-container'>
       <h1 className='header'>Odin's Eye</h1>
@@ -38,6 +42,9 @@ const MainPage = () => {
         <div id='net-rec'>net rec</div>
         <div id='net-trans'>net-trans</div>
         <LineChart label='CPU Usage' yAxis='percent'/>
+        <div id='test'>
+          <DoughnutChart data={data.totalPods} />
+        </div>
       </div>
     </div>
   );
