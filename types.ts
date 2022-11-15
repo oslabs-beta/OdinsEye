@@ -14,6 +14,8 @@ export type KubernetesController = {
   totalRestarts: RequestHandler;
   namespaceNames: RequestHandler;
   podNames: RequestHandler;
+  podsNotReady: RequestHandler;
+  getMetrics: RequestHandler;
 };
 
 export type TestState = {
@@ -22,7 +24,7 @@ export type TestState = {
   data: null | [];
 };
 
-export type GetDataType = (page?: string) => AllDataType;
+export type GetDataType = (page?: string) => any;
 
 export type ErrorType = {
   log: string;
@@ -38,4 +40,5 @@ export type AllDataType = {
   totalRec?: any[];
   totalTrans?: any[];
   logs?: any[];
+  data?: any;
 };

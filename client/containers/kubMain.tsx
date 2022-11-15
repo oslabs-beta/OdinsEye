@@ -4,6 +4,7 @@ import axios from 'axios';
 import { getData } from '../getData';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
+import { AllDataType } from '../../types';
 
 //passdown namespaces, then render conditionally based on the current namespace selected
 
@@ -11,15 +12,17 @@ type KubType = {
   namespaces: string[] | null;
 };
 
+//get request for each pod
 const KubPage = ({ namespaces }: KubType) => {
   const [page, setCurrentPage] = useState('default'); //need to set to current namespace
   //will need to update get request to include namespace within the function
+  const initialData: AllDataType = {};
+  const [data, setData] = useState(initialData);
   useEffect(() => {
-    getData('k8');
+    setData(getData('k8'));
     //list other metrics below
-  });
+  }, []);
   const handleChange = (newName: string) => {
-    console.log(newName);
     setCurrentPage(newName);
   };
   return (

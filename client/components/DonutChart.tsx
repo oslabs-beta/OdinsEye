@@ -14,9 +14,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
   data: number[] | undefined;
+  label: string;
+  tag: string;
 };
 
-const DoughnutChart = ({ data }: DoughnutType) => {
+const DoughnutChart = ({ data, label, tag }: DoughnutType) => {
   const [chartData, setChartData] = useState<number[]>([]);
   const initialData: ChartData<'doughnut'> = {
     datasets: [
@@ -59,7 +61,7 @@ const DoughnutChart = ({ data }: DoughnutType) => {
       },
       title: {
         display: true,
-        text: 'DOUGHNUT',
+        text: label,
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -70,22 +72,15 @@ const DoughnutChart = ({ data }: DoughnutType) => {
   };
 
   return (
-    <div>
+    <div id={tag}>
       <h2
         style={{
-          maxWidth: '300px',
           margin: 'auto auto',
           color: '#4be7b9',
           marginBottom: '10px',
         }}
-      >
-        Doughnut Chart Display
-      </h2>
-      <Doughnut
-        data={initialData}
-        options={options}
-        style={{ width: '500px', margin: 'auto auto' }}
-      />
+      ></h2>
+      <Doughnut data={initialData} options={options} />
     </div>
   );
 };

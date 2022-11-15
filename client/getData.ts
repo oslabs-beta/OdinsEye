@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { addNamespaces } from './rootReducer';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AllDataType } from '../types';
+import { totalmem } from 'os';
 
 type PathArray = string[][];
 
@@ -38,9 +39,7 @@ const getData: GetDataType = (page): AllDataType => {
             allData.totalNames = response.data.data.result[0].values[0][1];
             return;
           case 'total-pods':
-            allData.totalPods = [
-              parseInt(response.data.data.result[0].values[0][1]),
-            ];
+            allData.totalPods = response.data.data.result[0].values[0][1];
             return;
           case 'net-rec':
             allData.totalRec = response.data.data.result[0].values;
