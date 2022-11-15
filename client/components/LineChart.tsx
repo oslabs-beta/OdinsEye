@@ -42,9 +42,6 @@ const LineChart = (props:LineChartDataType) => {
         datasets: []
     }    
     const [lineChartData, setLineChartData] = useState<any>(initialData);
-    //DataType[]
-    // const test:LineChartDataType = {data: [[1,'string'],[2,'hello']],label:'string', yAxis:'string'}
-    // setLineChartData([[1,'2']])
 
     const options: ChartOptions<'line'> = {
         responsive: true,
@@ -85,14 +82,7 @@ const LineChart = (props:LineChartDataType) => {
         },
     };
 
-    // getData();
-
     useEffect(() => {
-        // setLineChartData(data)
-        //testing for totalCPU usage 
-        // console.log('data', data);
-        // const data = getData('total-cpu');
-        // console.log(data)
         fetch(props.url)
             .then((res) => res.json())
             .then((data) => {
@@ -143,9 +133,9 @@ const LineChart = (props:LineChartDataType) => {
             
     }, []);
     return (
-        <div className= 'line-chart'>
+        <div className= 'line-chart-container'>
             <h2>This is the line chart</h2>
-            <Line options={options} data={lineChartData} />
+            <Line className="line-chart" options={options} data={lineChartData} />
         </div>
     )
 }

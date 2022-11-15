@@ -36,15 +36,19 @@ const MainPage = () => {
           <div id='total-pods'>total pods</div>
         </div>
         <div id='small-graphs'>
-          <div id='total-cpu'>total cpu</div>
-          <div id='total-memory-use'>total mem use</div>
+          <div id='total-cpu'>total cpu
+          <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='percent'/>
+          </div>
+          <div id='total-memory-use'>total mem use
+          <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='kilobytes'/>
+          </div>
         </div>
-        <div id='net-rec'>net rec</div>
-        <div id='net-trans'>net-trans</div>
-        <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='percent'/>
-        <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='kilobytes'/>
-        <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='kilobytes'/>
+        <div id='net-rec'>net rec
         <LineChart url='/api/dashboard/totalReceive' label='Mem Usage' yAxis='kilobytes'/>
+        </div>
+        <div id='net-trans'>net-trans
+        <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='kilobytes'/>
+        </div>
         <div id='test'>
           {/* <DoughnutChart data={data.totalPods} /> */}
         </div>
