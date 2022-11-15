@@ -86,7 +86,9 @@ const dashboardController: DashboardController = {
       const data = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
       );
-      res.locals.totalReceive = await data;
+      const response = await data.data
+      res.locals.totalReceive = response;
+
       return next();
     } catch (err) {
       return next({
@@ -102,7 +104,8 @@ const dashboardController: DashboardController = {
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
       );
-      res.locals.totalTransmit = await response;
+      const data = await response;
+      res.locals.totalTransmit = data.data;
       return next();
     } catch (err) {
       return next({

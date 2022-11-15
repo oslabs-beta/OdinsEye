@@ -25,8 +25,6 @@ export type TestState = {
   data: null | [];
 };
 
-export type GetDataType = (page?: string) => any;
-
 export type ErrorType = {
   log: string;
   status: number;
@@ -34,12 +32,12 @@ export type ErrorType = {
 };
 
 export type AllDataType = {
-  totalCpu?: any[];
-  totalNames?: number;
-  totalMem?: any[];
-  totalPods?: number[];
-  totalRec?: any[];
-  totalTrans?: any[];
-  logs?: any[];
-  data?: any;
+  data?: number[] | number | undefined;
+  // totalCpu?: any[] | unde;
+  // totalNames?: number;
+  // totalMem?: any[];
+  // totalPods?: number;
+  // totalRec?: any[];
+  // totalTrans?: any[];
+  // logs?: any[];
 };

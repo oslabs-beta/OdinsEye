@@ -13,12 +13,12 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
-  data: number[] | undefined;
+  path: string;
   label: string;
   tag: string;
 };
 
-const DoughnutChart = ({ data, label, tag }: DoughnutType) => {
+const DoughnutChart = ({ label, tag }: DoughnutType) => {
   const [chartData, setChartData] = useState<number[]>([]);
   const initialData: ChartData<'doughnut'> = {
     datasets: [
@@ -45,11 +45,11 @@ const DoughnutChart = ({ data, label, tag }: DoughnutType) => {
       },
     ],
   };
-  useEffect(() => {
-    if (data) {
-      setChartData(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     setChartData(data);
+  //   }
+  // }, [data]);
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
     interaction: {

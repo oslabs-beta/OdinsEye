@@ -1,7 +1,6 @@
 const React = require('react');
 import NavBar from '../components/navbar';
 const styles = require('../styles/index.scss');
-import { getData } from '../getData';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TestState } from '../../types';
@@ -25,7 +24,7 @@ const MainPage = () => {
   const [data, setData] = useState(initialData);
   console.log(data);
   useEffect(() => {
-    setData(getData());
+    // setData(getData());
     dispatch(addNamespaces());
     //list other metrics below
   }, []);
@@ -57,7 +56,7 @@ const MainPage = () => {
           </div>
           <div id='total-pods'>
             <DoughnutChart
-              data={data.totalPods}
+              path='/api/dashboard/totalPods'
               label='Total Pods'
               tag='total-pod-chart'
             />
@@ -68,9 +67,28 @@ const MainPage = () => {
           <div id='total-memory-use'>total mem use</div>
         </div>
         <div id='net-rec'>net rec</div>
-        <div id='net-trans'>
-          <LineChart data={data.totalCpu} label='CPU Usage' yAxis='percent' />
-        </div>
+        <div id='net-trans'>net-trans</div>
+        <LineChart
+          url='/api/dashboard/totalCpu'
+          label='Cpu Usage'
+          yAxis='percent'
+        />
+        <LineChart
+          url='/api/dashboard/totalMem'
+          label='Mem Usage'
+          yAxis='kilobytes'
+        />
+        <LineChart
+          url='/api/dashboard/totalTransmit'
+          label='Mem Usage'
+          yAxis='kilobytes'
+        />
+        <LineChart
+          url='/api/dashboard/totalReceive'
+          label='Mem Usage'
+          yAxis='kilobytes'
+        />
+        <div id='test'>{/* <DoughnutChart data={data.totalPods} /> */}</div>
       </div>
     </div>
   );

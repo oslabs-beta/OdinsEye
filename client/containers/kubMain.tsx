@@ -1,7 +1,6 @@
 const React = require('react');
 import NavBar from '../components/navbar';
 import axios from 'axios';
-import { getData } from '../getData';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
 import { AllDataType } from '../../types';
@@ -19,7 +18,7 @@ const KubPage = ({ namespaces }: KubType) => {
   const initialData: AllDataType = {};
   const [data, setData] = useState(initialData);
   useEffect(() => {
-    setData(getData('k8'));
+    // setData(getData('k8'));
     //list other metrics below
   }, []);
   const handleChange = (newName: string) => {
