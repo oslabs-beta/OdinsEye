@@ -9,7 +9,7 @@ import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
-import { AllDataType } from '../../types';
+import { AllDataType } from '../../types'
 
 
 // type AppProps = {
@@ -41,9 +41,12 @@ const MainPage = () => {
         </div>
         <div id='net-rec'>net rec</div>
         <div id='net-trans'>net-trans</div>
-        <LineChart data={data.totalCpu} label='CPU Usage' yAxis='percent'/>
+        <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='percent'/>
+        <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='kilobytes'/>
+        <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='kilobytes'/>
+        <LineChart url='/api/dashboard/totalReceive' label='Mem Usage' yAxis='kilobytes'/>
         <div id='test'>
-          <DoughnutChart data={data.totalPods} />
+          {/* <DoughnutChart data={data.totalPods} /> */}
         </div>
       </div>
     </div>
