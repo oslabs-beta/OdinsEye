@@ -6,7 +6,7 @@ var dashboard_1 = require("./routes/dashboard");
 var kubernetes_1 = require("./routes/kubernetes");
 var cors = require('cors');
 var app = express();
-var PORT = 3030;
+var PORT = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

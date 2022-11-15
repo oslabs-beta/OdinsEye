@@ -79,6 +79,7 @@ body {
   grid-area: main;
   display: flex;
   flex-direction: column;
+
   #small-graphs {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -89,6 +90,15 @@ body {
   //     'nt nt'
   //     'log log';
 
+  #list-data {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  #total-names {
+    background-color: aliceblue;
+    // width: 400px;
+    height: 200px;
+  }
   #total-cpu {
     // grid-area: cpu;
     background-color: aliceblue;
@@ -107,7 +117,7 @@ body {
     // grid-area: pod;
     background-color: aquamarine;
     // width: 400px;
-    height: 400px;
+    height: 200px;
   }
 
   #net-rec {

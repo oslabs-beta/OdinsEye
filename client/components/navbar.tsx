@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { darkMode } from '../rootReducer';
 import { TestState } from '../../types';
 
-const NavBar = (props: any) => {
+const NavBar = () => {
   const dispatch = useDispatch();
   const darkTest = useSelector((state: TestState) => state.dark);
   return (
