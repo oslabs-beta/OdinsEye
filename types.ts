@@ -11,10 +11,15 @@ export type DashboardController = {
 };
 
 export type KubernetesController = {
-  totalRestarts: RequestHandler;
-  namespaceNames: RequestHandler;
-  podNames: RequestHandler;
-};
+
+    totalRestarts: RequestHandler,
+    namespaceNames: RequestHandler,
+    podNames: RequestHandler,
+    podsNotReady: RequestHandler,
+    getNameSpaceMetrics: RequestHandler,
+    getPodMetrics: RequestHandler
+}
+
 
 export type TestState = {
   dark: boolean;
@@ -31,7 +36,6 @@ export type ErrorType = {
   message: { err: string };
 };
 
-
 export type AllDataType = {
   data?: any[] | number | undefined
   // totalCpu?: any[] | unde;
@@ -42,3 +46,4 @@ export type AllDataType = {
   // totalTrans?: any[];
   // logs?: any[];
 };
+
