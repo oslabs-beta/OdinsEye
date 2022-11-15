@@ -133,21 +133,21 @@ var dashboardController = {
         });
     }); },
     totalReceive: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var data, _a, err_4;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var data, response, err_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 3, , 4]);
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
                 case 1:
-                    data = _b.sent();
-                    _a = res.locals;
-                    return [4 /*yield*/, data];
+                    data = _a.sent();
+                    return [4 /*yield*/, data.data];
                 case 2:
-                    _a.totalReceive = _b.sent();
+                    response = _a.sent();
+                    res.locals.totalReceive = response;
                     return [2 /*return*/, next()];
                 case 3:
-                    err_4 = _b.sent();
+                    err_4 = _a.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getTotalCpu: ".concat(err_4),
                             status: 500,
@@ -158,21 +158,21 @@ var dashboardController = {
         });
     }); },
     totalTransmit: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, _a, err_5;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var response, data, err_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _a.trys.push([0, 3, , 4]);
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
-                    response = _b.sent();
-                    _a = res.locals;
+                    response = _a.sent();
                     return [4 /*yield*/, response];
                 case 2:
-                    _a.totalTransmit = _b.sent();
+                    data = _a.sent();
+                    res.locals.totalTransmit = data.data;
                     return [2 /*return*/, next()];
                 case 3:
-                    err_5 = _b.sent();
+                    err_5 = _a.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getTotalCpu: ".concat(err_5),
                             status: 500,

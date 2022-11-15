@@ -26,9 +26,6 @@ export type TestState = {
   namespaces: string[] | null;
   data: null | [];
 };
-
-export type GetDataType = (page?: string) => AllDataType;
-
 // {
 //   (path: string, elementId: string): Promise<any>;
 // };
@@ -37,5 +34,16 @@ export type ErrorType = {
   log: string;
   status: number;
   message: { err: string };
+};
+
+export type AllDataType = {
+  data?: any[] | number | undefined
+  // totalCpu?: any[] | unde;
+  // totalNames?: number;
+  // totalMem?: any[];
+  // totalPods?: number;
+  // totalRec?: any[];
+  // totalTrans?: any[];
+  // logs?: any[];
 };
 
