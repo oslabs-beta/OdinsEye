@@ -1,5 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+
+$nav: #1d1b1d;
+$header: #1d1b1d;
+
+
+*{
+  margin: 0;
+}
+
 body {
-  background-color: rgb(173, 173, 215);
+  background-color: #363636;
+  color:rgb(236, 240, 239);
+  font-family: 'Playfair Display', serif;
 }
 
 .main-container {
@@ -12,12 +25,14 @@ body {
   grid-template-columns: 300px 1fr;
 
   .header {
-    font-size: 100px;
+    background-color: $header;
+    font-size: 90px;
     text-align: center;
     grid-area: head;
     min-height: 150px;
-    margin-top: 50px;
-    margin-bottom: 0px;
+    padding-top: 20px;
+    width: 100%;
+    position: fixed;
   }
 
   #dropdown {
@@ -48,7 +63,6 @@ body {
       width: 100%;
       height: 100%;
       text-align: left;
-
       background: none;
       color: inherit;
       border: none;
@@ -60,6 +74,7 @@ body {
   }
 
   #nav-bar {
+    background-color: $nav;
     min-width: 300px;
     align-items: center;
     top: 200px;
@@ -67,10 +82,14 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
+    margin: -30px;
+    height: 100%;
+    color: aliceblue;
+    padding-top: 20px;
 
     .link {
       // font-family
-      color: rgb(20, 6, 66);
+      color: rgb(238, 238, 238);
     }
   }
 }
@@ -79,66 +98,93 @@ body {
   grid-area: main;
   display: flex;
   flex-direction: column;
-
-  #small-graphs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
+  margin-top: 200px;
+  // #small-graphs {
+  //   display: flex;
+  //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  // }
   //   grid-template-areas: ;
   //     'cpu mem'
   //     'pod nr'
   //     'nt nt'
   //     'log log';
 
+  //pods & namespaces
   #list-data {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex;
+    justify-content: center;
   }
+
+  //line chart
+  .charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+  }
+
+  .line-graph{
+    padding-top: 10px;
+  }
+
+  .line {
+    margin-top: 10px;
+    border: solid;
+  }
+
   #total-names {
-    background-color: aliceblue;
-    // width: 400px;
+    background-color: rgb(147, 186, 221);
+    width: 200px;
     height: 200px;
   }
+
+  #total-pods {
+    background-color: aliceblue;
+    width: 200px;
+    height: 200px;
+  }
+  
   #total-cpu {
     // grid-area: cpu;
     background-color: aliceblue;
-    // width: 400px;
-    height: 400px;
+    width: 700px;
+    height: auto;
   }
 
   #total-memory-use {
     // grid-area: mem;
     background-color: beige;
-    // width: 400px;
-    height: 400px;
+    width: 700px;
+    height: auto;
   }
 
   #total-pods {
     // grid-area: pod;
     background-color: aquamarine;
-    // width: 400px;
-    height: 200px;
+    width: 200px;
+    height: auto;
   }
 
   #net-rec {
     // grid-area: nr;
     background-color: burlywood;
-    // width: 400px;
-    height: 400px;
+    width: 700px;
+    height: auto;
   }
 
   #net-trans {
     // grid-area: nt;
     background-color: rgb(242, 165, 199);
-    // width: 400px;
-    height: 400px;
+    width: 700px;
+    height: auto;
   }
-  #extra {
-    // grid-area: nt;
-    background-color: rgb(96, 45, 67);
-    // width: 400px;
-    height: 400px;
-  }
+  // #extra {
+  //   // grid-area: nt;
+  //   background-color: rgb(96, 45, 67);
+  //   // width: 400px;
+  //   height: 400px;
+  // }
 
   #logs {
     // grid-area: log;
@@ -148,3 +194,5 @@ body {
     height: 400px;
   }
 }
+
+

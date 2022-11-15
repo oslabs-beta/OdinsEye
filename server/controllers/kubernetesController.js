@@ -59,7 +59,6 @@ var kubernetesController = {
                     restartQuery = 'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
                     _a.label = 1;
                 case 1:
-
                     _a.trys.push([1, 3, , 4]);
                     console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
@@ -68,7 +67,6 @@ var kubernetesController = {
                     console.log(response.data.data.result);
                     res.locals.restarts = response.data;
                     console.log(res.locals.restarts);
-
                     return [2 /*return*/, next()];
                 case 3:
                     err_1 = _a.sent();
@@ -90,6 +88,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
@@ -99,9 +98,7 @@ var kubernetesController = {
                         namespaceArray_1.push(element.metric.namespace);
                     });
                     res.locals.namespaceNames = namespaceArray_1;
-
                     console.log(res.locals.namespaceNames);
-
                     return [2 /*return*/, next()];
                 case 3:
                     err_2 = _a.sent();
@@ -123,15 +120,18 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
+                    console.log('into try block');
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
+                    console.log(response.data.data.result);
                     array = response.data.data.result;
                     podNameArray_1 = [];
                     array.forEach(function (element) {
                         podNameArray_1.push(element.metric.pod);
                     });
                     res.locals.names = podNameArray_1;
+                    console.log(res.locals.names);
                     // res.locals.restarts = await response.data;
                     // console.log(res.locals.restarts);
                     return [2 /*return*/, next()];
@@ -282,7 +282,6 @@ var kubernetesController = {
                 case 2:
                     restartResponse = _a.sent();
                     array1 = restartResponse.data.data.result;
-                    console.log(array1.length, 'array 1');
                     restartArray = [];
                     // for (let i = 0; i<array1.length; i++){
                     //     restartArray.push(array1[0].values[0][i][1])
@@ -294,7 +293,6 @@ var kubernetesController = {
                 case 3:
                     readyResponse = _a.sent();
                     array2 = readyResponse.data.data.result;
-                    console.log(array2.length, 'array2');
                     readyArray = [];
                     readyArray.push(array2[0].values);
                     objectData.ready = readyArray;
@@ -302,7 +300,6 @@ var kubernetesController = {
                 case 4:
                     cpuResponse = _a.sent();
                     array3 = cpuResponse.data.data.result;
-                    console.log(array3.length, 'array 3');
                     cpuArray = [];
                     cpuArray.push(array3[0].values);
                     objectData.cpu = cpuArray;
@@ -310,7 +307,6 @@ var kubernetesController = {
                 case 5:
                     memResponse = _a.sent();
                     array4 = memResponse.data.data.result;
-                    console.log(array4.length, 'array 4');
                     memArray = [];
                     memArray.push(array4[0].values);
                     objectData.memory = memArray;

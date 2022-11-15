@@ -13,6 +13,7 @@ import {
     ChartOptions,
     ChartData,
 } from 'chart.js';
+import { parentPort } from 'worker_threads';
   
 ChartJS.register(
     CategoryScale,
@@ -68,7 +69,7 @@ const LineChart = (props:LineChartDataType) => {
                 axis: 'y',
                 title: {
                     display: true,
-                    text: 'data'
+                    text: props.yAxis
                 },
             },
             x: {

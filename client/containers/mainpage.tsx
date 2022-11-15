@@ -31,27 +31,33 @@ const MainPage = () => {
       <h1 className='header'>Odin's Eye</h1>
       <NavBar />
       <div className='data-container'>
+        {/* <div id='small-graphs'> */}
         <div id='list-data'>
           <div id='total-names'>total names</div>
           <div id='total-pods'>total pods</div>
         </div>
-        <div id='small-graphs'>
-          <div id='total-cpu'>total cpu
-          <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='percent'/>
+        <div className='charts'>
+          <div className='line-graph'>
+            <div className='line' id='total-cpu'>total cpu
+              <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='Percent'/>
+            </div>
+            <div className='line' id='total-memory-use'>total mem use
+              <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='Kilobytes'/>
+            </div>
           </div>
-          <div id='total-memory-use'>total mem use
-          <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='kilobytes'/>
-          </div>
+          <div className='line-graph'>
+            <div className='line' id='net-rec'>net rec
+              <LineChart url='/api/dashboard/totalReceive' label='Mem Usage' yAxis='Kilobytes'/>
+            </div>
+            <div className='line' id='net-trans'>net-trans
+              <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='Kilobytes'/>
+            </div>
         </div>
-        <div id='net-rec'>net rec
-        <LineChart url='/api/dashboard/totalReceive' label='Mem Usage' yAxis='kilobytes'/>
         </div>
-        <div id='net-trans'>net-trans
-        <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='kilobytes'/>
-        </div>
-        <div id='test'>
+          {/* <div id='test'> */}
           {/* <DoughnutChart data={data.totalPods} /> */}
-        </div>
+          {/* </div> */}
+        {/* </div> */}
       </div>
     </div>
   );
