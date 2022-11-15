@@ -103,20 +103,20 @@ const kubernetesController: KubernetesController = {
             });
         }
     },
-    getMetrics: async (req: Request, res: Response, next: NextFunction) => {
+    getNameSpaceMetrics: async (req: Request, res: Response, next: NextFunction) => {
         const objectData: any = {
         };
-        const { podName } = req.params
-        const ccPodName = podName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-        console.log(ccPodName)
-        console.log(podName)
-        const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${ccPodName}"}[5m]))`
-        const readyQuery = `sum(kube_pod_status_ready{condition="false", namespace = "${ccPodName}"})`
-        // const cpuQuery = `sum+by+(${ccPodName})+(rate(container_cpu_usage_seconds_total[10m]))`
-        const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${ccPodName}"}[10m]))`
-        const memQuery = `sum(rate(container_memory_usage_bytes{container="", namespace=~"${ccPodName}"}[10m]))`
-        const receiveQuery = `sum(rate(node_network_receive_bytes_total{namespace = "${ccPodName}"}[10m]))`
-        const transmitQuery = `sum(rate(node_network_transmit_bytes_total{namespace = "${ccPodName}"}[10m]))`
+        const { namespaceName } = req.params
+        const ccNamespaceName = namespaceName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        console.log(ccNamespaceName)
+        // console.log(namespaceName)
+        const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${ccNamespaceName}"}[5m]))`
+        const readyQuery = `sum(kube_pod_status_ready{condition="false", namespace = "${ccNamespaceName}"})`
+        // const cpuQuery = `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`
+        const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${ccNamespaceName}"}[10m]))`
+        const memQuery = `sum(rate(container_memory_usage_bytes{container="", namespace=~"${ccNamespaceName}"}[10m]))`
+        const receiveQuery = `sum(rate(node_network_receive_bytes_total{namespace = "${ccNamespaceName}"}[10m]))`
+        const transmitQuery = `sum(rate(node_network_transmit_bytes_total{namespace = "${ccNamespaceName}"}[10m]))`
         try {
             //restarts per namespace
             const restartResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`)
@@ -152,21 +152,114 @@ const kubernetesController: KubernetesController = {
             //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
             const receiveResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
             const array5 = receiveResponse.data.data.result
-            //console.log(array5)
-            const receiveArray = []
-            receiveArray.push(array5[0].values)
-            objectData.reception = receiveArray;
-
+            console.log(array5)
+            if (array5.length === 0){
+                objectData.reception = []
+            } else {
+                const receiveArray = []
+                receiveArray.push(array5[0].values)
+                objectData.reception = receiveArray;
+            }
             //total transmitted data per pod
             //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
             const transmitResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
             const array6 = transmitResponse.data.data.result
             //console.log(array6)
-            const transmitArray = []
-            transmitArray.push(array6[0].values)
-            objectData.transmission = transmitArray;
+            if (array6.length === 0){
+                objectData.transmission = [];
+            } else {
+                const transmitArray = []
+                transmitArray.push(array6[0].values)
+                objectData.transmission = transmitArray;
+            }
 
-            res.locals.data = objectData;
+            res.locals.namespaceData = objectData;
+            return next();
+        } catch (err) {
+            return next({
+                log: `Error in kuberenetesController.getMetrics: ${err}`,
+                status: 500,
+                message: 'Error occured while retrieving getMetrics data',
+            });
+        }
+    },
+    getPodMetrics: async (req: Request, res: Response, next: NextFunction) => {
+        const objectData: any = {
+        };
+        const { podName } = req.params
+        const ccPodName = podName.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        console.log(ccPodName)
+        console.log(podName)
+        const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", pod = "${podName}"}[5m]))`
+        const readyQuery = `sum(kube_pod_status_ready{condition="false", pod = "${podName}"})`
+        // const cpuQuery = `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`
+        const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", pod=~"${podName}"}[10m]))`
+        const memQuery = `sum(rate(container_memory_usage_bytes{container="", pod=~"${podName}"}[10m]))`
+        const receiveQuery = `sum(rate(node_network_receive_bytes_total{pod = "${podName}"}[10m]))`
+        const transmitQuery = `sum(rate(node_network_transmit_bytes_total{pod = "${podName}"}[10m]))`
+        try {
+            //restarts per namespace
+            const restartResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`)
+            const array1= restartResponse.data.data.result
+            //console.log(array1.length, 'array 1')
+            const restartArray = [];
+            // for (let i = 0; i<array1.length; i++){
+            //     restartArray.push(array1[0].values[0][i][1])
+            // }
+            restartArray.push(array1[0].values)
+            //console.log(restartArray)
+            objectData.restarts = restartArray
+
+            //pods that are unavailable within namespace
+            const readyResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`);
+            const array2 = readyResponse.data.data.result
+            //console.log(array2.length, 'array2')
+            const readyArray = []
+            readyArray.push(array2[0].values)
+            objectData.ready = readyArray;
+
+            //total cpu within namespaces/pods
+            const cpuResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`)
+            const array3 = cpuResponse.data.data.result
+            //console.log(array3.length, 'array 3')
+            const cpuArray = []
+            cpuArray.push(array3[0].values)
+            objectData.cpu = cpuArray;
+            
+            //total memory per pod
+            const memResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${memQuery}&start=${start}&end=${end}&step=5m`)
+            const array4 = memResponse.data.data.result
+            //console.log(array4.length, 'array 4')
+            const memArray = []
+            memArray.push(array4[0].values)
+            objectData.memory = memArray;
+
+            //total network received per pod
+            //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
+            const receiveResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`)
+            const array5 = receiveResponse.data.data.result
+            //console.log(array5)
+            if (array5.length === 0){
+                objectData.reception = []
+            } else {
+                const receiveArray = []
+                receiveArray.push(array5[0].values)
+                objectData.reception = receiveArray;
+            }
+            //total transmitted data per pod
+            //NEED TO ADD IN ABILITY TO TAKE UNDEFINED VALUES 
+            const transmitResponse = await axios.get(`http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`)
+            const array6 = transmitResponse.data.data.result
+            //console.log(array6)
+            if (array6.length === 0){
+                objectData.transmission = [];
+            } else {
+                const transmitArray = []
+                transmitArray.push(array6[0].values)
+                objectData.transmission = transmitArray;
+            }
+
+            res.locals.podData = objectData;
             return next();
         } catch (err) {
             return next({
