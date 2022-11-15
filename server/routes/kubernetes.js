@@ -15,7 +15,10 @@ kubernetesRouter.get('/podNames', kubernetesController_1["default"].podNames, fu
 kubernetesRouter.get('/podsNotReady', kubernetesController_1["default"].podsNotReady, function (req, res) {
     return res.status(200).json(res.locals.ready);
 });
-kubernetesRouter.get('/:podName', kubernetesController_1["default"].getMetrics, function (req, res) {
-    return res.status(200).json(res.locals.data);
+kubernetesRouter.get('/namespaceMetrics/:namespaceName', kubernetesController_1["default"].getNameSpaceMetrics, function (req, res) {
+    return res.status(200).json(res.locals.namespaceData);
+});
+kubernetesRouter.get('/podMetrics/:podName', kubernetesController_1["default"].getPodMetrics, function (req, res) {
+    return res.status(200).json(res.locals.podData);
 });
 exports["default"] = kubernetesRouter;
