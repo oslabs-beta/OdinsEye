@@ -33,6 +33,8 @@ type LineChartDataType = {
   label: string;
   yAxis: string;
   url: string;
+  title: string;
+  color: string;
 };
 
 const LineChart = (props: LineChartDataType) => {
@@ -45,6 +47,10 @@ const LineChart = (props: LineChartDataType) => {
   };
   const [lineChartData, setLineChartData] = useState<any>(initialData);
   const options: ChartOptions<'line'> = {
+    animation: {
+        easing: 'easeInQuad',
+        duration: 1000,
+      },
     responsive: true,
     interaction: {
       intersect: false,
@@ -53,13 +59,16 @@ const LineChart = (props: LineChartDataType) => {
       legend: {
         position: 'top',
         labels: {
-          color: 'rgba(137, 170, 230, 0.6)',
+          color: "rgba(54, 133, 181, 0.6)",
+          font: {
+            size: 12
+          }
         },
       },
       title: {
         display: true,
-        text: 'Line-Chart',
-        color: 'rgba(137, 170, 230, 0.6)',
+        text: props.title,
+        color: "rgba(54, 133, 181, 0.6)",
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -119,8 +128,8 @@ const LineChart = (props: LineChartDataType) => {
             {
               label: props.label,
               data: yAxis,
-              backgroundColor: 'rgba(172, 128, 160, 0.3)',
-              borderColor: 'rgba(172, 128, 160, 0.3)',
+              backgroundColor: props.color,
+              borderColor: props.color,
               borderWidth: 1.5,
               pointRadius: 1,
               tension: 0.4,
@@ -136,7 +145,6 @@ const LineChart = (props: LineChartDataType) => {
   }, []);
   return (
     <div className='line-chart-container'>
-      <h2>This is the line chart</h2>
       <Line className='line-chart' options={options} data={lineChartData} />
     </div>
   );

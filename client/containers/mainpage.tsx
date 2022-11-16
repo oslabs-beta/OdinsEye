@@ -31,9 +31,10 @@ const MainPage = () => {
         {/* <div id='small-graphs'> */}
         <div id='list-data'>
           <div id='total-names'>
-            Total Namespaces:
-            <br />
-            {nameLength}
+            Total Namespaces
+            <div id='names-num'>
+              {nameLength}
+            </div>
           </div>
           <div id='total-pods'>
             <DoughnutChart
@@ -51,6 +52,8 @@ const MainPage = () => {
                 url='/api/dashboard/totalCpu'
                 label='Cpu Usage'
                 yAxis='Percent'
+                title='Total CPU % Usage'
+                color='rgba(137, 170, 230, 0.6)'
               />
             </div>
             <div className='line' id='total-memory-use'>
@@ -58,6 +61,8 @@ const MainPage = () => {
                 url='/api/dashboard/totalMem'
                 label='Mem Usage'
                 yAxis='Kilobytes'
+                title='Total Memory Usage (kB)'
+                color='rgba(54, 133, 181, 0.6)'
               />
             </div>
           </div>
@@ -67,6 +72,8 @@ const MainPage = () => {
                 url='/api/dashboard/totalReceive'
                 label='Mem Usage'
                 yAxis='Kilobytes'
+                title='Network Transmitted (kB)'
+                color='rgba(4, 113, 166, 0.6)'
               />
             </div>
             <div className='line' id='net-trans'>
@@ -74,6 +81,8 @@ const MainPage = () => {
                 url='/api/dashboard/totalTransmit'
                 label='Mem Usage'
                 yAxis='Kilobytes'
+                title='Network Received (kB)'
+                color='rgba(136, 217, 230, 0.5)'
               />
             </div>
           </div>
