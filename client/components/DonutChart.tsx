@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import axios from 'axios';
 
 import {
   Chart as ChartJS,
@@ -14,12 +15,31 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
   path: string;
+  path2?: string;
   label: string;
   tag: string;
 };
 
-const DoughnutChart = ({ label, tag }: DoughnutType) => {
+const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
   const [chartData, setChartData] = useState<number[]>([]);
+  const getData = async (url: string, url2?: string): Promise<any> => {
+    try {
+      const response = await axios.get(url);
+      const data = await response.data;
+      const copy = chartData.slice();
+      copy.push(data);
+      if (url2) {
+        const response2 = await axios.get(url2);
+        const data2 = await response2.data;
+        copy.push(data2);
+      }
+      setChartData(copy);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const initialData: ChartData<'doughnut'> = {
     datasets: [
       {
@@ -45,11 +65,13 @@ const DoughnutChart = ({ label, tag }: DoughnutType) => {
       },
     ],
   };
-  // useEffect(() => {
-  //   if (data) {
-  //     setChartData(data);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (!path2) {
+      getData(path);
+    } else {
+      getData(path, path2);
+    }
+  }, []);
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
     interaction: {

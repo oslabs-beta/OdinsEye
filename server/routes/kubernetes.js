@@ -13,7 +13,9 @@ kubernetesRouter.get('/podNames', kubernetesController_1["default"].podNames, fu
     return res.status(200).json(res.locals.names);
 });
 kubernetesRouter.get('/podsNotReady', kubernetesController_1["default"].podsNotReady, function (req, res) {
-    return res.status(200).json(res.locals.ready);
+    return res
+        .status(200)
+        .json(parseInt(res.locals.ready.data.result[0].values[0][1]));
 });
 kubernetesRouter.get('/namespaceMetrics/:namespaceName', kubernetesController_1["default"].getNameSpaceMetrics, function (req, res) {
     return res.status(200).json(res.locals.namespaceData);

@@ -115,11 +115,12 @@ var dashboardController = {
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
                     response = _b.sent();
+                    // console.log(response.data.data.result[0].values[0]);
                     _a = res.locals;
-                    return [4 /*yield*/, response];
+                    return [4 /*yield*/, response.data];
                 case 2:
+                    // console.log(response.data.data.result[0].values[0]);
                     _a.totalPods = _b.sent();
-                    // console.log(res.locals.totalPods);
                     return [2 /*return*/, next()];
                 case 3:
                     err_3 = _b.sent();

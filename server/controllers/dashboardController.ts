@@ -69,8 +69,8 @@ const dashboardController: DashboardController = {
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
       );
-      res.locals.totalPods = await response;
-      // console.log(res.locals.totalPods);
+      // console.log(response.data.data.result[0].values[0]);
+      res.locals.totalPods = await response.data;
       return next();
     } catch (err) {
       return next({
@@ -86,7 +86,7 @@ const dashboardController: DashboardController = {
       const data = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
       );
-      const response = await data.data
+      const response = await data.data;
       res.locals.totalReceive = response;
 
       return next();
