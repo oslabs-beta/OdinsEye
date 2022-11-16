@@ -55,7 +55,7 @@ const LineChart = (props: LineChartDataType) => {
       legend: {
         position: 'top',
         labels: {
-          color: "rgba(54, 133, 181, 0.6)",
+          color: "rgba(54, 133, 181, 1)",
           font: {
             size: 12
           }
@@ -64,7 +64,7 @@ const LineChart = (props: LineChartDataType) => {
       title: {
         display: true,
         text: props.title,
-        color: "rgba(54, 133, 181, 0.6)",
+        color: 'rgba(136, 217, 230, 0.8)',
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -80,6 +80,9 @@ const LineChart = (props: LineChartDataType) => {
           display: true,
           text: props.yAxis,
         },
+        ticks: {
+          color: 'rgba(136, 217, 230, 0.8)',
+        }
       },
       x: {
         display: true,
@@ -88,6 +91,9 @@ const LineChart = (props: LineChartDataType) => {
           display: true,
           text: 'Time',
         },
+        ticks: {
+          color: 'rgba(136, 217, 230, 0.8)',
+        }
       },
     },
   };

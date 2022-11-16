@@ -42,6 +42,7 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
   };
   //
   const initialData: ChartData<'doughnut'> = {
+    labels: [`Pods Ready: ${chartData[0]}`, `Not Ready: ${chartData[1]}`],
     datasets: [
       {
         label: 'Total Pods',
@@ -78,11 +79,15 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
     },
     plugins: {
       legend: {
+        labels: {
+          color: "rgba(54, 133, 181, 1)",
+        },
         position: 'top',
       },
       title: {
         display: true,
-        text: `Ready: ${chartData[0]} & Not Ready: ${chartData[1]}`,
+        text: `Total Pods`,
+        color: 'rgba(136, 217, 230, 0.8)',
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -101,7 +106,6 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
           marginBottom: '10px',
         }}
       >
-        {label}: {chartData[0] + chartData[1]}
       </h2>
       <Doughnut data={initialData} options={options} />
     </div>

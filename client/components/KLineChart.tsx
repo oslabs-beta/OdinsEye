@@ -13,6 +13,7 @@ import {
   ChartOptions,
   ChartData,
 } from 'chart.js';
+import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 
 ChartJS.register(
   CategoryScale,
@@ -48,10 +49,17 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: "rgba(54, 133, 181, 1)",
+          font: {
+            size: 14
+          }
+        },
       },
       title: {
         display: true,
         text: title,
+        color: 'rgba(136, 217, 230, 0.8)',
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -67,6 +75,9 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           display: true,
           text: yAxis,
         },
+        ticks: {
+          color: 'rgba(136, 217, 230, 0.8)',
+        }
       },
       x: {
         display: true,
@@ -75,6 +86,9 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           display: true,
           text: 'Time',
         },
+        ticks: {
+          color: 'rgba(136, 217, 230, 0.8)',
+        }
       },
     },
   };
@@ -108,8 +122,8 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           {
             label: label,
             data: yAxisData,
-            backgroundColor: 'rgba(245, 40, 145, 0.8)',
-            borderColor: 'rgba(245, 40, 145, 0.8)',
+            backgroundColor: "rgba(54, 133, 181, 0.8)",
+            borderColor: "rgba(54, 133, 181, 1)",
             borderWidth: 1.5,
             pointRadius: 1,
             tension: 0.4,

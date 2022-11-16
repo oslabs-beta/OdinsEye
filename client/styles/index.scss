@@ -60,9 +60,11 @@ body {
       font-family: $font;
       background-color: transparent;
       color: $PersianGreen;
-      border-style: none;
+      border: 1px solid $border;
+      padding: 5px 15px;
       &:hover {
         background-color: rgba(159, 155, 158, 0.2);
+        cursor: pointer;
       }
     }
     .menu {
@@ -156,9 +158,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 25px;
+    padding-top: 30px;
     -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
-    font-size: 135px;
+    font-size: 210px;
     color: rgba(54, 133, 181, 0.6);
   }
 
@@ -203,42 +205,24 @@ body {
     display: flex;
     width: 200px;
     height: 200px;
-    padding-top: 60px;
+    color: rgba(136, 217, 230, 0.8);
   }
 
-  // #total-pods {
-  //   // background-color: aliceblue;
-  //   width: 200px;
-  //   height: 200px;
-  // }
+  #kube-main-dash{
+    display: flex;
+    flex-direction: column;
+  }
 
-  // #total-cpu {
-  //   // grid-area: cpu;
-  // }
-
-  // #total-memory-use {
-  //   // grid-area: mem;
-  //   width: 700px;
-  //   height: auto;
-  // }
-
-  // #total-pods {
-  //   // grid-area: pod;
-  //   width: 200px;
-  //   height: auto;
-  // }
-
-  // #net-rec {
-  //   // grid-area: nr;
-  //   width: 700px;
-  //   height: auto;
-  // }
-
-  // #net-trans {
-  //   // grid-area: nt;
-  //   width: 700px;
-  //   height: auto;
-  // }
+  #kube-list-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    border: 1px solid $border;
+    margin: 0 24px 0 24px;
+    padding: 5px 5px 5px 5px;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+  }
 
   #logs {
     // grid-area: log;
@@ -284,6 +268,38 @@ body {
     background-color: $background;
     box-shadow: 0 0 20px 20px $background,
       /* inner white */ /* middle magenta */ 0 0 100px 40px #0ff; /* outer cyan */
+    cursor: pointer;
   }
   bottom: 20px;
+}
+
+#dropdown{
+  width: 400px;
+  max-width: 400px;
+  margin-left: -55px;
+}
+
+#pod-names{
+  width: 600px;
+  max-width: 600px;
+  border: 1px solid cl;
+  margin-left: 60px;
+  padding: 5px 0 0 20px;
+
+  h2{
+    border-bottom: 1px solid $border;
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+  div {
+    padding: 5px;
+  }
+}
+
+.pod-list:hover{
+  cursor: pointer;
+}
+
+#kube-total-pods {
+  margin-left: -100px;
 }

@@ -56,6 +56,7 @@ $fontColor: rgba(159, 163, 162, 0.8);
       transform: translateX(-90%);
       &:hover {
         font-size: 30px;
+        cursor: pointer;
       }
     }
   }
