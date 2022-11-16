@@ -63,9 +63,7 @@ var kubernetesController = {
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
-                    // console.log(response.data.data.result);
                     res.locals.restarts = response.data;
-                    // console.log(res.locals.restarts);
                     return [2 /*return*/, next()];
                 case 3:
                     err_1 = _a.sent();
@@ -96,7 +94,6 @@ var kubernetesController = {
                         namespaceArray_1.push(element.metric.namespace);
                     });
                     res.locals.namespaceNames = namespaceArray_1;
-                    // console.log(res.locals.namespaceNames);
                     return [2 /*return*/, next()];
                 case 3:
                     err_2 = _a.sent();
@@ -188,7 +185,6 @@ var kubernetesController = {
                     array1 = restartResponse.data.data.result;
                     restartArray = [];
                     restartArray.push(array1[0].values);
-                    //console.log(restartArray)
                     objectData.restarts = restartArray;
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 3:
@@ -201,7 +197,6 @@ var kubernetesController = {
                 case 4:
                     notReadyResponse = _a.sent();
                     arrayNot = notReadyResponse.data.data.result[0].values[0][1];
-                    // console.log(arrayNot);
                     // const notReadyArray = [];
                     // notReadyArray.push(arrayNot[0].values);
                     objectData.notReady = parseInt(arrayNot);
@@ -223,7 +218,6 @@ var kubernetesController = {
                 case 7:
                     receiveResponse = _a.sent();
                     array5 = receiveResponse.data.data.result;
-                    // console.log(array5);
                     if (array5.length === 0) {
                         objectData.reception = [];
                     }
@@ -236,7 +230,6 @@ var kubernetesController = {
                 case 8:
                     transmitResponse = _a.sent();
                     array6 = transmitResponse.data.data.result;
-                    //console.log(array6)
                     if (array6.length === 0) {
                         objectData.transmission = [];
                     }
@@ -286,13 +279,11 @@ var kubernetesController = {
                     //     restartArray.push(array1[0].values[0][i][1])
                     // }
                     restartArray.push(array1[0].values);
-                    //console.log(restartArray)
                     objectData.restarts = restartArray;
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                 case 3:
                     readyResponse = _a.sent();
                     array2 = readyResponse.data.data.result;
-                    console.log(array2, 'array2');
                     readyArray = [];
                     readyArray.push(array2[0].values);
                     objectData.ready = readyArray;
@@ -314,7 +305,6 @@ var kubernetesController = {
                 case 6:
                     receiveResponse = _a.sent();
                     array5 = receiveResponse.data.data.result;
-                    //console.log(array5)
                     if (array5.length === 0) {
                         objectData.reception = [];
                     }
@@ -327,7 +317,6 @@ var kubernetesController = {
                 case 7:
                     transmitResponse = _a.sent();
                     array6 = transmitResponse.data.data.result;
-                    //console.log(array6)
                     if (array6.length === 0) {
                         objectData.transmission = [];
                     }

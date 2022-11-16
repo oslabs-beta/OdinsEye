@@ -11,16 +11,12 @@ const NavBar = () => {
   dark ? (classInfo = 'open') : (classInfo = 'closed');
   return (
     <nav id='nav-bar'>
-      <button
-        id='eyepatch'
-        className={classInfo}
-        onClick={(e) => {
-          let eye = document.getElementById('eyepatch') as HTMLInputElement;
-          dark ? (eye.className = 'open') : (eye.className = 'closed');
-          dispatch(darkMode(dark));
-        }}
-      ></button>
-      <br />
+      <div id='logo'>
+        <img
+          src={require('../images/odin-logo.png').default}
+          alt='odin-eye-logo'
+        />
+      </div>
       <Link className='link' to='/'>
         Main Page
       </Link>
@@ -32,6 +28,21 @@ const NavBar = () => {
       {/* <Link to='/mongo'>PETER</Link> */}
       {/* <br /> */}
       {/* <Link to='/alert'>EMILY</Link> */}
+      <img
+        id='eyepatch'
+        className={classInfo}
+        src={
+          dark
+            ? require('../images/3.png').default
+            : require('../images/4.png').default
+        }
+        onClick={(e) => {
+          let eye = document.getElementById('eyepatch') as HTMLInputElement;
+          dark ? (eye.className = 'open') : (eye.className = 'closed');
+          dispatch(darkMode(dark));
+        }}
+      />
+      <br />
     </nav>
   );
 };

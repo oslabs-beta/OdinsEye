@@ -52,6 +52,7 @@ body {
 
   #dropdown {
     grid-area: drop;
+    padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10px;
     #dropdown-but {
@@ -168,7 +169,7 @@ body {
     justify-content: space-evenly;
     border: 1px solid $border;
     margin: 0 24px 0 24px;
-    padding: 5px 5px 5px 5px;
+    padding: 10px 5px 20px 5px;
     box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
       rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
@@ -199,8 +200,10 @@ body {
 
   #total-names {
     // background-color: rgb(147, 186, 221);
+    display: flex;
     width: 200px;
     height: 200px;
+    padding-top: 60px;
   }
 
   // #total-pods {
@@ -260,17 +263,27 @@ body {
     }
   }
 }
-
+#logo {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+}
 #eyepatch {
   background-color: transparent;
-  height: 35px;
+  position: fixed;
+  height: 50px;
   width: 50px;
   border-style: none;
-}
-
-.closed {
-  background-image: url('../images/2.png');
-}
-.open {
-  background-image: url('../images/1.png');
+  &:hover {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: $background;
+    box-shadow: 0 0 20px 20px $background,
+      /* inner white */ /* middle magenta */ 0 0 100px 40px #0ff; /* outer cyan */
+  }
+  bottom: 20px;
 }
