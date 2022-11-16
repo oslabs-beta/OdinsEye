@@ -21,8 +21,13 @@ const MainPage = () => {
   if (namespaces) {
     nameLength = namespaces.length;
   }
+  const dark = useSelector((state: TestState) => state.dark);
   return (
-    <div className='main-container'>
+    <div
+      className={
+        'main-container theme' + (dark ? 'theme--dark' : 'theme--light')
+      }
+    >
       <div className='header'>
         <h1>Odin's Eye</h1>
       </div>

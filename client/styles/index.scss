@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-
 $nav: #1d1b1d;
 $header: #1d1b1d;
 $border: #353636;
@@ -16,6 +14,7 @@ $fontColor: rgba(136, 217, 230, 0.8);
 $Celeste: rgb(197, 255, 253);
 $MiddleBlue: rgb(136, 217, 230);
 $CoolGrey: rgb(139, 139, 174);
+$font: 'Playfair Display', serif;
 
 * {
   margin: 0;
@@ -24,7 +23,7 @@ $CoolGrey: rgb(139, 139, 174);
 body {
   background-color: $background;
   color: $fontColor;
-  font-family: 'Playfair Display', serif;
+  font-family: $font;
 }
 
 .main-container {
@@ -47,13 +46,24 @@ body {
     position: fixed;
     border: 1px solid $border;
     color: $fontColor;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   #dropdown {
     grid-area: drop;
     padding-bottom: 20px;
-    margin-top: 150px;
+    padding-left: 10px;
+    #dropdown-but {
+      font-size: 20px;
+      font-family: $font;
+      background-color: transparent;
+      color: $PersianGreen;
+      border-style: none;
+      &:hover {
+        background-color: rgba(159, 155, 158, 0.2);
+      }
+    }
     .menu {
       position: absolute;
 
@@ -67,12 +77,13 @@ body {
 
     .menu > li {
       margin: 0;
-
-      background-color: white;
+      background-color: $background;
+      color: $PersianGreen;
     }
 
     .menu > li:hover {
-      background-color: lightgray;
+      background-color: rgb(151, 150, 150);
+      color: #1d1b1d;
     }
 
     .menu > li > button {
@@ -103,16 +114,17 @@ body {
     color: $fontColor;
     padding-top: 20px;
     border: 1px solid $border;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
 
     .link {
-      // font-family
       color: $fontColor;
     }
   }
 }
 
 .data-container {
+  margin-top: 170px;
   grid-area: main;
   display: flex;
   flex-direction: column;
@@ -126,7 +138,7 @@ body {
   //     'pod nr'
   //     'nt nt'
   //     'log log';
-   
+
   #total-names {
     display: flex;
     flex-direction: column;
@@ -137,7 +149,6 @@ body {
     font-family: Helvetica;
     font-weight: bolder;
     padding-top: 20px;
-
   }
 
   #names-num {
@@ -150,36 +161,40 @@ body {
     color: rgba(54, 133, 181, 0.6);
   }
 
-  
-
   //pods & namespaces
   #list-data {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-evenly;
     border: 1px solid $border;
     margin: 0 24px 0 24px;
     padding: 5px 5px 5px 5px;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   //line chart
   .charts {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
     margin: 5px 5px 5px 5px;
-    
   }
 
   .line-graph {
     padding-top: 10px;
+    display: flex;
+    flex-direction: row;
   }
 
   .line {
     margin: 30px 0 20px 0;
     border: 1px solid $border;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    width: 700px;
+    height: auto;
   }
 
   #total-names {
@@ -188,46 +203,38 @@ body {
     height: 200px;
   }
 
-  #total-pods {
-    // background-color: aliceblue;
-    width: 200px;
-    height: 200px;
-  }
+  // #total-pods {
+  //   // background-color: aliceblue;
+  //   width: 200px;
+  //   height: 200px;
+  // }
 
-  #total-cpu {
-    // grid-area: cpu;
-    width: 700px;
-    height: auto;
-  }
+  // #total-cpu {
+  //   // grid-area: cpu;
+  // }
 
-  #total-memory-use {
-    // grid-area: mem;
-    width: 700px;
-    height: auto;
-  }
+  // #total-memory-use {
+  //   // grid-area: mem;
+  //   width: 700px;
+  //   height: auto;
+  // }
 
-  #total-pods {
-    // grid-area: pod;
-    width: 200px;
-    height: auto;
-  }
+  // #total-pods {
+  //   // grid-area: pod;
+  //   width: 200px;
+  //   height: auto;
+  // }
 
-  #net-rec {
-    // grid-area: nr;
-    width: 700px;
-    height: auto;
-  }
+  // #net-rec {
+  //   // grid-area: nr;
+  //   width: 700px;
+  //   height: auto;
+  // }
 
-  #net-trans {
-    // grid-area: nt;
-    width: 700px;
-    height: auto;
-  }
-  // #extra {
+  // #net-trans {
   //   // grid-area: nt;
-  //   background-color: rgb(96, 45, 67);
-  //   // width: 400px;
-  //   height: 400px;
+  //   width: 700px;
+  //   height: auto;
   // }
 
   #logs {
@@ -237,4 +244,33 @@ body {
     width: 100%;
     height: 400px;
   }
+
+  .pod-list {
+    color: $PersianGreen;
+    &:hover {
+      color: $OperaMauve;
+      font-size: 20px;
+    }
+  }
+  .pod-list-bad {
+    color: red;
+    &:hover {
+      color: $OperaMauve;
+      font-size: 20px;
+    }
+  }
+}
+
+#eyepatch {
+  background-color: transparent;
+  height: 35px;
+  width: 50px;
+  border-style: none;
+}
+
+.closed {
+  background-image: url('../images/2.png');
+}
+.open {
+  background-image: url('../images/1.png');
 }

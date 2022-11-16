@@ -1,35 +1,62 @@
+$nav: #1d1b1d;
+$header: #1d1b1d;
+$border: #232424;
+$MiddleBlueGreen: rgba(125, 226, 209);
+$PersianGreen: rgb(51, 153, 137);
+$PacificBlue: rgb(80, 178, 192);
+$OperaMauve: rgb(172, 128, 160);
+$LittleBoyBlue: rgb(137, 170, 230);
+$BlueNCS: rgb(54, 133, 181);
+$HonoluluBlue: rgb(4, 113, 166);
+$RichBlack: rgb(6, 24, 38);
+$background: rgb(31, 28, 30);
+$fontColor: rgba(159, 163, 162, 0.8);
+
 #popup {
   position: fixed;
-  background: rgba(244, 243, 243, 0.5);
+  background: rgba(6, 24, 38, 0.7);
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-#popup-inner {
-  position: relative;
-  display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(300px, 600px));
-  padding: 100px;
-  background: rgb(255, 255, 255, 0.8);
-  opacity: 100%;
-  height: 80%;
-  width: 80%;
-  overflow: scroll;
-}
+  #popup-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 100px;
+    background: $nav;
+    opacity: 100%;
+    height: 80%;
+    width: 80%;
+    overflow: scroll;
 
-.popup-inner .close-btn {
-  top: 16px;
-  right: 16px;
-}
+    h2 {
+      color: $PacificBlue;
+      font-weight: bold;
+      font-size: 50px;
+      align-self: center;
+      max-height: 40px;
+    }
 
-h3 {
-  margin-bottom: 20px;
-  color: #1d2523;
-  font-weight: bold;
+    .close-btn {
+      position: fixed;
+      padding: 5px;
+      right: 7%;
+      top: 50px;
+      // margin-right: 10px;
+      // right: 8em;
+      background: transparent;
+      color: $PacificBlue;
+      font-size: 20px;
+      border-style: none;
+      transform: translateX(-90%);
+      &:hover {
+        font-size: 30px;
+      }
+    }
+  }
 }

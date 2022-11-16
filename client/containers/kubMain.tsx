@@ -6,6 +6,7 @@ import DropDown from '../components/Dropdown';
 import { AllDataType } from '../../types';
 import KLineChart from '../components/KLineChart';
 import Popup from '../components/PopUp';
+import KDoughnutChart from '../components/KDonutChart';
 
 //passdown namespaces, then render conditionally based on the current namespace selected
 
@@ -16,6 +17,7 @@ type KubType = {
 type KubDataType = {
   cpu: any[];
   memory: any[];
+  notReady: number;
   ready: any[];
   reception: any[];
   restarts: any[];
@@ -29,6 +31,7 @@ const KubPage = ({ namespaces }: KubType) => {
   const initialData = {
     cpu: [],
     memory: [],
+    notReady: 0,
     ready: [],
     reception: [],
     restarts: [],
@@ -36,61 +39,99 @@ const KubPage = ({ namespaces }: KubType) => {
   };
   const [data, setData] = useState<KubDataType>(initialData);
   const [pods, setPods] = useState<string[]>([]);
+  const [notReady, setNotReady] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
+  const podsArray: JSX.Element[] = [];
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
-      if (podsName) {
-        const response = await axios.get(url, { params: { namespace: page } });
-        const data = await response.data;
-        setPods(data);
-      } else {
-        const response = await axios.get(url);
-        const data = await response.data;
-        setData(data);
+      const response = await axios.get(url);
+      const data = await response.data;
+      setData(data);
+      const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
+        params: { namespace: page },
+      });
+      const podData: string[] = await podResponse.data;
+      setPods(podData);
+      const badPods: any[] = [];
+      if (data.notReady > 0) {
+        // console.log(podData, 'data');
+        const badPodResponse = await axios.get(
+          '/api/kubernetesMetrics/podsNotReadyNames/',
+          { params: { namespace: page, podData: podData } }
+        );
+        const badPodData = await badPodResponse.data;
+        setPods(badPodData);
       }
-      // return data;
     } catch (err) {
       console.log(err);
     }
   };
-
   useEffect(() => {
-    console.log(page);
     getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
-    console.log(getData('/api/kubernetesMetrics/podNames', true));
   }, [page]);
+
   const handleChange = (newName: string) => {
     setCurrentPage(newName);
   };
-  const podsArray: JSX.Element[] = [];
+
   const [buttonPopup, setButtonPopup] = useState(false);
   if (pods.length > 0) {
-    pods.forEach((name: string) => {
-      podsArray.push(
-        <div key={name}>
-          <a
-            className='pod-list'
-            onClick={() => {
-              setCurrentPod(name);
-              setButtonPopup(true);
-            }}
-          >
-            {name}
-          </a>
-          <br />
-        </div>
-      );
+    pods.forEach((pod: string | string[]) => {
+      if (Array.isArray(pod)) {
+        if (parseInt(pod[0]) > 0) {
+          podsArray.push(
+            <div key={pod[1]}>
+              <a
+                className='pod-list-bad'
+                onClick={() => {
+                  setCurrentPod(pod[1]);
+                  setButtonPopup(true);
+                }}
+              >
+                {pod[1]}
+              </a>
+              <br />
+            </div>
+          );
+        } else {
+          podsArray.push(
+            <div key={pod[1]}>
+              <a
+                className='pod-list'
+                onClick={() => {
+                  setCurrentPod(pod[1]);
+                  setButtonPopup(true);
+                }}
+              >
+                {pod}
+              </a>
+              <br />
+            </div>
+          );
+        }
+      } else {
+        podsArray.push(
+          <div key={pod}>
+            <a
+              className='pod-list'
+              onClick={() => {
+                setCurrentPod(pod);
+                setButtonPopup(true);
+              }}
+            >
+              {pod}
+            </a>
+            <br />
+          </div>
+        );
+      }
     });
   }
-
   return (
     <div className='main-container'>
-      <DropDown
-        namespaces={namespaces}
-        current={page}
-        handleChange={handleChange}
-      />
-      <h1 className='header'>Kubernetes</h1>
+      <div className='header'>
+        <h1>Odin's Eye</h1>
+      </div>
       <NavBar />
       <Popup
         namespace={page}
@@ -100,62 +141,72 @@ const KubPage = ({ namespaces }: KubType) => {
       />
       <div className='data-container'>
         <div id='list-data'>
+          <DropDown
+            namespaces={namespaces}
+            current={page}
+            handleChange={handleChange}
+          />
           <div id='total-pods'>
-            total pods: {pods.length}
-            <br />
-            unhealthy:{data.ready.length}
+            <KDoughnutChart
+              data={[pods.length - data.notReady, data.notReady]}
+              label='Total Pods'
+            />
           </div>
-          <div id='pod-names'>{podsArray}</div>
+          <div id='pod-names'>
+            <h2>
+              Pod Names:
+              <br />
+            </h2>
+            {podsArray}
+          </div>
         </div>
-        <div id='small-graphs'>
-          <div id='total-cpu'>
-            <KLineChart
-              data={data.cpu}
-              label='test'
-              yAxis='%'
-              title='Total CPU % Usage'
-            />
+        <div className='charts'>
+          <div className='line-graph'>
+            <div id='total-cpu' className='line'>
+              <KLineChart
+                data={data.cpu}
+                label='test'
+                yAxis='%'
+                title='Total CPU % Usage'
+              />
+            </div>
+            <div id='total-memory-use' className='line'>
+              <KLineChart
+                data={data.memory}
+                label='kB'
+                yAxis='kilobytes'
+                title='Total Memory Usage (kB)'
+              />
+            </div>
           </div>
-          <div id='total-memory-use'>
-            <KLineChart
-              data={data.memory}
-              label='kB'
-              yAxis='kilobytes'
-              title='Total Memory Usage (kB)'
-            />
+          <div className='line-graph'>
+            <div id='net-rec' className='line'>
+              <KLineChart
+                data={data.ready}
+                label='kB'
+                yAxis='kilobytes'
+                title='Network Received (kB)'
+              />
+            </div>
+            <div id='net-trans' className='line'>
+              <KLineChart
+                data={data.transmission}
+                label='kB'
+                yAxis='kilobytes'
+                title='Network Transmitted (kB)'
+              />
+            </div>
           </div>
-          <div id='net-rec'>
-            <KLineChart
-              data={data.ready}
-              label='kB'
-              yAxis='kilobytes'
-              title='Network Received (kB)'
-            />
+          <div className='line-graph'>
+            <div id='retarts' className='line'>
+              <KLineChart
+                data={data.restarts}
+                label='Restarts'
+                yAxis='restarts'
+                title='Pod Restarts'
+              />
+            </div>
           </div>
-          <div id='net-trans'>
-            <KLineChart
-              data={data.transmission}
-              label='kB'
-              yAxis='kilobytes'
-              title='Network Transmitted (kB)'
-            />
-          </div>
-          <div id='retarts'>
-            <KLineChart
-              data={data.restarts}
-              label='Restarts'
-              yAxis='restarts'
-              title='Pod Restarts'
-            />
-          </div>
-          {/* <div id='retarts'>
-            <KLineChart
-              data={data.ready}
-              label='test'
-              yAxis='test'
-              title='Pod Restarts'
-            />
-          </div> */}
         </div>
         {/* <div id='logs'>logs</div> */}
       </div>

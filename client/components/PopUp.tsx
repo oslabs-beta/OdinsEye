@@ -28,8 +28,8 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
     restarts: [],
     transmission: [],
   };
-  const [data, setData] = useState<PopUpDataType>(initialData);
 
+  const [data, setData] = useState<PopUpDataType>(initialData);
   const getData = async (name: string): Promise<void> => {
     try {
       const response = await axios.get(
@@ -45,22 +45,18 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
     if (podName) {
       getData(podName);
     }
-  });
+  }, [podName]);
 
   return trigger ? (
     <div id='popup'>
       <div id='popup-inner'>
         <h2>{podName}</h2>
-        <div id='popup-butt'>
-          <button
-            style={{ position: 'absolute', top: '16px', right: '20px' }}
-            className='close-btn'
-            onClick={() => setTrigger(false)}
-          >
-            Close
-          </button>
-          <div className='data-container'>
-            <div id='total-cpu'>
+        <button className='close-btn' onClick={() => setTrigger(false)}>
+          X
+        </button>
+        <div className='data-container'>
+          <div className='line-graph'>
+            <div id='total-cpu' className='line'>
               <KLineChart
                 data={data.cpu}
                 label='test'
@@ -68,7 +64,7 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
                 title='Total CPU % Usage'
               />
             </div>
-            <div id='total-memory-use'>
+            <div id='total-memory-use' className='line'>
               <KLineChart
                 data={data.memory}
                 label='kB'
@@ -76,7 +72,9 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
                 title='Total Memory Usage (kB)'
               />
             </div>
-            <div id='net-rec'>
+          </div>
+          <div className='line-graph'>
+            <div id='net-rec' className='line'>
               <KLineChart
                 data={data.ready}
                 label='kB'
@@ -84,7 +82,7 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
                 title='Network Received (kB)'
               />
             </div>
-            <div id='net-trans'>
+            <div id='net-trans' className='line'>
               <KLineChart
                 data={data.transmission}
                 label='kB'
@@ -92,7 +90,9 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
                 title='Network Transmitted (kB)'
               />
             </div>
-            <div id='retarts'>
+          </div>
+          <div className='line-graph'>
+            <div id='retarts' className='line'>
               <KLineChart
                 data={data.restarts}
                 label='Restarts'
@@ -102,11 +102,10 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
             </div>
           </div>
         </div>
-        ;
       </div>
     </div>
   ) : (
-    <a></a>
+    <div></div>
   );
 };
 

@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { KubernetesController } from '../../types';
 
 import axios from 'axios';
+import { parse } from 'path';
 //const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 //const client = require('prom-client');
@@ -93,7 +94,6 @@ const kubernetesController: KubernetesController = {
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
       );
-      // console.log(response.data.data.result);
       res.locals.ready = response.data;
       return next();
     } catch (err) {
@@ -115,7 +115,6 @@ const kubernetesController: KubernetesController = {
     //   return g[1].toUpperCase();
     // });
     //console.log(ccNamespaceName);
-    console.log(namespaceName);
     const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"}[5m]))`;
     const readyQuery = `sum(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"})`;
     const notReadyQuery = `sum(kube_pod_status_ready{condition="false", namespace = "${namespaceName}"})`;
@@ -149,12 +148,11 @@ const kubernetesController: KubernetesController = {
       const notReadyResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${notReadyQuery}&start=${start}&end=${end}&step=5m`
       );
-      const arrayNot = notReadyResponse.data.data.result;
-      //console.log(array2)
-      const notReadyArray = [];
-      notReadyArray.push(arrayNot[0].values);
-      objectData.notReady = notReadyArray;
-
+      const arrayNot = notReadyResponse.data.data.result[0].values[0][1];
+      // console.log(arrayNot);
+      // const notReadyArray = [];
+      // notReadyArray.push(arrayNot[0].values);
+      objectData.notReady = parseInt(arrayNot);
       //total cpu within namespaces/pods
       const cpuResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`
@@ -246,7 +244,7 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
       );
       const array2 = readyResponse.data.data.result;
-      //console.log(array2.length, 'array2')
+      console.log(array2, 'array2');
       const readyArray = [];
       readyArray.push(array2[0].values);
       objectData.ready = readyArray;
@@ -309,6 +307,37 @@ const kubernetesController: KubernetesController = {
         message: 'Error occured while retrieving getMetrics data',
       });
     }
+  },
+  podsNotReadyNames: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { namespace, podData } = req.query;
+    if (Array.isArray(podData)) {
+      const promises = podData.map(async (name) => {
+        const readyQuery = `sum(kube_pod_status_ready{condition="false",namespace="${namespace}",pod="${name}"})`;
+        try {
+          const response = await axios.get(
+            `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
+          );
+          const status = response.data.data.result[0].values[0][1];
+          if (parseInt(status) > 0) {
+            return [status, name];
+          }
+        } catch (err) {
+          return next({
+            log: `Error in kuberenetesController.podsNotReady: ${err}`,
+            status: 500,
+            message: 'Error occured while retrieving pods not ready data',
+          });
+        }
+      });
+      await Promise.all(promises).then((data) => {
+        res.locals.status = data;
+      });
+    }
+    return next();
   },
 };
 
