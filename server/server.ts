@@ -18,7 +18,12 @@ if (process.env.NODE_ENV) {
   app.use('/', express.static(path.join(__dirname, '../dist')));
 }
 
+app.use('/kubernetes', (req: Request, res: Response) => {
+  express.static(path.join(__dirname, '../client/index.html'));
+});
+
 app.use('/api/dashboard', dashboardRouter);
+
 app.use('/api/kubernetesMetrics', kubernetesRouter);
 
 app.get('/dashboard', (req: Request, res: Response) => {

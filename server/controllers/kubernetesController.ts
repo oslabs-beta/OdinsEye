@@ -25,13 +25,10 @@ const kubernetesController: KubernetesController = {
     const restartQuery =
       'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
     try {
-      // console.log('into try block');
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`
       );
-      // console.log(response.data.data.result);
       res.locals.restarts = response.data;
-      // console.log(res.locals.restarts);
       return next();
     } catch (err) {
       return next({
@@ -44,7 +41,6 @@ const kubernetesController: KubernetesController = {
   namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
-      // console.log('into try block');
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${namespaceQuery}&start=${start}&end=${end}&step=5m`
       );
@@ -54,7 +50,6 @@ const kubernetesController: KubernetesController = {
         namespaceArray.push(element.metric.namespace);
       });
       res.locals.namespaceNames = namespaceArray;
-      // console.log(res.locals.namespaceNames);
       return next();
     } catch (err) {
       return next({
@@ -90,7 +85,6 @@ const kubernetesController: KubernetesController = {
     const readyQuery =
       'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
     try {
-      // console.log('into try block');
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
       );
@@ -111,10 +105,6 @@ const kubernetesController: KubernetesController = {
   ) => {
     const objectData: any = {};
     const { namespaceName } = req.params;
-    // const ccNamespaceName = namespaceName.replace(/-([a-z])/g, function (g) {
-    //   return g[1].toUpperCase();
-    // });
-    //console.log(ccNamespaceName);
     const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"}[5m]))`;
     const readyQuery = `sum(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"})`;
     const notReadyQuery = `sum(kube_pod_status_ready{condition="false", namespace = "${namespaceName}"})`;
@@ -131,7 +121,6 @@ const kubernetesController: KubernetesController = {
       const array1 = restartResponse.data.data.result;
       const restartArray = [];
       restartArray.push(array1[0].values);
-      //console.log(restartArray)
       objectData.restarts = restartArray;
 
       //pods that are unavailable within namespace
@@ -139,7 +128,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
       );
       const array2 = readyResponse.data.data.result;
-      //console.log(array2)
       const readyArray = [];
       readyArray.push(array2[0].values);
       objectData.ready = readyArray;
@@ -149,7 +137,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${notReadyQuery}&start=${start}&end=${end}&step=5m`
       );
       const arrayNot = notReadyResponse.data.data.result[0].values[0][1];
-      // console.log(arrayNot);
       // const notReadyArray = [];
       // notReadyArray.push(arrayNot[0].values);
       objectData.notReady = parseInt(arrayNot);
@@ -177,7 +164,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`
       );
       const array5 = receiveResponse.data.data.result;
-      // console.log(array5);
       if (array5.length === 0) {
         objectData.reception = [];
       } else {
@@ -191,7 +177,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`
       );
       const array6 = transmitResponse.data.data.result;
-      //console.log(array6)
       if (array6.length === 0) {
         objectData.transmission = [];
       } else {
@@ -215,8 +200,7 @@ const kubernetesController: KubernetesController = {
     const ccPodName = podName.replace(/-([a-z])/g, function (g) {
       return g[1].toUpperCase();
     });
-    // console.log(ccPodName);
-    // console.log(podName);
+
     const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", pod = "${podName}"}[5m]))`;
     const readyQuery = `sum(kube_pod_status_ready{condition="false", pod = "${podName}"})`;
     // const cpuQuery = `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`
@@ -230,13 +214,11 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`
       );
       const array1 = restartResponse.data.data.result;
-      //console.log(array1.length, 'array 1')
       const restartArray = [];
       // for (let i = 0; i<array1.length; i++){
       //     restartArray.push(array1[0].values[0][i][1])
       // }
       restartArray.push(array1[0].values);
-      //console.log(restartArray)
       objectData.restarts = restartArray;
 
       //pods that are unavailable within namespace
@@ -244,7 +226,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
       );
       const array2 = readyResponse.data.data.result;
-      console.log(array2, 'array2');
       const readyArray = [];
       readyArray.push(array2[0].values);
       objectData.ready = readyArray;
@@ -254,7 +235,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`
       );
       const array3 = cpuResponse.data.data.result;
-      //console.log(array3.length, 'array 3')
       const cpuArray = [];
       cpuArray.push(array3[0].values);
       objectData.cpu = cpuArray;
@@ -264,7 +244,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${memQuery}&start=${start}&end=${end}&step=5m`
       );
       const array4 = memResponse.data.data.result;
-      //console.log(array4.length, 'array 4')
       const memArray = [];
       memArray.push(array4[0].values);
       objectData.memory = memArray;
@@ -275,7 +254,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${receiveQuery}&start=${start}&end=${end}&step=5m`
       );
       const array5 = receiveResponse.data.data.result;
-      //console.log(array5)
       if (array5.length === 0) {
         objectData.reception = [];
       } else {
@@ -289,7 +267,6 @@ const kubernetesController: KubernetesController = {
         `http://localhost:9090/api/v1/query_range?query=${transmitQuery}&start=${start}&end=${end}&step=5m`
       );
       const array6 = transmitResponse.data.data.result;
-      //console.log(array6)
       if (array6.length === 0) {
         objectData.transmission = [];
       } else {
