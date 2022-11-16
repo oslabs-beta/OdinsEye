@@ -3,6 +3,18 @@
 
 $nav: #1d1b1d;
 $header: #1d1b1d;
+$border: #232424;
+$MiddleBlueGreen: rgba(125, 226, 209);
+$PersianGreen: rgb(51, 153, 137);
+$PacificBlue: rgb(80, 178, 192);
+$OperaMauve: rgb(172, 128, 160);
+$LittleBoyBlue: rgb(137, 170, 230);
+$BlueNCS: rgb(54, 133, 181);
+$HonoluluBlue: rgb(4, 113, 166);
+$RichBlack: rgb(6, 24, 38);
+$background: rgb(31, 28, 30);
+$fontColor: rgba(159, 163, 162, 0.8);
+
 
 
 *{
@@ -10,8 +22,8 @@ $header: #1d1b1d;
 }
 
 body {
-  background-color: #363636;
-  color:rgb(236, 240, 239);
+  background-color: $background;
+  color: $fontColor;
   font-family: 'Playfair Display', serif;
 }
 
@@ -26,13 +38,15 @@ body {
 
   .header {
     background-color: $header;
-    font-size: 90px;
+    font-size: 30px;
     text-align: center;
     grid-area: head;
-    min-height: 150px;
-    padding-top: 20px;
+    max-height: 160px;
+    padding: 30px 0 30px 0;
     width: 100%;
     position: fixed;
+    border: 1px solid $border;
+    color: $MiddleBlueGreen;
   }
 
   #dropdown {
@@ -82,14 +96,15 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    margin: -30px;
+    margin: -59px 0 0 2px;
     height: 100%;
-    color: aliceblue;
+    color: $fontColor;
     padding-top: 20px;
+    border: 1px solid $border;
 
     .link {
       // font-family
-      color: rgb(238, 238, 238);
+      color: $fontColor;
     }
   }
 }
@@ -98,7 +113,7 @@ body {
   grid-area: main;
   display: flex;
   flex-direction: column;
-  margin-top: 200px;
+  margin-top: 170px;
   // #small-graphs {
   //   display: flex;
   //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -113,6 +128,9 @@ body {
   #list-data {
     display: flex;
     justify-content: center;
+    border: 1px solid $border;
+    margin: 0 24px 0 24px;
+    padding: 5px 5px 5px 5px;
   }
 
   //line chart
@@ -130,52 +148,47 @@ body {
 
   .line {
     margin-top: 10px;
-    border: solid;
+    border: 1px solid $border;
   }
 
   #total-names {
-    background-color: rgb(147, 186, 221);
+    // background-color: rgb(147, 186, 221);
     width: 200px;
     height: 200px;
   }
 
   #total-pods {
-    background-color: aliceblue;
+    // background-color: aliceblue;
     width: 200px;
     height: 200px;
   }
   
   #total-cpu {
     // grid-area: cpu;
-    background-color: aliceblue;
     width: 700px;
     height: auto;
   }
 
   #total-memory-use {
     // grid-area: mem;
-    background-color: beige;
     width: 700px;
     height: auto;
   }
 
   #total-pods {
     // grid-area: pod;
-    background-color: aquamarine;
     width: 200px;
     height: auto;
   }
 
   #net-rec {
     // grid-area: nr;
-    background-color: burlywood;
     width: 700px;
     height: auto;
   }
 
   #net-trans {
     // grid-area: nt;
-    background-color: rgb(242, 165, 199);
     width: 700px;
     height: auto;
   }

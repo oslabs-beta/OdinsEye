@@ -1,6 +1,7 @@
 const React = require('react');
 import NavBar from '../components/navbar';
 const styles = require('../styles/index.scss');
+// import {logo} from 'odins-eye.png'
 import { getData } from '../getData';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +11,7 @@ import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
 import { AllDataType } from '../../types'
+
 
 
 // type AppProps = {
@@ -28,7 +30,9 @@ const MainPage = () => {
   const namespaces = useSelector((state: TestState) => state.namespaces);
   return (
     <div className='main-container'>
-      <h1 className='header'>Odin's Eye</h1>
+      <div className="header">
+        <h1>Odin's Eye</h1>
+      </div>
       <NavBar />
       <div className='data-container'>
         {/* <div id='small-graphs'> */}
@@ -38,18 +42,18 @@ const MainPage = () => {
         </div>
         <div className='charts'>
           <div className='line-graph'>
-            <div className='line' id='total-cpu'>total cpu
+            <div className='line' id='total-cpu'>
               <LineChart url='/api/dashboard/totalCpu' label='Cpu Usage' yAxis='Percent'/>
             </div>
-            <div className='line' id='total-memory-use'>total mem use
+            <div className='line' id='total-memory-use'>
               <LineChart url='/api/dashboard/totalMem' label='Mem Usage' yAxis='Kilobytes'/>
             </div>
           </div>
           <div className='line-graph'>
-            <div className='line' id='net-rec'>net rec
+            <div className='line' id='net-rec'>
               <LineChart url='/api/dashboard/totalReceive' label='Mem Usage' yAxis='Kilobytes'/>
             </div>
-            <div className='line' id='net-trans'>net-trans
+            <div className='line' id='net-trans'>
               <LineChart url='/api/dashboard/totalTransmit' label='Mem Usage' yAxis='Kilobytes'/>
             </div>
         </div>
