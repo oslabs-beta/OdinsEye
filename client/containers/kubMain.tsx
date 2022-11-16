@@ -7,6 +7,8 @@ import { AllDataType } from '../../types';
 import KLineChart from '../components/KLineChart';
 import Popup from '../components/PopUp';
 import KDoughnutChart from '../components/KDonutChart';
+import { useSelector } from 'react-redux';
+import { TestState } from '../../types';
 
 //passdown namespaces, then render conditionally based on the current namespace selected
 
@@ -127,8 +129,13 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     });
   }
+  const dark = useSelector((state: TestState) => state.dark);
+
+  let theme: string;
+
+  dark ? (theme = 'lightMode') : (theme = 'darkMode');
   return (
-    <div className='main-container'>
+    <div className={'main-container ' + theme}>
       <div className='header'>
         <h1>Odin's Eye</h1>
       </div>

@@ -55,6 +55,7 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 10px;
+    min-width: 300px;
     #dropdown-but {
       font-size: 20px;
       font-family: $font;
@@ -130,15 +131,6 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 130px;
-  // #small-graphs {
-  //   display: flex;
-  //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  // }
-  //   grid-template-areas: ;
-  //     'cpu mem'
-  //     'pod nr'
-  //     'nt nt'
-  //     'log log';
 
   #total-names {
     display: flex;
@@ -206,40 +198,6 @@ body {
     padding-top: 60px;
   }
 
-  // #total-pods {
-  //   // background-color: aliceblue;
-  //   width: 200px;
-  //   height: 200px;
-  // }
-
-  // #total-cpu {
-  //   // grid-area: cpu;
-  // }
-
-  // #total-memory-use {
-  //   // grid-area: mem;
-  //   width: 700px;
-  //   height: auto;
-  // }
-
-  // #total-pods {
-  //   // grid-area: pod;
-  //   width: 200px;
-  //   height: auto;
-  // }
-
-  // #net-rec {
-  //   // grid-area: nr;
-  //   width: 700px;
-  //   height: auto;
-  // }
-
-  // #net-trans {
-  //   // grid-area: nt;
-  //   width: 700px;
-  //   height: auto;
-  // }
-
   #logs {
     // grid-area: log;
     background-color: rgb(218, 178, 246);
@@ -247,22 +205,26 @@ body {
     width: 100%;
     height: 400px;
   }
-
-  .pod-list {
-    color: $PersianGreen;
-    &:hover {
-      color: $OperaMauve;
-      font-size: 20px;
+  #pod-names {
+    padding-left: 50px;
+    min-width: 600px;
+    .pod-list {
+      color: $PersianGreen;
+      &:hover {
+        color: $OperaMauve;
+        font-size: 20px;
+      }
     }
-  }
-  .pod-list-bad {
-    color: red;
-    &:hover {
-      color: $OperaMauve;
-      font-size: 20px;
+    .pod-list-bad {
+      color: red;
+      &:hover {
+        color: $OperaMauve;
+        font-size: 20px;
+      }
     }
   }
 }
+
 #logo {
   display: flex;
   width: 200px;
