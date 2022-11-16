@@ -55,45 +55,51 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
           X
         </button>
         <div className='data-container'>
-          <div id='total-cpu'>
-            <KLineChart
-              data={data.cpu}
-              label='test'
-              yAxis='%'
-              title='Total CPU % Usage'
-            />
+          <div className='line-graph'>
+            <div id='total-cpu' className='line'>
+              <KLineChart
+                data={data.cpu}
+                label='test'
+                yAxis='%'
+                title='Total CPU % Usage'
+              />
+            </div>
+            <div id='total-memory-use' className='line'>
+              <KLineChart
+                data={data.memory}
+                label='kB'
+                yAxis='kilobytes'
+                title='Total Memory Usage (kB)'
+              />
+            </div>
           </div>
-          <div id='total-memory-use'>
-            <KLineChart
-              data={data.memory}
-              label='kB'
-              yAxis='kilobytes'
-              title='Total Memory Usage (kB)'
-            />
+          <div className='line-graph'>
+            <div id='net-rec' className='line'>
+              <KLineChart
+                data={data.ready}
+                label='kB'
+                yAxis='kilobytes'
+                title='Network Received (kB)'
+              />
+            </div>
+            <div id='net-trans' className='line'>
+              <KLineChart
+                data={data.transmission}
+                label='kB'
+                yAxis='kilobytes'
+                title='Network Transmitted (kB)'
+              />
+            </div>
           </div>
-          <div id='net-rec'>
-            <KLineChart
-              data={data.ready}
-              label='kB'
-              yAxis='kilobytes'
-              title='Network Received (kB)'
-            />
-          </div>
-          <div id='net-trans'>
-            <KLineChart
-              data={data.transmission}
-              label='kB'
-              yAxis='kilobytes'
-              title='Network Transmitted (kB)'
-            />
-          </div>
-          <div id='retarts'>
-            <KLineChart
-              data={data.restarts}
-              label='Restarts'
-              yAxis='restarts'
-              title='Pod Restarts'
-            />
+          <div className='line-graph'>
+            <div id='retarts' className='line'>
+              <KLineChart
+                data={data.restarts}
+                label='Restarts'
+                yAxis='restarts'
+                title='Pod Restarts'
+              />
+            </div>
           </div>
         </div>
       </div>

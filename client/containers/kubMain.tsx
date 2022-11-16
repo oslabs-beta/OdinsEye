@@ -152,11 +152,17 @@ const KubPage = ({ namespaces }: KubType) => {
               label='Total Pods'
             />
           </div>
-          <div id='pod-names'>{podsArray}</div>
+          <div id='pod-names'>
+            <h2>
+              Pod Names:
+              <br />
+            </h2>
+            {podsArray}
+          </div>
         </div>
         <div className='charts'>
           <div className='line-graph'>
-            <div id='total-cpu' className='chart'>
+            <div id='total-cpu' className='line'>
               <KLineChart
                 data={data.cpu}
                 label='test'
@@ -164,7 +170,7 @@ const KubPage = ({ namespaces }: KubType) => {
                 title='Total CPU % Usage'
               />
             </div>
-            <div id='total-memory-use' className='chart'>
+            <div id='total-memory-use' className='line'>
               <KLineChart
                 data={data.memory}
                 label='kB'
@@ -174,7 +180,7 @@ const KubPage = ({ namespaces }: KubType) => {
             </div>
           </div>
           <div className='line-graph'>
-            <div id='net-rec' className='chart'>
+            <div id='net-rec' className='line'>
               <KLineChart
                 data={data.ready}
                 label='kB'
@@ -182,7 +188,7 @@ const KubPage = ({ namespaces }: KubType) => {
                 title='Network Received (kB)'
               />
             </div>
-            <div id='net-trans' className='chart'>
+            <div id='net-trans' className='line'>
               <KLineChart
                 data={data.transmission}
                 label='kB'
@@ -192,7 +198,7 @@ const KubPage = ({ namespaces }: KubType) => {
             </div>
           </div>
           <div className='line-graph'>
-            <div id='retarts' className='chart'>
+            <div id='retarts' className='line'>
               <KLineChart
                 data={data.restarts}
                 label='Restarts'
