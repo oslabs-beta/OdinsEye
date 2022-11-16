@@ -7,7 +7,7 @@ import { parse } from 'path';
 //const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 //const client = require('prom-client');
-const start = new Date(Date.now() - 60 * 60000).toISOString();
+const start = new Date(Date.now() - 1440 * 60000).toISOString();
 const end = new Date(Date.now()).toISOString();
 
 // const kc = new k8s.KubeConfig();
