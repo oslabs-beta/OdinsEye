@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
-
 $nav: #1d1b1d;
 $header: #1d1b1d;
 $border: #232424;
@@ -15,9 +14,7 @@ $RichBlack: rgb(6, 24, 38);
 $background: rgb(31, 28, 30);
 $fontColor: rgba(159, 163, 162, 0.8);
 
-
-
-*{
+* {
   margin: 0;
 }
 
@@ -52,6 +49,7 @@ body {
   #dropdown {
     grid-area: drop;
     padding-bottom: 20px;
+    margin-top: 150px;
     .menu {
       position: absolute;
 
@@ -142,7 +140,7 @@ body {
     margin: 5px 5px 5px 5px;
   }
 
-  .line-graph{
+  .line-graph {
     padding-top: 10px;
   }
 
@@ -162,7 +160,7 @@ body {
     width: 200px;
     height: 200px;
   }
-  
+
   #total-cpu {
     // grid-area: cpu;
     width: 700px;
@@ -207,5 +205,3 @@ body {
     height: 400px;
   }
 }
-
-

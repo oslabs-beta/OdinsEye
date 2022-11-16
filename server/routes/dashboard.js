@@ -17,7 +17,9 @@ dashboardRouter.get('/totalReceive', dashboardController_1["default"].totalRecei
 });
 dashboardRouter.get('/totalPods', dashboardController_1["default"].totalPods, function (req, res) {
     //pods metric/value will return multiple of the same values with different time stamp, just need the first one
-    return res.status(200).json(res.locals.totalPods.data);
+    return res
+        .status(200)
+        .json(parseInt(res.locals.totalPods.data.result[0].values[0][1]));
 });
 dashboardRouter.get('/totalNamespaces', dashboardController_1["default"].totalNamespaces, function (req, res) {
     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one

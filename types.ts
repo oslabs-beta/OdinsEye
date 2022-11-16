@@ -11,24 +11,19 @@ export type DashboardController = {
 };
 
 export type KubernetesController = {
-
-    totalRestarts: RequestHandler,
-    namespaceNames: RequestHandler,
-    podNames: RequestHandler,
-    podsNotReady: RequestHandler,
-    getNameSpaceMetrics: RequestHandler,
-    getPodMetrics: RequestHandler
-}
-
+  totalRestarts: RequestHandler;
+  namespaceNames: RequestHandler;
+  podNames: RequestHandler;
+  podsNotReady: RequestHandler;
+  getNameSpaceMetrics: RequestHandler;
+  getPodMetrics: RequestHandler;
+};
 
 export type TestState = {
   dark: boolean;
   namespaces: string[] | null;
   data: null | [];
 };
-// {
-//   (path: string, elementId: string): Promise<any>;
-// };
 
 export type ErrorType = {
   log: string;
@@ -37,7 +32,7 @@ export type ErrorType = {
 };
 
 export type AllDataType = {
-  data?: any[] | number | undefined
+  data?: number[] | number | undefined;
   // totalCpu?: any[] | unde;
   // totalNames?: number;
   // totalMem?: any[];
@@ -46,4 +41,3 @@ export type AllDataType = {
   // totalTrans?: any[];
   // logs?: any[];
 };
-
