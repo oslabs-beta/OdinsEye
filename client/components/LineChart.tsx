@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { getData } from '../getData';
+import { Filler } from 'chart.js';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,6 +15,7 @@ import {
     ChartOptions,
     ChartData,
 } from 'chart.js';
+import { parentPort } from 'worker_threads';
   
 ChartJS.register(
     CategoryScale,
@@ -21,7 +24,8 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    Filler
 );
 
 type DataType = [number,string];
@@ -51,10 +55,14 @@ const LineChart = (props:LineChartDataType) => {
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    color: 'rgba(137, 170, 230, 0.6)',
+                }
             },
             title: {
                 display: true,
                 text: 'Line-Chart',
+                color:'rgba(137, 170, 230, 0.6)',
             },
             //turn off display of data inside the chart
             //not sure why it is throwing an error, so i commented it out
@@ -68,7 +76,7 @@ const LineChart = (props:LineChartDataType) => {
                 axis: 'y',
                 title: {
                     display: true,
-                    text: 'data'
+                    text: props.yAxis
                 },
             },
             x: {
@@ -116,8 +124,8 @@ const LineChart = (props:LineChartDataType) => {
                       {
                         label: props.label,
                         data: yAxis,
-                        backgroundColor: 'rgba(245, 40, 145, 0.8)',
-                        borderColor: 'rgba(245, 40, 145, 0.8)',
+                        backgroundColor: 'rgba(172, 128, 160, 0.3)',
+                        borderColor: 'rgba(172, 128, 160, 0.3)',
                         borderWidth: 1.5,
                         pointRadius: 1,
                         tension: 0.4,
