@@ -39,7 +39,6 @@ const KubPage = ({ namespaces }: KubType) => {
   };
   const [data, setData] = useState<KubDataType>(initialData);
   const [pods, setPods] = useState<string[]>([]);
-  const [notReady, setNotReady] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
   const podsArray: JSX.Element[] = [];
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
@@ -101,6 +100,7 @@ const KubPage = ({ namespaces }: KubType) => {
                 onClick={() => {
                   setCurrentPod(pod[1]);
                   setButtonPopup(true);
+                  handleChange(page);
                 }}
               >
                 {pod}

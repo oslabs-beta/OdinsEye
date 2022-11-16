@@ -13,6 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV) {
     app.use('/', express.static(path.join(__dirname, '../dist')));
 }
+app.use('/kubernetes', function (req, res) {
+    express.static(path.join(__dirname, '../client/index.html'));
+});
 app.use('/api/dashboard', dashboard_1["default"]);
 app.use('/api/kubernetesMetrics', kubernetes_1["default"]);
 app.get('/dashboard', function (req, res) {
