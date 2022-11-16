@@ -6,21 +6,20 @@ import { TestState } from '../../types';
 
 const NavBar = () => {
   const dispatch = useDispatch();
-  const darkTest = useSelector((state: TestState) => state.dark);
+  const dark = useSelector((state: TestState) => state.dark);
+  let classInfo: string;
+  dark ? (classInfo = 'open') : (classInfo = 'closed');
   return (
     <nav id='nav-bar'>
       <button
         id='eyepatch'
+        className={classInfo}
         onClick={(e) => {
           let eye = document.getElementById('eyepatch') as HTMLInputElement;
-          dispatch(darkMode(darkTest));
-          eye.innerHTML === 'eye'
-            ? (eye.innerHTML = 'eyepatch')
-            : (eye.innerHTML = 'eye');
+          dark ? (eye.className = 'open') : (eye.className = 'closed');
+          dispatch(darkMode(dark));
         }}
-      >
-        eye
-      </button>
+      ></button>
       <br />
       <Link className='link' to='/'>
         Main Page

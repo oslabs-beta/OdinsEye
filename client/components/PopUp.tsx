@@ -28,8 +28,8 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
     restarts: [],
     transmission: [],
   };
-  const [data, setData] = useState<PopUpDataType>(initialData);
 
+  const [data, setData] = useState<PopUpDataType>(initialData);
   const getData = async (name: string): Promise<void> => {
     try {
       const response = await axios.get(
@@ -45,68 +45,61 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
     if (podName) {
       getData(podName);
     }
-  });
+  }, [podName]);
 
   return trigger ? (
     <div id='popup'>
       <div id='popup-inner'>
         <h2>{podName}</h2>
-        <div id='popup-butt'>
-          <button
-            style={{ position: 'absolute', top: '16px', right: '20px' }}
-            className='close-btn'
-            onClick={() => setTrigger(false)}
-          >
-            Close
-          </button>
-          <div className='data-container'>
-            <div id='total-cpu'>
-              <KLineChart
-                data={data.cpu}
-                label='test'
-                yAxis='%'
-                title='Total CPU % Usage'
-              />
-            </div>
-            <div id='total-memory-use'>
-              <KLineChart
-                data={data.memory}
-                label='kB'
-                yAxis='kilobytes'
-                title='Total Memory Usage (kB)'
-              />
-            </div>
-            <div id='net-rec'>
-              <KLineChart
-                data={data.ready}
-                label='kB'
-                yAxis='kilobytes'
-                title='Network Received (kB)'
-              />
-            </div>
-            <div id='net-trans'>
-              <KLineChart
-                data={data.transmission}
-                label='kB'
-                yAxis='kilobytes'
-                title='Network Transmitted (kB)'
-              />
-            </div>
-            <div id='retarts'>
-              <KLineChart
-                data={data.restarts}
-                label='Restarts'
-                yAxis='restarts'
-                title='Pod Restarts'
-              />
-            </div>
+        <button className='close-btn' onClick={() => setTrigger(false)}>
+          X
+        </button>
+        <div className='data-container'>
+          <div id='total-cpu'>
+            <KLineChart
+              data={data.cpu}
+              label='test'
+              yAxis='%'
+              title='Total CPU % Usage'
+            />
+          </div>
+          <div id='total-memory-use'>
+            <KLineChart
+              data={data.memory}
+              label='kB'
+              yAxis='kilobytes'
+              title='Total Memory Usage (kB)'
+            />
+          </div>
+          <div id='net-rec'>
+            <KLineChart
+              data={data.ready}
+              label='kB'
+              yAxis='kilobytes'
+              title='Network Received (kB)'
+            />
+          </div>
+          <div id='net-trans'>
+            <KLineChart
+              data={data.transmission}
+              label='kB'
+              yAxis='kilobytes'
+              title='Network Transmitted (kB)'
+            />
+          </div>
+          <div id='retarts'>
+            <KLineChart
+              data={data.restarts}
+              label='Restarts'
+              yAxis='restarts'
+              title='Pod Restarts'
+            />
           </div>
         </div>
-        ;
       </div>
     </div>
   ) : (
-    <a></a>
+    <div></div>
   );
 };
 

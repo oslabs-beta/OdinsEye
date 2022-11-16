@@ -37,15 +37,22 @@ kubernetesRouter.get(
 kubernetesRouter.get(
   '/namespaceMetrics/:namespaceName',
   kubernetesController.getNameSpaceMetrics,
-  (req: Response, res: Response) => {
+  (req: Request, res: Response) => {
     return res.status(200).json(res.locals.namespaceData);
   }
 );
 kubernetesRouter.get(
   '/podMetrics/:podName',
   kubernetesController.getPodMetrics,
-  (req: Response, res: Response) => {
+  (req: Request, res: Response) => {
     return res.status(200).json(res.locals.podData);
+  }
+);
+kubernetesRouter.get(
+  '/podsNotReadyNames/',
+  kubernetesController.podsNotReadyNames,
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.status);
   }
 );
 

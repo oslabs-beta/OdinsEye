@@ -17,6 +17,7 @@ export type KubernetesController = {
   podsNotReady: RequestHandler;
   getNameSpaceMetrics: RequestHandler;
   getPodMetrics: RequestHandler;
+  podsNotReadyNames?: RequestHandler;
 };
 
 export type TestState = {

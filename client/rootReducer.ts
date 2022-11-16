@@ -7,7 +7,7 @@ import { addNamespaces } from './getData';
 const darkMode = createAction<boolean, 'darkMode'>('darkMode');
 
 const initialState: TestState = {
-  dark: false,
+  dark: true,
   namespaces: [],
   data: null,
   //possible global state values: user, total pods, namespaces?
@@ -17,9 +17,9 @@ const initialState: TestState = {
 
 const rootReducer = createReducer(initialState, (builder) =>
   builder
-    .addCase(darkMode, (state) => {
-      let dark: boolean;
-      state.dark ? (dark = false) : (dark = true);
+    .addCase(darkMode, (state, action) => {
+      let dark;
+      action.payload ? (dark = false) : (dark = true);
       return { ...state, dark };
     })
     .addCase(addNamespaces.pending, (state, action) => {
