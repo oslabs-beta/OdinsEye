@@ -46,20 +46,12 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
         label: 'Total Pods',
         data: chartData,
         backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 206, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(153, 102, 255)',
-          'rgb(255, 159, 64)',
+          'rgba(54, 133, 181, 0.6)',
+          ' rgb(172, 128, 160, 0.6)'
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          'rgba(54, 133, 181, 1)',
+          ' rgb(172, 128, 160, 1)',
         ],
         borderWidth: 1,
       },
@@ -73,7 +65,13 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
     }
   }, []);
   const options: ChartOptions<'doughnut'> = {
+    animation: {
+      easing: 'easeInQuad',
+      duration: 1000,
+    },
     responsive: true,
+    rotation: 270,
+    circumference: 180,
     interaction: {
       intersect: false,
     },

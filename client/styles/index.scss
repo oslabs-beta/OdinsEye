@@ -2,7 +2,7 @@
 
 $nav: #1d1b1d;
 $header: #1d1b1d;
-$border: #232424;
+$border: #353636;
 $MiddleBlueGreen: rgba(125, 226, 209);
 $PersianGreen: rgb(51, 153, 137);
 $PacificBlue: rgb(80, 178, 192);
@@ -12,7 +12,10 @@ $BlueNCS: rgb(54, 133, 181);
 $HonoluluBlue: rgb(4, 113, 166);
 $RichBlack: rgb(6, 24, 38);
 $background: rgb(31, 28, 30);
-$fontColor: rgba(159, 163, 162, 0.8);
+$fontColor: rgba(136, 217, 230, 0.8);
+$Celeste: rgb(197, 255, 253);
+$MiddleBlue: rgb(136, 217, 230);
+$CoolGrey: rgb(139, 139, 174);
 
 * {
   margin: 0;
@@ -35,15 +38,16 @@ body {
 
   .header {
     background-color: $header;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
     grid-area: head;
     max-height: 160px;
-    padding: 30px 0 30px 0;
+    padding: 25px 0 25px 0;
     width: 100%;
     position: fixed;
     border: 1px solid $border;
-    color: $MiddleBlueGreen;
+    color: $fontColor;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   #dropdown {
@@ -94,11 +98,12 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    margin: -59px 0 0 2px;
+    margin: -96px 0 0 2px;
     height: 100%;
     color: $fontColor;
     padding-top: 20px;
     border: 1px solid $border;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;;
 
     .link {
       // font-family
@@ -111,7 +116,7 @@ body {
   grid-area: main;
   display: flex;
   flex-direction: column;
-  margin-top: 170px;
+  margin-top: 130px;
   // #small-graphs {
   //   display: flex;
   //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -121,6 +126,31 @@ body {
   //     'pod nr'
   //     'nt nt'
   //     'log log';
+   
+  #total-names {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    font-size: 12.5px;
+    color: #666666;
+    font-family: Helvetica;
+    font-weight: bolder;
+    padding-top: 20px;
+
+  }
+
+  #names-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 25px;
+    -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
+    font-size: 135px;
+    color: rgba(54, 133, 181, 0.6);
+  }
+
+  
 
   //pods & namespaces
   #list-data {
@@ -129,6 +159,7 @@ body {
     border: 1px solid $border;
     margin: 0 24px 0 24px;
     padding: 5px 5px 5px 5px;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   //line chart
@@ -138,6 +169,7 @@ body {
     justify-content: space-around;
     align-items: center;
     margin: 5px 5px 5px 5px;
+    
   }
 
   .line-graph {
@@ -145,8 +177,9 @@ body {
   }
 
   .line {
-    margin-top: 10px;
+    margin: 30px 0 20px 0;
     border: 1px solid $border;
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px, rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   #total-names {
