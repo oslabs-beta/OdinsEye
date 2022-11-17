@@ -89,14 +89,15 @@ $themes: (
     }
 
     h2 {
-      margin-top: 200px;
+      margin-top: 15%;
+      padding-top: 40px;
       @include themify($themes) {
         color: themed('font');
       }
       font-weight: bold;
       font-size: 50px;
       align-self: center;
-      max-height: 40px;
+      min-height: 40px;
     }
     .data-container {
       margin-top: 60px;
