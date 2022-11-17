@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Filler } from 'chart.js';
+import { TestState } from '../../types';
+import { useSelector } from 'react-redux';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -36,6 +39,10 @@ type LineChartDataType = {
 };
 
 const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
+  const dark = useSelector((state: TestState) => state.dark);
+  let fontColor;
+  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+
   const initialData: ChartData<'line'> = {
     datasets: [],
   };
@@ -50,7 +57,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       legend: {
         position: 'top',
         labels: {
-          color: 'rgba(54, 133, 181, 1)',
+          color: fontColor,
           font: {
             size: 18,
           },
@@ -59,7 +66,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       title: {
         display: true,
         text: title,
-        color: 'rgba(136, 217, 230, 0.8)',
+        color: fontColor,
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -76,7 +83,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           text: yAxis,
         },
         ticks: {
-          color: 'rgba(136, 217, 230, 0.8)',
+          color: fontColor,
         },
       },
       x: {
@@ -87,7 +94,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           text: 'Time',
         },
         ticks: {
-          color: 'rgba(136, 217, 230, 0.8)',
+          color: fontColor,
         },
       },
     },
@@ -106,7 +113,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       });
       let yAxisData: number[] = [];
       switch (yAxis) {
-        case 'kilobytes':
+        case 'Kilobytes':
           yAxisData = metrics.map(
             (value: [number, string]) => Number(value[1]) / 1000000
           );

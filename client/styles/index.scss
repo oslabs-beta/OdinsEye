@@ -1,29 +1,23 @@
-$nav: #1d1b1d;
-$header: #1d1b1d;
+// $nav: #1d1b1d;
+// $header: #1d1b1d;
 $border: #353636;
-$MiddleBlueGreen: rgba(125, 226, 209);
-$PersianGreen: rgb(51, 153, 137);
-$PacificBlue: rgb(80, 178, 192);
-$OperaMauve: rgb(172, 128, 160);
-$LittleBoyBlue: rgb(137, 170, 230);
-$BlueNCS: rgb(54, 133, 181);
-$HonoluluBlue: rgb(4, 113, 166);
-$RichBlack: rgb(6, 24, 38);
-$background: rgb(31, 28, 30);
-$fontColor: rgba(136, 217, 230, 0.8);
-$Celeste: rgb(197, 255, 253);
-$MiddleBlue: rgb(136, 217, 230);
-$CoolGrey: rgb(139, 139, 174);
+// $MiddleBlueGreen: rgba(125, 226, 209);
+// $PersianGreen: rgb(51, 153, 137);
+// $PacificBlue: rgb(80, 178, 192);
+// $OperaMauve: rgb(172, 128, 160);
+// $LittleBoyBlue: rgb(137, 170, 230);
+// $BlueNCS: rgb(54, 133, 181);
+// $HonoluluBlue: rgb(4, 113, 166);
+// $RichBlack: rgb(6, 24, 38);
+// $background: rgb(31, 28, 30);
+// $fontColor: rgba(136, 217, 230, 0.8);
+// $Celeste: rgb(197, 255, 253);
+// $MiddleBlue: rgb(136, 217, 230);
+// $CoolGrey: rgb(139, 139, 174);
 $font: 'Playfair Display', serif;
 
 * {
   margin: 0;
-}
-
-body {
-  background-color: $background;
-  color: $fontColor;
-  font-family: $font;
 }
 
 #main-container {
@@ -34,10 +28,14 @@ body {
     'navb main'
     'navb main';
   grid-template-columns: 300px 1fr;
+  height: 100em;
 
+  // color: $fontColor;
+  font-family: $font;
   .header {
-    background-color: $header;
-    font-size: 20px;
+    // background-color: $header;
+    z-index: 1;
+    font-size: 30px;
     text-align: center;
     grid-area: head;
     max-height: 160px;
@@ -45,9 +43,9 @@ body {
     width: 100%;
     position: fixed;
     border: 1px solid $border;
-    color: $fontColor;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    // color: $fontColor;
+    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   #dropdown {
@@ -60,11 +58,11 @@ body {
       font-size: 20px;
       font-family: $font;
       background-color: transparent;
-      color: $PersianGreen;
+      // color: $PersianGreen;
       border: 1px solid $border;
       padding: 5px 15px;
       &:hover {
-        background-color: rgba(159, 155, 158, 0.2);
+        // background-color: rgba(159, 155, 158, 0.2);
         cursor: pointer;
       }
     }
@@ -81,14 +79,14 @@ body {
 
     .menu > li {
       margin: 0;
-      background-color: $background;
-      color: $PersianGreen;
+      // background-color: $background;
+      // color: $PersianGreen;
     }
 
-    .menu > li:hover {
-      background-color: rgb(151, 150, 150);
-      color: #1d1b1d;
-    }
+    // .menu > li:hover {
+    //   background-color: rgb(151, 150, 150);
+    //   color: #1d1b1d;
+    // }
 
     .menu > li > button {
       width: 100%;
@@ -105,7 +103,7 @@ body {
   }
 
   #nav-bar {
-    background-color: $nav;
+    // background-color: $nav;
     min-width: 300px;
     align-items: center;
     top: 201px;
@@ -113,27 +111,25 @@ body {
     display: flex;
     flex-direction: column;
     position: fixed;
-    margin: -95px 0 0 2px;
+    margin: -70px 0 0 2px;
     height: 100%;
     padding-top: 20px;
     border: 1px solid $border;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
-    .link {
-      color: $fontColor;
-      &:hover {
-        color: $OperaMauve;
-      }
-    }
+    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    // .link {
+    //   color: $fontColor;
+    //   &:hover {
+    //     color: $OperaMauve;
+    //   }
+    // }
   }
 }
 
 .data-container {
-  margin-top: 170px;
   grid-area: main;
   display: flex;
   flex-direction: column;
-  margin-top: 130px;
 
   #total-names {
     display: flex;
@@ -141,7 +137,7 @@ body {
     justify-content: start;
     align-items: center;
     font-size: 12.5px;
-    color: #666666;
+    // color: #666666;
     font-family: Helvetica;
     font-weight: bolder;
     padding-top: 20px;
@@ -152,9 +148,9 @@ body {
     align-items: center;
     justify-content: center;
     padding-top: 20px;
-    -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
+    // -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
     font-size: 210px;
-    color: rgba(54, 133, 181, 0.6);
+    // color: rgba(54, 133, 181, 0.6);
   }
 
   //pods & namespaces
@@ -165,8 +161,8 @@ body {
     border: 1px solid $border;
     margin: 0 24px 0 24px;
     padding: 10px 5px 20px 5px;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   //line chart
@@ -186,8 +182,9 @@ body {
   }
 
   .line {
-    margin: 30px 0 20px 0;
+    margin: 30px 20px 20px 0;
     border: 1px solid $border;
+    padding: 5px;
     box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
       rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
     width: 700px;
@@ -198,7 +195,7 @@ body {
     display: flex;
     width: 200px;
     height: 200px;
-    color: rgba(136, 217, 230, 0.8);
+    // color: rgba(136, 217, 230, 0.8);
   }
 
   #kube-main-dash {
@@ -212,9 +209,11 @@ body {
     justify-content: space-evenly;
     border: 1px solid $border;
     margin: 0 24px 0 24px;
+    margin-top: 204px;
     padding: 5px 5px 5px 5px;
-    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    padding-bottom: 25px;
+    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
   // #logs {
@@ -223,24 +222,24 @@ body {
   //   width: 100%;
   //   height: 400px;
   // }
-  #pod-names {
-    padding-left: 50px;
-    min-width: 600px;
-    .pod-list {
-      color: $PersianGreen;
-      &:hover {
-        color: $OperaMauve;
-        font-size: 20px;
-      }
-    }
-    .pod-list-bad {
-      color: red;
-      &:hover {
-        color: $OperaMauve;
-        font-size: 20px;
-      }
-    }
-  }
+  // #pod-names {
+  //   padding-left: 50px;
+  //   min-width: 600px;
+  //   .pod-list {
+  //     color: $PersianGreen;
+  //     &:hover {
+  //       color: $OperaMauve;
+  //       font-size: 20px;
+  //     }
+  //   }
+  //   .pod-list-bad {
+  //     color: rgb(82, 1, 1);
+  //     &:hover {
+  //       color: $OperaMauve;
+  //       font-size: 20px;
+  //     }
+  //   }
+  // }
 }
 
 #logo {
@@ -252,7 +251,7 @@ body {
   padding-bottom: 20px;
 }
 #eyepatch {
-  background-color: transparent;
+  // background-color: transparent;
   position: fixed;
   height: 50px;
   width: 50px;
@@ -261,12 +260,12 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: $background;
-    box-shadow: 0 0 20px 20px $background,
-      /* inner white */ /* middle magenta */ 0 0 100px 40px #0ff; /* outer cyan */
+    // background-color: $background;
+    // box-shadow: 0 0 20px 20px $background,
+    // /* inner white */ /* middle magenta */ 0 0 100px 40px #0ff; /* outer cyan */
     cursor: pointer;
   }
-  bottom: 20px;
+  bottom: 3%;
 }
 
 #dropdown {

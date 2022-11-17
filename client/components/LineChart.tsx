@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Filler } from 'chart.js';
+import { TestState } from '../../types';
+import { useSelector } from 'react-redux';
 
 import {
   Chart as ChartJS,
@@ -41,12 +43,17 @@ const LineChart = (props: LineChartDataType) => {
   const initialData: ChartData<'line'> = {
     datasets: [],
   };
+  const dark = useSelector((state: TestState) => state.dark);
+  let fontColor;
+  console.log(fontColor);
+  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+
   const [lineChartData, setLineChartData] = useState<any>(initialData);
   const options: ChartOptions<'line'> = {
     animation: {
-        easing: 'easeInQuad',
-        duration: 1000,
-      },
+      easing: 'easeInQuad',
+      duration: 1000,
+    },
     responsive: true,
     interaction: {
       intersect: false,
@@ -55,22 +62,17 @@ const LineChart = (props: LineChartDataType) => {
       legend: {
         position: 'top',
         labels: {
-          color: "rgba(54, 133, 181, 1)",
+          color: fontColor,
           font: {
-            size: 12
-          }
+            size: 14,
+          },
         },
       },
       title: {
         display: true,
         text: props.title,
-        color: 'rgba(136, 217, 230, 0.8)',
+        color: fontColor,
       },
-      //turn off display of data inside the chart
-      //not sure why it is throwing an error, so i commented it out
-      // datalabels: {
-      //     display: false,
-      // }
     },
     scales: {
       y: {
@@ -81,8 +83,8 @@ const LineChart = (props: LineChartDataType) => {
           text: props.yAxis,
         },
         ticks: {
-          color: 'rgba(136, 217, 230, 0.8)',
-        }
+          color: fontColor,
+        },
       },
       x: {
         display: true,
@@ -92,8 +94,8 @@ const LineChart = (props: LineChartDataType) => {
           text: 'Time',
         },
         ticks: {
-          color: 'rgba(136, 217, 230, 0.8)',
-        }
+          color: fontColor,
+        },
       },
     },
   };
@@ -114,7 +116,7 @@ const LineChart = (props: LineChartDataType) => {
         });
         let yAxis: number[] = [];
         switch (props.yAxis) {
-          case 'kilobytes':
+          case 'Kilobytes':
             yAxis = metrics.map(
               (value: [number, string]) => Number(value[1]) / 1000000
             );
