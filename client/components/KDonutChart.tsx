@@ -23,26 +23,16 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
   const [chartData, setChartData] = useState<number[]>([]);
 
   const initialData: ChartData<'doughnut'> = {
+    labels: [`Pods Ready: ${chartData[0]}`, `Not Ready: ${chartData[1]}`],
     datasets: [
       {
         label: 'Total Pods',
         data: chartData,
         backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 206, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(153, 102, 255)',
-          'rgb(255, 159, 64)',
+          'rgba(54, 133, 181, 0.6)',
+          ' rgb(172, 128, 160, 0.6)',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
+        borderColor: ['rgba(54, 133, 181, 1)', ' rgb(172, 128, 160, 1.2)'],
         borderWidth: 1,
       },
     ],
@@ -53,17 +43,28 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
     }
   }, [data]);
   const options: ChartOptions<'doughnut'> = {
+    animation: {
+      easing: 'easeInQuad',
+      duration: 1000,
+    },
     responsive: true,
+    rotation: 270,
+    circumference: 180,
     interaction: {
       intersect: false,
     },
     plugins: {
       legend: {
+        display: true,
         position: 'top',
+        labels: {
+          color: 'rgba(54, 133, 181, 1)',
+        },
       },
       title: {
         display: true,
-        text: `Ready:${data[0]} & Not Ready:${data[1]}`,
+        text: `Total Pods`,
+        color: 'rgba(136, 217, 230, 0.8)',
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -81,9 +82,7 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
           color: '#4be7b9',
           marginBottom: '10px',
         }}
-      >
-        {label}: {data[0] + data[1]}
-      </h2>
+      ></h2>
       <Doughnut data={initialData} options={options} />
     </div>
   );

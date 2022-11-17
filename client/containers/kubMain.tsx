@@ -135,7 +135,7 @@ const KubPage = ({ namespaces }: KubType) => {
 
   dark ? (theme = 'lightMode') : (theme = 'darkMode');
   return (
-    <div className={'main-container ' + theme}>
+    <div id='main-container' className={theme}>
       <div className='header'>
         <h1>Odin's Eye</h1>
       </div>
@@ -147,13 +147,13 @@ const KubPage = ({ namespaces }: KubType) => {
         trigger={buttonPopup}
       />
       <div className='data-container'>
-        <div id='list-data'>
+        <div id='kube-list-data'>
           <DropDown
             namespaces={namespaces}
             current={page}
             handleChange={handleChange}
           />
-          <div id='total-pods'>
+          <div id='kube-total-pods'>
             <KDoughnutChart
               data={[pods.length - data.notReady, data.notReady]}
               label='Total Pods'
@@ -172,7 +172,7 @@ const KubPage = ({ namespaces }: KubType) => {
             <div id='total-cpu' className='line'>
               <KLineChart
                 data={data.cpu}
-                label='test'
+                label='Percent'
                 yAxis='%'
                 title='Total CPU % Usage'
               />
@@ -181,7 +181,7 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.memory}
                 label='kB'
-                yAxis='kilobytes'
+                yAxis='Kilobytes'
                 title='Total Memory Usage (kB)'
               />
             </div>
@@ -191,7 +191,7 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.ready}
                 label='kB'
-                yAxis='kilobytes'
+                yAxis='Kilobytes'
                 title='Network Received (kB)'
               />
             </div>
@@ -199,7 +199,7 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.transmission}
                 label='kB'
-                yAxis='kilobytes'
+                yAxis='Kilobytes'
                 title='Network Transmitted (kB)'
               />
             </div>

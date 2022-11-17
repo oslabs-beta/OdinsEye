@@ -24,10 +24,8 @@ const MainPage = () => {
   const dark = useSelector((state: TestState) => state.dark);
   let theme: string;
 
-  dark ? (theme = 'lightMode') : (theme = 'darkMode');
-
   return (
-    <div className={'main-container ' + theme}>
+    <div id='main-container'>
       <div className='header'>
         <h1>Odin's Eye</h1>
       </div>
@@ -54,9 +52,9 @@ const MainPage = () => {
               <LineChart
                 url='/api/dashboard/totalCpu'
                 label='Cpu Usage'
-                yAxis='Percent'
+                yAxis='%'
                 title='Total CPU % Usage'
-                color='rgba(137, 170, 230, 0.6)'
+                color='rgba(137, 170, 230, 0.8)'
               />
             </div>
             <div className='line' id='total-memory-use'>
@@ -65,7 +63,7 @@ const MainPage = () => {
                 label='Mem Usage'
                 yAxis='Kilobytes'
                 title='Total Memory Usage (kB)'
-                color='rgba(54, 133, 181, 0.6)'
+                color='rgba(54, 133, 181, 0.8)'
               />
             </div>
           </div>
@@ -76,7 +74,7 @@ const MainPage = () => {
                 label='Mem Usage'
                 yAxis='Kilobytes'
                 title='Network Transmitted (kB)'
-                color='rgba(4, 113, 166, 0.6)'
+                color='rgba(4, 113, 166, 0.8)'
               />
             </div>
             <div className='line' id='net-trans'>
@@ -85,7 +83,7 @@ const MainPage = () => {
                 label='Mem Usage'
                 yAxis='Kilobytes'
                 title='Network Received (kB)'
-                color='rgba(136, 217, 230, 0.5)'
+                color='rgba(51, 153, 137, 0.7)'
               />
             </div>
           </div>

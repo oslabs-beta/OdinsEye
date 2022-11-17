@@ -40,7 +40,7 @@ var axios_1 = require("axios");
 //const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 //const client = require('prom-client');
-var start = new Date(Date.now() - 60 * 60000).toISOString();
+var start = new Date(Date.now() - 1440 * 60000).toISOString();
 var end = new Date(Date.now()).toISOString();
 // const kc = new k8s.KubeConfig();
 // kc.loadFromDefault();

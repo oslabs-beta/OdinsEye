@@ -9,6 +9,12 @@ const NavBar = () => {
   const dark = useSelector((state: TestState) => state.dark);
   let classInfo: string;
   dark ? (classInfo = 'open') : (classInfo = 'closed');
+  function toggleTheme() {
+    const main = document.getElementById('root');
+    if (main) {
+      dark ? (main.className = 'darkMode') : (main.className = 'lightMode');
+    }
+  }
   return (
     <nav id='nav-bar'>
       <div id='logo'>
@@ -39,6 +45,7 @@ const NavBar = () => {
         onClick={(e) => {
           let eye = document.getElementById('eyepatch') as HTMLInputElement;
           dark ? (eye.className = 'open') : (eye.className = 'closed');
+          toggleTheme();
           dispatch(darkMode(dark));
         }}
       />
