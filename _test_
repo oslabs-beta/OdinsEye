@@ -1,0 +1,3 @@
+import dashboard from "./dist/server/routes/dashboard";
+import kubernetes from "./dist/server/routes/kubernetes"
+
