@@ -50,10 +50,10 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       legend: {
         position: 'top',
         labels: {
-          color: "rgba(54, 133, 181, 1)",
+          color: 'rgba(54, 133, 181, 1)',
           font: {
-            size: 14
-          }
+            size: 18,
+          },
         },
       },
       title: {
@@ -77,7 +77,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
         },
         ticks: {
           color: 'rgba(136, 217, 230, 0.8)',
-        }
+        },
       },
       x: {
         display: true,
@@ -88,7 +88,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
         },
         ticks: {
           color: 'rgba(136, 217, 230, 0.8)',
-        }
+        },
       },
     },
   };
@@ -122,8 +122,8 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
           {
             label: label,
             data: yAxisData,
-            backgroundColor: "rgba(54, 133, 181, 0.8)",
-            borderColor: "rgba(54, 133, 181, 1)",
+            backgroundColor: 'rgba(54, 133, 181, 0.8)',
+            borderColor: 'rgba(54, 133, 181, 1)',
             borderWidth: 1.5,
             pointRadius: 1,
             tension: 0.4,

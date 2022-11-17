@@ -22,12 +22,10 @@ const MainPage = () => {
     nameLength = namespaces.length;
   }
   const dark = useSelector((state: TestState) => state.dark);
+  let theme: string;
+
   return (
-    <div
-      className={
-        'main-container theme' + (dark ? 'theme--dark' : 'theme--light')
-      }
-    >
+    <div id='main-container'>
       <div className='header'>
         <h1>Odin's Eye</h1>
       </div>
@@ -37,9 +35,7 @@ const MainPage = () => {
         <div id='list-data'>
           <div id='total-names'>
             Total Namespaces
-            <div id='names-num'>
-              {nameLength}
-            </div>
+            <div id='names-num'>{nameLength}</div>
           </div>
           <div id='total-pods'>
             <DoughnutChart

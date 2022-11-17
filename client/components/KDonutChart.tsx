@@ -30,13 +30,9 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
         data: chartData,
         backgroundColor: [
           'rgba(54, 133, 181, 0.6)',
-          ' rgb(172, 128, 160, 0.6)'
-
+          ' rgb(172, 128, 160, 0.6)',
         ],
-        borderColor: [
-          'rgba(54, 133, 181, 1)',
-          ' rgb(172, 128, 160, 1.2)',
-        ],
+        borderColor: ['rgba(54, 133, 181, 1)', ' rgb(172, 128, 160, 1.2)'],
         borderWidth: 1,
       },
     ],
@@ -62,8 +58,8 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
         display: true,
         position: 'top',
         labels: {
-          color: "rgba(54, 133, 181, 1)",
-        }
+          color: 'rgba(54, 133, 181, 1)',
+        },
       },
       title: {
         display: true,
@@ -86,8 +82,7 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
           color: '#4be7b9',
           marginBottom: '10px',
         }}
-      >
-      </h2>
+      ></h2>
       <Doughnut data={initialData} options={options} />
     </div>
   );

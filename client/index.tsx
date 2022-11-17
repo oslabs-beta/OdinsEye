@@ -4,7 +4,6 @@ import App from './components/App';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { addNamespaces } from './getData';
 
 const container = document.getElementById('root');
 

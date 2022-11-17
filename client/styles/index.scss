@@ -26,7 +26,7 @@ body {
   font-family: $font;
 }
 
-.main-container {
+#main-container {
   display: grid;
   grid-template-areas:
     'head head'
@@ -52,9 +52,10 @@ body {
 
   #dropdown {
     grid-area: drop;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 20px;
-    padding-left: 10px;
+    padding-left: 50px;
+    min-width: 300px;
     #dropdown-but {
       font-size: 20px;
       font-family: $font;
@@ -107,21 +108,22 @@ body {
     background-color: $nav;
     min-width: 300px;
     align-items: center;
-    top: 200px;
+    top: 201px;
     grid-area: navb;
     display: flex;
     flex-direction: column;
     position: fixed;
-    margin: -96px 0 0 2px;
+    margin: -95px 0 0 2px;
     height: 100%;
-    color: $fontColor;
     padding-top: 20px;
     border: 1px solid $border;
     box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
       rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
-
     .link {
       color: $fontColor;
+      &:hover {
+        color: $OperaMauve;
+      }
     }
   }
 }
@@ -132,15 +134,6 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 130px;
-  // #small-graphs {
-  //   display: flex;
-  //   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  // }
-  //   grid-template-areas: ;
-  //     'cpu mem'
-  //     'pod nr'
-  //     'nt nt'
-  //     'log log';
 
   #total-names {
     display: flex;
@@ -158,7 +151,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 30px;
+    padding-top: 20px;
     -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
     font-size: 210px;
     color: rgba(54, 133, 181, 0.6);
@@ -189,6 +182,7 @@ body {
     padding-top: 10px;
     display: flex;
     flex-direction: row;
+    justify-content: center;
   }
 
   .line {
@@ -201,14 +195,13 @@ body {
   }
 
   #total-names {
-    // background-color: rgb(147, 186, 221);
     display: flex;
     width: 200px;
     height: 200px;
     color: rgba(136, 217, 230, 0.8);
   }
 
-  #kube-main-dash{
+  #kube-main-dash {
     display: flex;
     flex-direction: column;
   }
@@ -224,29 +217,32 @@ body {
       rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
-  #logs {
-    // grid-area: log;
-    background-color: rgb(218, 178, 246);
-    min-width: 800px;
-    width: 100%;
-    height: 400px;
-  }
-
-  .pod-list {
-    color: $PersianGreen;
-    &:hover {
-      color: $OperaMauve;
-      font-size: 20px;
+  // #logs {
+  //   background-color: rgb(218, 178, 246);
+  //   min-width: 800px;
+  //   width: 100%;
+  //   height: 400px;
+  // }
+  #pod-names {
+    padding-left: 50px;
+    min-width: 600px;
+    .pod-list {
+      color: $PersianGreen;
+      &:hover {
+        color: $OperaMauve;
+        font-size: 20px;
+      }
     }
-  }
-  .pod-list-bad {
-    color: red;
-    &:hover {
-      color: $OperaMauve;
-      font-size: 20px;
+    .pod-list-bad {
+      color: red;
+      &:hover {
+        color: $OperaMauve;
+        font-size: 20px;
+      }
     }
   }
 }
+
 #logo {
   display: flex;
   width: 200px;
@@ -273,20 +269,20 @@ body {
   bottom: 20px;
 }
 
-#dropdown{
+#dropdown {
   width: 400px;
   max-width: 400px;
   margin-left: -55px;
 }
 
-#pod-names{
+#pod-names {
   width: 600px;
   max-width: 600px;
   border: 1px solid cl;
   margin-left: 60px;
   padding: 5px 0 0 20px;
 
-  h2{
+  h2 {
     border-bottom: 1px solid $border;
     font-weight: bold;
     padding-bottom: 5px;
@@ -296,7 +292,7 @@ body {
   }
 }
 
-.pod-list:hover{
+.pod-list:hover {
   cursor: pointer;
 }
 
