@@ -12,7 +12,13 @@ const NavBar = () => {
   function toggleTheme() {
     const main = document.getElementById('root');
     if (main) {
-      dark ? (main.className = 'darkMode') : (main.className = 'lightMode');
+      dark ? (main.className = 'theme-dark') : (main.className = 'theme-light');
+    }
+    const body = Array.from(document.getElementsByTagName('body'))[0];
+    if (body) {
+      dark
+        ? body.setAttribute('data-theme', 'dark')
+        : body.setAttribute('data-theme', 'light');
     }
   }
   return (
