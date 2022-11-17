@@ -1,6 +1,7 @@
 const React = require('react');
 import NavBar from '../components/navbar';
 const styles = require('../styles/index.scss');
+const styles2 = require('../styles/colors.scss');
 // import {logo} from 'odins-eye.png'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
