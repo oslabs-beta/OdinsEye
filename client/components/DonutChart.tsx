@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { TestState } from '../../types';
 
 import {
   Chart as ChartJS,
@@ -21,6 +23,11 @@ type DoughnutType = {
 };
 
 const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
+  const dark = useSelector((state: TestState) => state.dark);
+  let fontColor;
+  console.log(fontColor);
+  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+
   const [chartData, setChartData] = useState<number[]>([]);
   const getData = async (url: string, url2?: string): Promise<any> => {
     try {
@@ -78,14 +85,14 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
     plugins: {
       legend: {
         labels: {
-          color: 'rgba(54, 133, 181, 1)',
+          color: fontColor,
         },
         position: 'top',
       },
       title: {
         display: true,
         text: `Total Pods`,
-        color: 'rgba(136, 217, 230, 0.8)',
+        color: fontColor,
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { TestState } from '../../types';
 
 import {
   Chart as ChartJS,
@@ -20,6 +21,11 @@ type DoughnutType = {
 };
 
 const KDoughnutChart = ({ data, label }: DoughnutType) => {
+  const dark = useSelector((state: TestState) => state.dark);
+  let fontColor;
+  console.log(fontColor);
+  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+
   const [chartData, setChartData] = useState<number[]>([]);
 
   const initialData: ChartData<'doughnut'> = {
@@ -59,13 +65,13 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
         display: true,
         position: 'top',
         labels: {
-          color: 'rgba(54, 133, 181, 1)',
+          color: fontColor,
         },
       },
       title: {
         display: true,
         text: `Total Pods`,
-        color: 'rgba(136, 217, 230, 0.8)',
+        color: fontColor,
       },
       //turn off display of data inside the chart
       //not sure why it is throwing an error, so i commented it out
@@ -80,7 +86,7 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
       <h2
         style={{
           margin: 'auto auto',
-          color: '#4be7b9',
+          color: fontColor,
           marginBottom: '10px',
         }}
       ></h2>
