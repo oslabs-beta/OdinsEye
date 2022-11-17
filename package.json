@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production nodemon server/server.js",
     "build": "NODE_ENV=production webpack",
     "dev": "NODE_ENV=development webpack serve --open & tsc server/server.ts & nodemon server/server.js",
-    "test": "jest --runInBand --forceExit"
+    "test": "NODE_ENV=test jest --watch"
   },
   "author": "Chris, Emily, Peter, Wendy",
   "license": "ISC",
