@@ -49,12 +49,9 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
         data: chartData,
         backgroundColor: [
           'rgba(54, 133, 181, 0.6)',
-          ' rgb(172, 128, 160, 0.6)'
+          ' rgb(172, 128, 160, 0.6)',
         ],
-        borderColor: [
-          'rgba(54, 133, 181, 1)',
-          ' rgb(172, 128, 160, 1)',
-        ],
+        borderColor: ['rgba(54, 133, 181, 1)', ' rgb(172, 128, 160, 1)'],
         borderWidth: 1,
       },
     ],
@@ -71,6 +68,7 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
       easing: 'easeInQuad',
       duration: 1000,
     },
+    events: [],
     responsive: true,
     rotation: 270,
     circumference: 180,
@@ -80,7 +78,7 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
     plugins: {
       legend: {
         labels: {
-          color: "rgba(54, 133, 181, 1)",
+          color: 'rgba(54, 133, 181, 1)',
         },
         position: 'top',
       },
@@ -105,8 +103,7 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
           color: '#4be7b9',
           marginBottom: '10px',
         }}
-      >
-      </h2>
+      ></h2>
       <Doughnut data={initialData} options={options} />
     </div>
   );

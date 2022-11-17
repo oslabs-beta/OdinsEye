@@ -47,6 +47,7 @@ const KDoughnutChart = ({ data, label }: DoughnutType) => {
       easing: 'easeInQuad',
       duration: 1000,
     },
+    events: [],
     responsive: true,
     rotation: 270,
     circumference: 180,
