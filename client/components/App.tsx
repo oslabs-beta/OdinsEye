@@ -13,8 +13,8 @@ const App = () => {
     <Routes>
       <Route path='/' element={<MainPage />} />
       <Route path='/kubernetes' element={<KubPage namespaces={namespaces} />} />
-      {/* <Route path='/mongo' element={<MongoPage name={prop3} />} />
-      <Route path='/alert' element={<AlertsPage name={prop2} />} /> */}
+      <Route path='/mongo' element={<MongoPage />} />
+      {/*<Route path='/alert' element={<AlertsPage name={prop2} />} /> */}
     </Routes>
   );
 };
