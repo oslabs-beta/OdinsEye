@@ -1,11 +1,18 @@
 const React = require('react');
 import NavBar from '../components/navbar';
+import { currentPage } from '../rootReducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 type AppProps = {
   name: string;
 };
 
 const MongoPage = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(currentPage('mongo'));
+  }, []);
   return (
     <div id='main-container'>
       <div className='header'>
@@ -14,15 +21,14 @@ const MongoPage = () => {
       <NavBar />
       <div className='data-container'>
         <div id='temp'>
-          <h1 id='mongo'>PETER DID IT!!</h1>
-
+          <h1 id='mongo-h1'>PETER DID IT!!</h1>
           <img
             src={require('../images/hammer.png').default}
             alt='mjolnir'
             id='mjolnir'
           />
         </div>
-        <h1 id='mongo'>COMING SOON</h1>
+        <h1 id='mongo-h1'>COMING SOON</h1>
         {/* <div id='list-data'></div> */}
         {/* <div className='charts'></div> */}
       </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { TestState } from '../../types';
+import { State } from '../../types';
 
 import {
   Chart as ChartJS,
@@ -23,9 +23,8 @@ type DoughnutType = {
 };
 
 const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
-  const dark = useSelector((state: TestState) => state.dark);
+  const dark = useSelector((state: State) => state.dark);
   let fontColor;
-  console.log(fontColor);
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
 
   const [chartData, setChartData] = useState<number[]>([]);

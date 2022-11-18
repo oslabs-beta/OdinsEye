@@ -5,24 +5,25 @@ const styles2 = require('../styles/colors.scss');
 // import {logo} from 'odins-eye.png'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TestState } from '../../types';
+import { State } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
-import { AllDataType } from '../../types';
+import { currentPage } from '../rootReducer';
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     dispatch(addNamespaces());
+    dispatch(currentPage('main'));
   }, []);
-  const namespaces = useSelector((state: TestState) => state.namespaces);
+
+  const namespaces = useSelector((state: State) => state.namespaces);
   let nameLength;
   if (namespaces) {
     nameLength = namespaces.length;
   }
-  const dark = useSelector((state: TestState) => state.dark);
   let theme: string;
 
   return (
@@ -89,10 +90,6 @@ const MainPage = () => {
             </div>
           </div>
         </div>
-        {/* <div id='test'> */}
-        {/* <DoughnutChart data={data.totalPods} /> */}
-        {/* </div> */}
-        {/* </div> */}
       </div>
     </div>
   );

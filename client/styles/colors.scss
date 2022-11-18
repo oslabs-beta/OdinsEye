@@ -6,10 +6,14 @@ $background: rgb(31, 28, 30);
 $fontColor: rgba(136, 217, 230, 0.8);
 $font: 'Playfair Display', serif;
 $theme-map: null;
+$light-bg: #c9c5ba;
+$light-box: #e5e0d4;
 
 $themes: (
   dark: (
     'bg': $background,
+    'scroll-back': $fontColor,
+    'scroll': lighten($background, 20%),
     'font': $fontColor,
     'header': $PacificBlue,
     'box-shadow': rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
@@ -24,14 +28,16 @@ $themes: (
     'pod-bad': rgb(187, 72, 103),
   ),
   light: (
-    'bg': #c9c5ba,
+    'bg': $light-bg,
+    'scroll-back': $light-box,
+    'scroll': darken(#c9c5ba, 10%),
     'font': #5d536b,
     'header': #696773,
-    'box-shadow': #c9c5ba,
-    'box-shadow2': #c9c5ba,
+    'box-shadow': $light-bg,
+    'box-shadow2': $light-bg,
     'drop-hover': #ceede0,
-    'header-back': #e5e0d4,
-    'chart-back': #e5e0d4,
+    'header-back': $light-box,
+    'chart-back': $light-box,
     'chart-font': #363946,
     'nav-back': #97b1a6,
     'nav-font': #272838,
@@ -124,6 +130,9 @@ body[data-theme='light'] {
           color: $OperaMauve;
         }
       }
+      .current {
+        background-color: lighten(themed('nav-back'), 10%);
+      }
     }
   }
 }
@@ -199,6 +208,18 @@ body[data-theme='light'] {
         }
       }
     }
+  }
+}
+
+::-webkit-scrollbar-track {
+  @include themify($themes) {
+    background: themed('scroll-back');
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  @include themify($themes) {
+    background: themed('scroll');
   }
 }
 
