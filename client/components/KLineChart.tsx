@@ -16,7 +16,6 @@ import {
   ChartOptions,
   ChartData,
 } from 'chart.js';
-import finalPropsSelectorFactory from 'react-redux/es/connect/selectorFactory';
 
 ChartJS.register(
   CategoryScale,

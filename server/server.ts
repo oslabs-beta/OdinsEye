@@ -22,6 +22,10 @@ app.use('/kubernetes', (req: Request, res: Response) => {
   express.static(path.join(__dirname, '../client/index.html'));
 });
 
+app.use('/mongo', (req: Request, res: Response) => {
+  express.static(path.join(__dirname, '../client/index.html'));
+});
+
 app.use('/api/dashboard', dashboardRouter);
 
 app.use('/api/kubernetesMetrics', kubernetesRouter);

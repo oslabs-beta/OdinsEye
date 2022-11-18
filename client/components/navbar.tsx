@@ -37,7 +37,9 @@ const NavBar = () => {
         Kubernetes Clusters
       </Link>
       <br />
-      {/* <Link to='/mongo'>PETER</Link> */}
+      <Link className='link' to='/mongo'>
+        MongoDB
+      </Link>
       {/* <br /> */}
       {/* <Link to='/alert'>EMILY</Link> */}
       <img
