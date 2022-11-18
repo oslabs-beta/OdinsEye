@@ -11,6 +11,7 @@ import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
 import { AllDataType } from '../../types';
+import BarChart from '../components/BarChart';
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +47,9 @@ const MainPage = () => {
               tag='total-pod-chart'
             />
           </div>
+        </div>
+        <div>
+          <BarChart />
         </div>
         <div className='charts'>
           <div className='line-graph'>
