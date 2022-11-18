@@ -78,26 +78,24 @@ $themes: (
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 100px;
+    padding: 50px;
     opacity: 100%;
-    height: 80%;
-    width: 80%;
+    height: calc(100% - 10vh);
+    width: 90%;
     overflow: scroll;
-    justify-content: center;
+    align-content: center;
     @include themify($themes) {
       background-color: themed('nav-back');
     }
 
     h2 {
-      margin-top: 15%;
-      padding-top: 40px;
+      position: relative;
       @include themify($themes) {
         color: themed('font');
       }
       font-weight: bold;
       font-size: 50px;
       align-self: center;
-      min-height: 40px;
     }
     .data-container {
       margin-top: 60px;

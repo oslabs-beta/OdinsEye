@@ -145,8 +145,7 @@ body[data-theme='light'] {
     @include themify($themes) {
       background-color: themed('header-back');
       color: themed('font');
-      box-shadow: themed('box-shadow') 0px 1px 2px 0px,
-        themed('box-shadow2') 0px 2px 6px 2px;
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
     }
   }
 
@@ -169,8 +168,7 @@ body[data-theme='light'] {
     @include themify($themes) {
       background-color: themed('header-back');
       color: themed('font');
-      box-shadow: themed('box-shadow') 0px 1px 2px 0px,
-        themed('box-shadow2') 0px 2px 6px 2px;
+      box-shadow: themed('box-shadow') themed('box-shadow2');
     }
   }
 
