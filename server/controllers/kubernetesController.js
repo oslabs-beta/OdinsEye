@@ -330,7 +330,7 @@ var kubernetesController = {
                 case 8:
                     err_6 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getMetrics: ".concat(err_6),
+                            log: "Error in kuberenetesController.getPodMetrics: ".concat(err_6),
                             status: 500,
                             message: 'Error occured while retrieving getMetrics data'
                         })];

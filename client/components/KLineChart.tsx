@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Filler } from 'chart.js';
-import { TestState } from '../../types';
+import { State } from '../../types';
 import { useSelector } from 'react-redux';
 
 import {
@@ -38,7 +38,7 @@ type LineChartDataType = {
 };
 
 const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
-  const dark = useSelector((state: TestState) => state.dark);
+  const dark = useSelector((state: State) => state.dark);
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
 

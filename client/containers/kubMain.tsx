@@ -3,14 +3,12 @@ import NavBar from '../components/navbar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
-import { AllDataType } from '../../types';
 import KLineChart from '../components/KLineChart';
 import Popup from '../components/PopUp';
 import KDoughnutChart from '../components/KDonutChart';
-import { useSelector } from 'react-redux';
-import { TestState } from '../../types';
-
-//passdown namespaces, then render conditionally based on the current namespace selected
+import { useSelector, useDispatch } from 'react-redux';
+import { State } from '../../types';
+import { currentPage } from '../rootReducer';
 
 type KubType = {
   namespaces: string[] | null;
@@ -26,10 +24,9 @@ type KubDataType = {
   transmission: any[];
 };
 
-//get request for each pod
 const KubPage = ({ namespaces }: KubType) => {
-  const [page, setCurrentPage] = useState('default'); //need to set to current namespace
-  //will need to update get request to include namespace within the function
+  const dispatch = useDispatch();
+  const [page, setCurrentPage] = useState('default');
   const initialData = {
     cpu: [],
     memory: [],
@@ -55,7 +52,6 @@ const KubPage = ({ namespaces }: KubType) => {
       setPods(podData);
       const badPods: any[] = [];
       if (data.notReady > 0) {
-        // console.log(podData, 'data');
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
           { params: { namespace: page, podData: podData } }
@@ -64,11 +60,28 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
-      console.log(err);
+      setPods(['Error Fetching Pods']);
     }
   };
+
+  //runs effect on first render
   useEffect(() => {
-    getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+    dispatch(currentPage('kubernetes'));
+    if (namespaces && page === 'default') {
+      setCurrentPage(namespaces[0]);
+    }
+  }, []);
+
+  //runs effect on namespace change
+  useEffect(() => {
+    if (
+      (page === 'default' && namespaces?.includes('default')) ||
+      page !== 'default'
+    ) {
+      getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+    } else {
+      setPods(['No Pods']);
+    }
   }, [page]);
 
   const handleChange = (newName: string) => {
@@ -76,6 +89,7 @@ const KubPage = ({ namespaces }: KubType) => {
   };
 
   const [buttonPopup, setButtonPopup] = useState(false);
+
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
       if (Array.isArray(pod)) {
@@ -129,7 +143,7 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     });
   }
-  const dark = useSelector((state: TestState) => state.dark);
+  const dark = useSelector((state: State) => state.dark);
 
   let theme: string;
 
@@ -160,10 +174,7 @@ const KubPage = ({ namespaces }: KubType) => {
             />
           </div>
           <div id='pod-names'>
-            <h2>
-              Pod Names:
-              <br />
-            </h2>
+            <h2 id='pod-name-header'>Pod Names:</h2>
             {podsArray}
           </div>
         </div>

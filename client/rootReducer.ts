@@ -1,15 +1,22 @@
-import { createAction, createReducer, createSlice } from '@reduxjs/toolkit';
-import { TestState } from '../types';
+import {
+  createAction,
+  createReducer,
+  createSlice,
+  current,
+} from '@reduxjs/toolkit';
+import { State } from '../types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { addNamespaces } from './getData';
 
 //ACTIONS
 const darkMode = createAction<boolean, 'darkMode'>('darkMode');
+const currentPage = createAction<string, 'currentPage'>('currentPage');
 
-const initialState: TestState = {
+const initialState: State = {
   dark: true,
   namespaces: [],
   data: null,
+  currentPage: 'main',
   //possible global state values: user, total pods, namespaces?
 };
 
@@ -21,6 +28,18 @@ const rootReducer = createReducer(initialState, (builder) =>
       let dark;
       action.payload ? (dark = false) : (dark = true);
       return { ...state, dark };
+    })
+    .addCase(currentPage, (state, action) => {
+      let previous = document.getElementById(state.currentPage);
+      if (previous) {
+        previous.className = 'link';
+      }
+      let currentPage = action.payload;
+      let newPage = document.getElementById(currentPage);
+      if (newPage) {
+        newPage.className = 'link-div current';
+      }
+      return { ...state, currentPage };
     })
     .addCase(addNamespaces.pending, (state, action) => {
       console.log('pending');
@@ -38,4 +57,4 @@ const rootReducer = createReducer(initialState, (builder) =>
 
 export default rootReducer;
 
-export { darkMode, addNamespaces };
+export { darkMode, currentPage, addNamespaces };

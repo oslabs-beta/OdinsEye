@@ -21,10 +21,11 @@ export type KubernetesController = {
   podsNotReadyNames?: RequestHandler;
 };
 
-export type TestState = {
+export type State = {
   dark: boolean;
   namespaces: string[] | null;
   data: null | [];
+  currentPage: string;
 };
 
 export type ErrorType = {

@@ -5,10 +5,10 @@ import KubPage from '../containers/kubMain';
 import AlertsPage from '../containers/alertPage';
 import MongoPage from '../containers/mongoMain';
 import { useDispatch, useSelector } from 'react-redux';
-import { TestState } from '../../types';
+import { State } from '../../types';
 
 const App = () => {
-  const namespaces = useSelector((state: TestState) => state.namespaces);
+  const namespaces = useSelector((state: State) => state.namespaces);
   return (
     <Routes>
       <Route path='/' element={<MainPage />} />

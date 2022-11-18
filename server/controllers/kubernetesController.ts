@@ -122,7 +122,6 @@ const kubernetesController: KubernetesController = {
       const restartArray = [];
       restartArray.push(array1[0].values);
       objectData.restarts = restartArray;
-
       //pods that are unavailable within namespace
       const readyResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
@@ -279,7 +278,7 @@ const kubernetesController: KubernetesController = {
       return next();
     } catch (err) {
       return next({
-        log: `Error in kuberenetesController.getMetrics: ${err}`,
+        log: `Error in kuberenetesController.getPodMetrics: ${err}`,
         status: 500,
         message: 'Error occured while retrieving getMetrics data',
       });
