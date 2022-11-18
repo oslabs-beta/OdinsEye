@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { darkMode } from '../rootReducer';
-import { TestState } from '../../types';
+import { darkMode, currentPage } from '../rootReducer';
+import { State } from '../../types';
 
 const NavBar = () => {
   const dispatch = useDispatch();
-  const dark = useSelector((state: TestState) => state.dark);
+  const dark = useSelector((state: State) => state.dark);
   let classInfo: string;
+
   dark ? (classInfo = 'open') : (classInfo = 'closed');
   function toggleTheme() {
     const main = document.getElementById('root');
@@ -29,19 +30,21 @@ const NavBar = () => {
           alt='odin-eye-logo'
         />
       </div>
-      <Link className='link' to='/'>
-        Main Page
-      </Link>
-      <br />
-      <Link className='link' to='/kubernetes'>
-        Kubernetes Clusters
-      </Link>
-      <br />
-      <Link className='link' to='/mongo'>
-        MongoDB
-      </Link>
-      {/* <br /> */}
-      {/* <Link to='/alert'>EMILY</Link> */}
+      <div id='main' className='link-div'>
+        <Link className='link' to='/'>
+          Main Page
+        </Link>
+      </div>
+      <div id='kubernetes' className='link-div'>
+        <Link className='link' to='/kubernetes'>
+          Kubernetes Clusters
+        </Link>
+      </div>
+      <div id='mongo' className='link-div'>
+        <Link className='link' to='/mongo'>
+          MongoDB
+        </Link>
+      </div>
       <img
         id='eyepatch'
         className={classInfo}
