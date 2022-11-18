@@ -10,12 +10,10 @@ import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
-<<<<<<< HEAD
 import { AllDataType } from '../../types';
 import BarChart from '../components/BarChart';
-=======
 import { currentPage } from '../rootReducer';
->>>>>>> dev
+
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
