@@ -209,7 +209,7 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.restarts}
                 label='Restarts'
-                yAxis='restarts'
+                yAxis='Restarts'
                 title='Pod Restarts'
               />
             </div>

@@ -8,6 +8,7 @@ export type DashboardController = {
   totalReceive: RequestHandler;
   totalPods: RequestHandler;
   totalNamespaces: RequestHandler;
+  cpuUsageOverTotalCpu: RequestHandler;
 };
 
 export type KubernetesController = {

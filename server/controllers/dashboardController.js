@@ -207,6 +207,47 @@ var dashboardController = {
                 case 4: return [2 /*return*/];
             }
         });
+    }); },
+    cpuUsageOverTotalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var totalCpuUage, totalCore, percentageOfCore, cpuUsageOverTotalCpu, totalCoreInCluster, percent, err_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 7, , 8]);
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                case 1:
+                    totalCpuUage = _a.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                case 2:
+                    totalCore = _a.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))/sum(machine_cpu_cores)*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                case 3:
+                    percentageOfCore = _a.sent();
+                    return [4 /*yield*/, totalCpuUage];
+                case 4:
+                    cpuUsageOverTotalCpu = _a.sent();
+                    return [4 /*yield*/, totalCore];
+                case 5:
+                    totalCoreInCluster = _a.sent();
+                    return [4 /*yield*/, percentageOfCore];
+                case 6:
+                    percent = _a.sent();
+                    res.locals.cpuUsageOverTotalCpu = {
+                        cpu: cpuUsageOverTotalCpu.data.data.result[0],
+                        core: totalCoreInCluster.data.data.result[0],
+                        percent: percent.data.data.result[0]
+                    };
+                    return [2 /*return*/, next()];
+                case 7:
+                    err_7 = _a.sent();
+                    return [2 /*return*/, next({
+                            log: "Error in dashboardController.getTotalCpu: ".concat(err_7),
+                            status: 500,
+                            message: 'Error occured while retrieving dashboard transmit data'
+                        })];
+                case 8: return [2 /*return*/];
+            }
+        });
     }); }
 };
 exports["default"] = dashboardController;

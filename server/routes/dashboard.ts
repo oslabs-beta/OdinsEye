@@ -53,7 +53,15 @@ dashboardRouter.get(
   (req: Request, res: Response) => {
     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
     return res.status(200).json(res.locals.totalNamespaces.data);
-  }
+  },
+
+dashboardRouter.get(
+  '/cpuUsage',
+  dashboardController.cpuUsageOverTotalCpu,
+  (req: Request, res: Response) => {
+    //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
+    return res.status(200).json(res.locals.cpuUsageOverTotalCpu);
+  }) 
 );
 
 export default dashboardRouter;
