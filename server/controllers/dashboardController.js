@@ -233,9 +233,9 @@ var dashboardController = {
                 case 6:
                     percent = _a.sent();
                     res.locals.cpuUsageOverTotalCpu = {
-                        cpu: cpuUsageOverTotalCpu.data.data.result[0],
-                        core: totalCoreInCluster.data.data.result[0],
-                        percent: percent.data.data.result[0]
+                        cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
+                        core: totalCoreInCluster.data.data.result[0].values[1][1],
+                        percent: percent.data.data.result[0].values[1][1]
                     };
                     return [2 /*return*/, next()];
                 case 7:

@@ -51,7 +51,7 @@ const MainPage = () => {
             />
           </div>
         </div>
-        <div>
+        <div className='bar-chart'>
           <BarChart />
         </div>
         <div className='charts'>

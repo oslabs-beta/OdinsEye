@@ -147,9 +147,9 @@ const dashboardController: DashboardController = {
       const totalCoreInCluster = await totalCore;
       const percent = await percentageOfCore;
       res.locals.cpuUsageOverTotalCpu = {
-        cpu: cpuUsageOverTotalCpu.data.data.result[0],
-        core: totalCoreInCluster.data.data.result[0],
-        percent: percent.data.data.result[0]
+        cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
+        core: totalCoreInCluster.data.data.result[0].values[1][1],
+        percent: percent.data.data.result[0].values[1][1]
       }
       return next();
     } catch (err) {

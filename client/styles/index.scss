@@ -170,6 +170,15 @@ $font: 'Playfair Display', serif;
     //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
 
+  .bar-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $border;
+    margin: 25px;
+    height: 200px;
+  }
+
   //line chart
   .charts {
     display: flex;

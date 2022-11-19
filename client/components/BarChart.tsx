@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import axios from "axios";
+import { NONAME } from "dns";
 
 ChartJS.register(
   CategoryScale,
@@ -22,35 +23,40 @@ ChartJS.register(
   Legend
 );
 
+
 const BarChart = (props: any) => {
     const initialData: ChartData<'bar'> = {
         datasets: [],
     };
+    ChartJS.defaults.datasets.bar.barThickness = 30;
     const [barChartData, setBarChartData] = useState<any>(initialData);
     const option: ChartOptions<'bar'> = {
         indexAxis: 'y',
-
         elements: {
           bar: {
             borderWidth: 2,
             borderSkipped: false,
+            // borderRadius: 10,
           },
         },
+        interaction: {
+            intersect: false,
+          },
         responsive: true,
         plugins: {
             legend: {
-                display: false,
+                display: true,
             },
             title: {
                 display: true,
-                text: 'Bar Chart',
+                text: 'Cluster Core Cpu Usage',
                 color: 'rgb(53,162,235)',
             },
+           
         },
         scales: {
             y: {
                 stacked: true,
-
                 grid: {
                     display: false,
                     drawBorder: false,
@@ -78,26 +84,33 @@ const BarChart = (props: any) => {
             .then((res) => res.json())
             .then((data) => {
                 const metrics = data
-                const xAxis = [metrics.core.values[0][1]];
-                let yAxis = [metrics.cpu.values[0][1]];
+                const percentage = metrics.percent.slice(0,4) + "%";
+                const xAxis = [percentage];
+                let yAxis = [metrics.cpu, metrics.core];
                 console.log(metrics);
                 const newData: ChartData<'bar'> = {
                     labels: xAxis,
                   datasets: [
                     {
-                      label: 'metric',
+                      label: 'Cpu Usage',
                       data: yAxis,
                       backgroundColor: "rgb(52,162,235)",
                       borderColor: "rgb(52,162,235)"
                     },
+                    {
+                        label: 'Total Core Cpu',
+                        data: yAxis[1],
+                        backgroundColor: 'rgba(54, 133, 181, 1)',
+                        borderColor: 'rgba(54, 133, 181, 1)'
+                      }
                   ],
                 }
                 setBarChartData(newData);
             })
     }, [])
     return(
-        <div className='bar-chart-container' style={{width: "700px", height: '100px', color:'#4be7b9', margin: '0 0 10px 50px'}}>
-            <Bar className='bar-chart' data={barChartData} options={option}/>
+        <div className='bar-chart-container'>
+            <Bar className='bar-chart-js' data={barChartData} options={option}/>
         </div>
     )
 
