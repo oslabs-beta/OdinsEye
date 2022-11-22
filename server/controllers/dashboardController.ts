@@ -135,13 +135,13 @@ const dashboardController: DashboardController = {
   cpuUsageOverTotalCpu: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const totalCpuUage = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))&start=${start}&end=${end}&step=5m`
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=${start}&end=${end}&step=5m`
       );
       const totalCore = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=${start}&end=${end}&step=5m`
       );
       const percentageOfCore = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))/sum(machine_cpu_cores)*100&start=${start}&end=${end}&step=5m`
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=${start}&end=${end}&step=5m`
       );
       const cpuUsageOverTotalCpu = await totalCpuUage;
       const totalCoreInCluster = await totalCore;

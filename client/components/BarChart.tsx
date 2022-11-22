@@ -42,7 +42,7 @@ const BarChart = (props: any) => {
         interaction: {
             intersect: false,
           },
-        responsive: true,
+        responsive: false,
         plugins: {
             legend: {
                 display: true,
@@ -92,7 +92,7 @@ const BarChart = (props: any) => {
                     labels: xAxis,
                   datasets: [
                     {
-                      label: 'Cpu Usage',
+                      label: 'Core Usage',
                       data: yAxis,
                       backgroundColor: "rgb(52,162,235)",
                       borderColor: "rgb(52,162,235)"

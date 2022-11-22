@@ -214,13 +214,13 @@ var dashboardController = {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 7, , 8]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
                     totalCpuUage = _a.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
                     totalCore = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[1m]))/sum(machine_cpu_cores)*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 3:
                     percentageOfCore = _a.sent();
                     return [4 /*yield*/, totalCpuUage];
