@@ -134,6 +134,8 @@ $font: 'Playfair Display', serif;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
+  position: fixed;
+  margin-left: 300px;
 
   #total-names {
     display: flex;
@@ -163,7 +165,7 @@ $font: 'Playfair Display', serif;
     flex-direction: row;
     justify-content: space-evenly;
     border: 1px solid $border;
-    margin: 115px 24px 0 24px;
+    margin: 125px 24px 0 24px;
     padding: 10px -35px 20px 5px;
     height: 342px;
     max-height: 342px;
@@ -322,6 +324,7 @@ $font: 'Playfair Display', serif;
 }
 
 #temp {
+  margin: 300px;
   display: flex;
   justify-content: center;
 }

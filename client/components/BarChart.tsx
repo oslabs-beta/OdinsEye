@@ -28,7 +28,7 @@ const BarChart = (props: any) => {
     const initialData: ChartData<'bar'> = {
         datasets: [],
     };
-    ChartJS.defaults.datasets.bar.barThickness = 30;
+    ChartJS.defaults.datasets.bar.barThickness = 35;
     const [barChartData, setBarChartData] = useState<any>(initialData);
     const option: ChartOptions<'bar'> = {
         indexAxis: 'y',
@@ -36,7 +36,6 @@ const BarChart = (props: any) => {
           bar: {
             borderWidth: 2,
             borderSkipped: false,
-            // borderRadius: 10,
           },
         },
         interaction: {
