@@ -2,14 +2,26 @@
 exports.__esModule = true;
 var path = require('path');
 var express = require('express');
+var cookieParser = require('cookie-parser');
 var dashboard_1 = require("./routes/dashboard");
 var kubernetes_1 = require("./routes/kubernetes");
 var cors = require('cors');
 var app = express();
 var PORT = 3000;
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// set cookie to help page persist through refresh
+app.use(function (req, res, next) {
+    var cookie = req.cookies.cookieName;
+    if (cookie == undefined) {
+        var randomNum = Math.random().toString();
+        randomNum = randomNum.substring(2, randomNum.length);
+        res.cookie('cookieName', randomNum, { maxAge: 90000, httpOnly: true });
+    }
+    return next();
+});
 if (process.env.NODE_ENV) {
     app.use('/', express.static(path.join(__dirname, '../dist')));
 }

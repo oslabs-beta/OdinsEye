@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard';
 import kubernetesRouter from './routes/kubernetes';
@@ -10,9 +11,21 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// set cookie to help page persist through refresh
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const cookie: string = req.cookies.cookieName;
+  if(cookie == undefined){
+    let randomNum = Math.random().toString();
+    randomNum = randomNum.substring(2, randomNum.length);
+    res.cookie('cookieName', randomNum, {maxAge: 90000, httpOnly: true});
+  }
+  return next();
+});
 
 if (process.env.NODE_ENV) {
   app.use('/', express.static(path.join(__dirname, '../dist')));

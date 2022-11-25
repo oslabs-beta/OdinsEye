@@ -65,6 +65,12 @@ describe("dashboard controller route integration", () => {
         expect(res.header['content-type']).toBe('application/json; charset=utf-8');
         expect(res.statusCode).toBe(200);
         expect(typeof res).toBe('object');
+    }),
+    it('/cpuUsage', async () => {
+      const res = await request(app).get('/api/dashboard/cpuUsage')
+        expect(res.header['content-type']).toBe('application/json; charset=utf-8');
+        expect(res.statusCode).toBe(200);
+        expect(typeof res).toBe('object');
     });
   })
 });

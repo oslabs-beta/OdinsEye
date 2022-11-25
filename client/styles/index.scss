@@ -134,7 +134,7 @@ $font: 'Playfair Display', serif;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-
+  
   #total-names {
     display: flex;
     flex-direction: column;
@@ -163,11 +163,21 @@ $font: 'Playfair Display', serif;
     flex-direction: row;
     justify-content: space-evenly;
     border: 1px solid $border;
-    margin: 0 24px 0 24px;
-    padding: 10px 5px 20px 5px;
+    margin: 125px 24px 0 24px;
+    padding: 10px -35px 20px 5px;
+    height: 342px;
     max-height: 342px;
     // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
     //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+  }
+
+  .bar-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $border;
+    margin: 25px 25px 0px 25px;
+    height: 200px;
   }
 
   //line chart
@@ -176,7 +186,7 @@ $font: 'Playfair Display', serif;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin: 5px 5px 5px 5px;
+    margin: 5px 25px 5px 25px;
   }
 
   .line-graph {
@@ -312,6 +322,7 @@ $font: 'Playfair Display', serif;
 }
 
 #temp {
+  margin: 300px;
   display: flex;
   justify-content: center;
 }
