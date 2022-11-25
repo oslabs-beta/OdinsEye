@@ -26,6 +26,7 @@ const KDoughnutChart = ({ data }: DoughnutType) => {
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
 
   const [chartData, setChartData] = useState<number[]>([]);
+  const [loadErr, setLoadErr] = useState(false);
 
   const initialData: ChartData<'doughnut'> = {
     labels: [`Pods Ready: ${chartData[0]}`, `Not Ready: ${chartData[1]}`],
@@ -45,6 +46,9 @@ const KDoughnutChart = ({ data }: DoughnutType) => {
   useEffect(() => {
     if (data.length > 0) {
       setChartData(data);
+    }
+    if (data === undefined){
+      setLoadErr(true)
     }
   }, [data]);
   const options: ChartOptions<'doughnut'> = {
@@ -80,18 +84,26 @@ const KDoughnutChart = ({ data }: DoughnutType) => {
     },
   };
 
-  return (
-    <div>
-      <h2
-        style={{
-          margin: 'auto auto',
-          color: fontColor,
-          marginBottom: '10px',
-        }}
-      ></h2>
-      <Doughnut data={initialData} options={options} />
-    </div>
-  );
+  if(loadErr){
+    return (
+      <div id='error'>
+        <h5>Not Connected Prometheus API</h5>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2
+          style={{
+            margin: 'auto auto',
+            color: fontColor,
+            marginBottom: '10px',
+          }}
+        ></h2>
+        <Doughnut data={initialData} options={options} />
+      </div>
+    );
+  }
 };
 
 export default KDoughnutChart;
