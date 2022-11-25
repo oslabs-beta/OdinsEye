@@ -249,6 +249,13 @@ $font: 'Playfair Display', serif;
   margin-bottom: 160px;
 }
 
+#logs {
+  background-color: rgb(218, 178, 246);
+  min-width: 800px;
+  width: 100%;
+  height: 400px;
+}
+
 #logo {
   display: flex;
   width: 200px;
