@@ -20,6 +20,16 @@ export type KubernetesController = {
   podsNotReadyNames?: RequestHandler;
 };
 
+export type MongoController = {
+  opCounter: RequestHandler;
+  connections: RequestHandler;
+  queue: RequestHandler;
+  latency: RequestHandler;
+  uptime: RequestHandler;
+  memory: RequestHandler;
+  processes: RequestHandler;
+};
+
 export type State = {
   dark: boolean;
   namespaces: string[] | null;

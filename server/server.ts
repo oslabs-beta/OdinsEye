@@ -3,6 +3,7 @@ const express = require('express');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard';
 import kubernetesRouter from './routes/kubernetes';
+import mongoRouter from './routes/mongo';
 import { resourceLimits } from 'worker_threads';
 import { ErrorType } from '../types';
 
@@ -29,6 +30,8 @@ app.use('/mongo', (req: Request, res: Response) => {
 app.use('/api/dashboard', dashboardRouter);
 
 app.use('/api/kubernetesMetrics', kubernetesRouter);
+
+app.use('/api/mongodb', mongoRouter);
 
 app.get('/dashboard', (req: Request, res: Response) => {
   return res.status(200).send('hi');
