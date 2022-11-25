@@ -52,7 +52,7 @@ const KubPage = ({ namespaces }: KubType) => {
       });
       const podData: string[] = await podResponse.data;
       setPods(podData);
-      const badPods: any[] = [];
+      const badPods: string[] = [];
       if (data.notReady > 0) {
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
@@ -87,8 +87,10 @@ const KubPage = ({ namespaces }: KubType) => {
     }
   }, [page]);
 
+  //Upon changing the namespace page, will save and update to current
   const handleChange = (newName: string) => {
     setCurrentPage(newName);
+    //persists the current namespace selection when switching pages
     dispatch(saveNamespace(newName));
   };
   const [buttonPopup, setButtonPopup] = useState(false);

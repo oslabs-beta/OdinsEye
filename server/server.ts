@@ -3,7 +3,6 @@ const express = require('express');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard';
 import kubernetesRouter from './routes/kubernetes';
-import { resourceLimits } from 'worker_threads';
 import { ErrorType } from '../types';
 import axios from 'axios';
 
