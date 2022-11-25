@@ -44,11 +44,22 @@ const KubPage = ({ namespaces }: KubType) => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
+      console.log(data, 'data')
+      const dataArray = [];
+      for (const metric in data){
+        console.log(data[metric])
+        if (data[metric].length === 0){
+          dataArray.push(metric)
+        }
+      }
+      console.log(dataArray)
+
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
+      console.log('podData', podData)
       setPods(podData);
       const badPods: any[] = [];
       if (data.notReady > 0) {
