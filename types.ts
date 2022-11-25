@@ -26,6 +26,7 @@ export type State = {
   namespaces: string[] | null;
   data: null | [];
   currentPage: string;
+  currentNamespace: string;
 };
 
 export type ErrorType = {

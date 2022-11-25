@@ -6,6 +6,7 @@ import dashboardRouter from './routes/dashboard';
 import kubernetesRouter from './routes/kubernetes';
 import { resourceLimits } from 'worker_threads';
 import { ErrorType } from '../types';
+import axios from 'axios';
 
 const cors = require('cors');
 const app = express();
@@ -47,6 +48,36 @@ app.get('/dashboard', (req: Request, res: Response) => {
   return res.status(200).send('hi');
 });
 
+//network received/transmitted
+
+// async function send(res: Response, namespace: string) {
+//   const start = new Date(Date.now() - 10000).toISOString();
+//   const end = new Date(Date.now()).toISOString();
+//   const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${namespace}"}[10m]))`;
+//   const response = await axios.get(
+//     `http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`
+//   );
+//   const data = response.data.data.result[0].values;
+//   const newData = `data: ${JSON.stringify(data)}\n\n`;
+//   res.write(newData);
+//   setTimeout(() => send(res, namespace), 3000);
+// }
+
+// app.use('/live/:namespace', async (req: Request, res: Response) => {
+//   const { namespace } = req.params;
+//   // console.log(namespace);
+//   const headers = {
+//     'Content-Type': 'text/event-stream',
+//     Connection: 'keep-alive',
+//     'Cache-Control': 'no-cache',
+//   };
+//   res.writeHead(200, headers);
+//   send(res, namespace);
+//   req.on('close', () => {
+//     console.log('connection closed');
+//   });
+// });
+
 //redirect to page 404 when endpoint does not exist
 app.use('*', (req: Request, res: Response) => {
   return res.status(404).send('404 Page Not Found');
@@ -70,4 +101,5 @@ app.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}...`);
 });
 
+setTimeout;
 module.exports = app;

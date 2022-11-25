@@ -8,7 +8,8 @@ import Popup from '../components/PopUp';
 import KDoughnutChart from '../components/KDonutChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
-import { currentPage } from '../rootReducer';
+import { currentPage, saveNamespace } from '../rootReducer';
+import PodName from '../components/podName';
 
 type KubType = {
   namespaces: string[] | null;
@@ -26,8 +27,9 @@ type KubDataType = {
 
 const KubPage = ({ namespaces }: KubType) => {
   const dispatch = useDispatch();
-  const [page, setCurrentPage] = useState('default');
-  const initialData = {
+  const currName = useSelector((state: State) => state.currentNamespace);
+  const [page, setCurrentPage] = useState<string>('None');
+  const [data, setData] = useState<KubDataType>({
     cpu: [],
     memory: [],
     notReady: 0,
@@ -35,8 +37,8 @@ const KubPage = ({ namespaces }: KubType) => {
     reception: [],
     restarts: [],
     transmission: [],
-  };
-  const [data, setData] = useState<KubDataType>(initialData);
+  });
+  // const [podState, setPodState] = useState<boolean>(false);
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
   const podsArray: JSX.Element[] = [];
@@ -67,18 +69,19 @@ const KubPage = ({ namespaces }: KubType) => {
   //runs effect on first render
   useEffect(() => {
     dispatch(currentPage('kubernetes'));
-    if (namespaces && page === 'default') {
-      setCurrentPage(namespaces[0]);
-    }
+    currName !== ''
+      ? setCurrentPage(currName)
+      : namespaces
+      ? setCurrentPage(namespaces[0])
+      : setCurrentPage('None');
   }, []);
 
   //runs effect on namespace change
   useEffect(() => {
-    if (
-      (page === 'default' && namespaces?.includes('default')) ||
-      page !== 'default'
-    ) {
-      getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+    if (namespaces) {
+      if (page !== 'None') {
+        getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+      }
     } else {
       setPods(['No Pods']);
     }
@@ -86,59 +89,71 @@ const KubPage = ({ namespaces }: KubType) => {
 
   const handleChange = (newName: string) => {
     setCurrentPage(newName);
+    dispatch(saveNamespace(newName));
   };
-
   const [buttonPopup, setButtonPopup] = useState(false);
+  // const sse = new EventSource('http://localhost:3000/test/default');
+
+  // useEffect(() => {
+  //   sse.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     // console.log(data[0]);
+  //     // logs.push(data[0]);
+  //     const logs = document.getElementById('logs');
+  //     if (logs) {
+  //       logs.insertAdjacentText('beforeend', JSON.stringify(event.data));
+  //     }
+  //   };
+  // });
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
+      // if (!pod) {
+      //   setPodState(true);
+      //   <div key={pod[1]}>
+      //     <a
+      //       className='pod-list-load'
+      //       onClick={() => {
+      //         setCurrentPod(pod[1]);
+      //         setButtonPopup(true);
+      //       }}
+      //     >
+      //       {pod[1] + '- Loading'}
+      //     </a>
+      //     <br />
+      //   </div>;
+      // }
       if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
           podsArray.push(
-            <div key={pod[1]}>
-              <a
-                className='pod-list-bad'
-                onClick={() => {
-                  setCurrentPod(pod[1]);
-                  setButtonPopup(true);
-                }}
-              >
-                {pod[1]}
-              </a>
-              <br />
-            </div>
+            <PodName
+              key={pod[1]}
+              pod={pod[1]}
+              ready={false}
+              setCurrentPod={setCurrentPod}
+              setButtonPopup={setButtonPopup}
+            />
           );
         } else {
           podsArray.push(
-            <div key={pod[1]}>
-              <a
-                className='pod-list'
-                onClick={() => {
-                  setCurrentPod(pod[1]);
-                  setButtonPopup(true);
-                  handleChange(page);
-                }}
-              >
-                {pod}
-              </a>
-              <br />
-            </div>
+            <PodName
+              key={pod[1]}
+              pod={pod[1]}
+              ready={true}
+              setCurrentPod={setCurrentPod}
+              setButtonPopup={setButtonPopup}
+            />
           );
         }
       } else {
         podsArray.push(
-          <div key={pod}>
-            <a
-              className='pod-list'
-              onClick={() => {
-                setCurrentPod(pod);
-                setButtonPopup(true);
-              }}
-            >
-              {pod}
-            </a>
-            <br />
-          </div>
+          <PodName
+            key={pod}
+            pod={pod}
+            ready={true}
+            setCurrentPod={setCurrentPod}
+            setButtonPopup={setButtonPopup}
+          />
         );
       }
     });
@@ -200,7 +215,7 @@ const KubPage = ({ namespaces }: KubType) => {
           <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
-                data={data.ready}
+                data={data.reception}
                 label='kB'
                 yAxis='Kilobytes'
                 title='Network Received (kB)'
@@ -226,7 +241,6 @@ const KubPage = ({ namespaces }: KubType) => {
             </div>
           </div>
         </div>
-        {/* <div id='logs'>logs</div> */}
       </div>
     </div>
   );
