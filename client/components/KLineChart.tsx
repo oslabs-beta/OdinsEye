@@ -46,6 +46,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     datasets: [],
   };
   const [lineChartData, setLineChartData] = useState<any>(initialData);
+  const [loadErr, setLoadErr] = useState(false);
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -99,6 +100,8 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     },
   };
 
+
+
   useEffect(() => {
     if (data.length !== 0) {
       const metrics = data[0];
@@ -142,13 +145,25 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       };
       setLineChartData(newData);
     }
+    //error handling for when no data exist
+    if(data == undefined){
+      setLoadErr(true);
+    }  
   }, [data]);
 
-  return (
-    <div className='line-chart-container'>
-      <Line className='line-chart' options={options} data={lineChartData} />
-    </div>
-  );
+  if(loadErr) {
+    return (
+      <div id='error'>
+        <h5>Not Connected Prometheus API</h5>
+      </div>
+    )
+  } else {
+    return (
+      <div className='line-chart-container'>
+        <Line className='line-chart' options={options} data={lineChartData} />
+      </div>
+    );
+  }
 };
 
 export default KLineChart;

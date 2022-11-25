@@ -75,6 +75,4 @@ const addNamespaces = createAsyncThunk(
   }
 );
 
-// const setCurrentPage
-
 export { addNamespaces };

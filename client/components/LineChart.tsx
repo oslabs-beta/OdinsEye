@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Filler } from 'chart.js';
 import { State } from '../../types';
 import { useSelector } from 'react-redux';
+import { BounceLoader } from 'react-spinners';
 
 import {
   Chart as ChartJS,
@@ -40,6 +41,9 @@ type LineChartDataType = {
 };
 
 const LineChart = (props: LineChartDataType) => {
+  const [loadErr, setLoadErr] = useState(false);
+  const [loaded, setLoaded] = useState(true);
+  const [chartLoading, setChartLoading] = useState(false);
   const initialData: ChartData<'line'> = {
     datasets: [],
   };
@@ -143,12 +147,24 @@ const LineChart = (props: LineChartDataType) => {
           ],
         };
         setLineChartData(newData);
-      });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoadErr(true);
+      })
   }, []);
-  return (
-    <div className='line-chart-container'>
-      <Line className='line-chart' options={options} data={lineChartData} />
-    </div>
-  );
+  if(loadErr) {
+    return (
+      <div id='error'>
+        <h5>Not Connected Prometheus API</h5>
+      </div>
+    )
+  } else {
+    return (
+      <div className='line-chart-container'>
+        <Line className='line-chart' options={options} data={lineChartData} />
+      </div>
+    );
+  }
 };
 export default LineChart;
