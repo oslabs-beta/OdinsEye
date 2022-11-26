@@ -27,8 +27,8 @@ const MongoPage = () => {
             alt='mjolnir'
             id='mjolnir'
           />
+          <h1 id='mongo-h1'>COMING SOON</h1>
         </div>
-        <h1 id='mongo-h1'>COMING SOON</h1>
         {/* <div id='list-data'></div> */}
         {/* <div className='charts'></div> */}
       </div>

@@ -94,19 +94,6 @@ const KubPage = ({ namespaces }: KubType) => {
     dispatch(saveNamespace(newName));
   };
   const [buttonPopup, setButtonPopup] = useState(false);
-  // const sse = new EventSource('http://localhost:3000/test/default');
-
-  // useEffect(() => {
-  //   sse.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     // console.log(data[0]);
-  //     // logs.push(data[0]);
-  //     const logs = document.getElementById('logs');
-  //     if (logs) {
-  //       logs.insertAdjacentText('beforeend', JSON.stringify(event.data));
-  //     }
-  //   };
-  // });
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
@@ -237,7 +224,7 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.restarts}
                 label='Restarts'
-                yAxis='restarts'
+                yAxis='Restarts'
                 title='Pod Restarts'
               />
             </div>

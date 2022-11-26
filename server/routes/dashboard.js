@@ -24,5 +24,8 @@ dashboardRouter.get('/totalPods', dashboardController_1["default"].totalPods, fu
 dashboardRouter.get('/totalNamespaces', dashboardController_1["default"].totalNamespaces, function (req, res) {
     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
     return res.status(200).json(res.locals.totalNamespaces.data);
-});
+}, dashboardRouter.get('/cpuUsage', dashboardController_1["default"].cpuUsageOverTotalCpu, function (req, res) {
+    //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
+    return res.status(200).json(res.locals.cpuUsageOverTotalCpu);
+}));
 exports["default"] = dashboardRouter;

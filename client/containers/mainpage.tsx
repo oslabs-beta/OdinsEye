@@ -2,7 +2,6 @@ const React = require('react');
 import NavBar from '../components/navbar';
 const styles = require('../styles/index.scss');
 const styles2 = require('../styles/colors.scss');
-// import {logo} from 'odins-eye.png'
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types';
@@ -10,13 +9,23 @@ import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
 import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
+import BarChart from '../components/BarChart';
 import { currentPage } from '../rootReducer';
+import { BounceLoader } from 'react-spinners';
+import LiveChart from '../components/LiveChart';
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [loaded, setLoaded] = useState(true);
+  const [firstLoad, setfirstLoad] = useState(0);
+
   useEffect(() => {
+    setTimeout(() => {
+      setLoaded(false);
+    }, 6000);
     dispatch(addNamespaces());
     dispatch(currentPage('main'));
+    setfirstLoad((prevState) => prevState + 1);
   }, []);
 
   const namespaces = useSelector((state: State) => state.namespaces);
@@ -25,6 +34,7 @@ const MainPage = () => {
     nameLength = namespaces.length;
   }
   let theme: string;
+  // console.log(firstLoad);
 
   return (
     <div id='main-container'>
@@ -35,9 +45,26 @@ const MainPage = () => {
       <div className='data-container'>
         {/* <div id='small-graphs'> */}
         <div id='list-data'>
-          <div id='total-names'>
-            Total Namespaces
-            <div id='names-num'>{nameLength}</div>
+          {loaded && firstLoad == 0 ? (
+            <BounceLoader
+              color={'rgba(54, 133, 181, 0.8)'}
+              loading={loaded}
+              size={100}
+              cssOverride={{
+                marginTop: '110px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            />
+          ) : (
+            <div id='total-names'>
+              Total Namespaces
+              <div id='names-num'>{nameLength}</div>
+            </div>
+          )}
+          <div className='bar-chart'>
+            <BarChart />
           </div>
           <div id='total-pods'>
             <DoughnutChart
@@ -45,6 +72,25 @@ const MainPage = () => {
               path2='/api/kubernetesMetrics/podsNotReady'
               label='Total Pods'
               tag='total-pod-chart'
+            />
+          </div>
+        </div>
+        <div id='live-data' className='line-graph'>
+          <div className='line'>
+            <LiveChart
+              label={'Network Received'}
+              eventSource={'http://localhost:3000/live/received'}
+              title='Live Network Received'
+              color='#363946'
+            />
+          </div>
+          <div className='line'>
+            <LiveChart
+              label={'Network Transmitted'}
+              // yAxis={'test'}
+              eventSource={'http://localhost:3000/live/transmit'}
+              title='Live Network Transmitted'
+              color='rgba(136, 217, 230, 0.8)'
             />
           </div>
         </div>

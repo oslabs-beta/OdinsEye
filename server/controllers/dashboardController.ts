@@ -131,6 +131,35 @@ const dashboardController: DashboardController = {
       });
     }
   },
+
+  cpuUsageOverTotalCpu: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const totalCpuUage = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=${start}&end=${end}&step=5m`
+      );
+      const totalCore = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=${start}&end=${end}&step=5m`
+      );
+      const percentageOfCore = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=${start}&end=${end}&step=5m`
+      );
+      const cpuUsageOverTotalCpu = await totalCpuUage;
+      const totalCoreInCluster = await totalCore;
+      const percent = await percentageOfCore;
+      res.locals.cpuUsageOverTotalCpu = {
+        cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
+        core: totalCoreInCluster.data.data.result[0].values[1][1],
+        percent: percent.data.data.result[0].values[1][1]
+      }
+      return next();
+    } catch (err) {
+      return next({
+        log: `Error in dashboardController.getTotalCpu: ${err}`,
+        status: 500,
+        message: 'Error occured while retrieving dashboard transmit data',
+      });
+    }
+  }
 };
 
 export default dashboardController;

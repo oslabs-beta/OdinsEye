@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 import { Request, Response, NextFunction } from 'express';
 import dashboardRouter from './routes/dashboard';
 import kubernetesRouter from './routes/kubernetes';
@@ -10,9 +11,21 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// set cookie to help page persist through refresh
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const cookie: string = req.cookies.cookieName;
+  if (cookie == undefined) {
+    let randomNum = Math.random().toString();
+    randomNum = randomNum.substring(2, randomNum.length);
+    res.cookie('cookieName', randomNum, { maxAge: 90000, httpOnly: true });
+  }
+  return next();
+});
 
 if (process.env.NODE_ENV) {
   app.use('/', express.static(path.join(__dirname, '../dist')));
@@ -36,33 +49,55 @@ app.get('/dashboard', (req: Request, res: Response) => {
 
 //network received/transmitted
 
-// async function send(res: Response, namespace: string) {
-//   const start = new Date(Date.now() - 10000).toISOString();
-//   const end = new Date(Date.now()).toISOString();
-//   const cpuQuery = `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${namespace}"}[10m]))`;
-//   const response = await axios.get(
-//     `http://localhost:9090/api/v1/query_range?query=${cpuQuery}&start=${start}&end=${end}&step=5m`
-//   );
-//   const data = response.data.data.result[0].values;
-//   const newData = `data: ${JSON.stringify(data)}\n\n`;
-//   res.write(newData);
-//   setTimeout(() => send(res, namespace), 3000);
-// }
+app.use('/live/received', async (req: Request, res: Response) => {
+  const headers = {
+    'Content-Type': 'text/event-stream',
+    Connection: 'keep-alive',
+    'Cache-Control': 'no-cache',
+  };
+  res.writeHead(200, headers);
+  const timer = setInterval(async () => {
+    const start = new Date(Date.now() - 10000).toISOString();
+    const end = new Date(Date.now() - 5000).toISOString();
+    const response = await axios.get(
+      `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
+    );
+    const data = response.data.data.result[0].values[0];
+    const newData = `data: ${JSON.stringify(data)}\n\n`;
+    res.write(newData);
+  }, 1500);
+  res.on('close', () => {
+    res.end();
+    clearInterval(timer);
+    console.log('Connection closed');
+  });
+});
 
-// app.use('/live/:namespace', async (req: Request, res: Response) => {
-//   const { namespace } = req.params;
-//   // console.log(namespace);
-//   const headers = {
-//     'Content-Type': 'text/event-stream',
-//     Connection: 'keep-alive',
-//     'Cache-Control': 'no-cache',
-//   };
-//   res.writeHead(200, headers);
-//   send(res, namespace);
-//   req.on('close', () => {
-//     console.log('connection closed');
-//   });
-// });
+app.use('/live/transmit', async (req: Request, res: Response) => {
+  const headers = {
+    'Content-Type': 'text/event-stream',
+    Connection: 'keep-alive',
+    'Cache-Control': 'no-cache',
+  };
+  res.writeHead(200, headers);
+  // sendNetTransmit(res);
+  const timer = setInterval(async () => {
+    const start = new Date(Date.now() - 10000).toISOString();
+    const end = new Date(Date.now() - 5000).toISOString();
+    const response = await axios.get(
+      `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
+    );
+    // console.log(response.data.data.result[0].values);
+    const data = response.data.data.result[0].values[0];
+    const newData = `data: ${JSON.stringify(data)}\n\n`;
+    res.write(newData);
+  }, 1500);
+  res.on('close', () => {
+    res.end();
+    clearInterval(timer);
+    console.log('Connection closed');
+  });
+});
 
 //redirect to page 404 when endpoint does not exist
 app.use('*', (req: Request, res: Response) => {

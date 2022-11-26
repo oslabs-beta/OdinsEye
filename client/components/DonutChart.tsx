@@ -103,13 +103,6 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
 
   return (
     <div id={tag}>
-      <h2
-        style={{
-          margin: 'auto auto',
-          color: '#4be7b9',
-          marginBottom: '10px',
-        }}
-      ></h2>
       <Doughnut data={initialData} options={options} />
     </div>
   );
