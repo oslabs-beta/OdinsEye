@@ -63,6 +63,7 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     } catch (err) {
       setPods(['Error Fetching Pods']);
+      console.log(err);
     }
   };
 

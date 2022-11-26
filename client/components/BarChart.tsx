@@ -24,6 +24,7 @@ ChartJS.register(
 );
 
 const BarChart = (props: any) => {
+  const [loadErr, setLoadErr] = useState(false);
   const initialData: ChartData<'bar'> = {
     datasets: [],
   };
@@ -103,13 +104,25 @@ const BarChart = (props: any) => {
           ],
         };
         setBarChartData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoadErr(true);
       });
   }, []);
-  return (
-    <div className='bar-chart-container'>
-      <Bar className='bar-chart-js' data={barChartData} options={option} />
-    </div>
-  );
+  if (loadErr) {
+    return (
+      <div id='error'>
+        <h5>Not Connected Prometheus API</h5>
+      </div>
+    );
+  } else {
+    return (
+      <div className='bar-chart-container'>
+        <Bar className='bar-chart-js' data={barChartData} options={option} />
+      </div>
+    );
+  }
 };
 
 export default BarChart;
