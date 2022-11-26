@@ -80,40 +80,26 @@ var dashboardController = {
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 6:
                     namespacesResponse = _c.sent();
-                    // const totalNamespaces = await namespacesResponse.data;
-                    // const totalReceive = await receiveData.data;
-                    // const totalTransmit = await transmitResponse.data;
-                    // // console.log(response.data.data.result[0].values[0]);
-                    // const totalPods = await podsResponse.data;
-                    // const totalMem = await memResponse.data;
-                    // const totalCpu = await cpuResponse.data;
                     _a = res.locals;
                     _b = {};
                     return [4 /*yield*/, cpuResponse.data.data.result[0].values];
                 case 7:
-                    _b.totalCpu = _c.sent();
+                    _b.totalCpu = [_c.sent()];
                     return [4 /*yield*/, memResponse.data.data.result[0].values];
                 case 8:
-                    _b.totalMem = _c.sent();
+                    _b.totalMem = [_c.sent()];
                     return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
                 case 9:
-                    _b.totalPods = _c.sent();
+                    _b.totalPods = [_c.sent()];
                     return [4 /*yield*/, transmitResponse.data.data.result[0].values];
                 case 10:
-                    _b.totalTransmit = _c.sent();
+                    _b.totalTransmit = [_c.sent()];
                     return [4 /*yield*/, receiveData.data.data.result[0].values];
                 case 11:
-                    _b.totalReceive = _c.sent();
+                    _b.totalReceive = [_c.sent()];
                     return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
                 case 12:
-                    // const totalNamespaces = await namespacesResponse.data;
-                    // const totalReceive = await receiveData.data;
-                    // const totalTransmit = await transmitResponse.data;
-                    // // console.log(response.data.data.result[0].values[0]);
-                    // const totalPods = await podsResponse.data;
-                    // const totalMem = await memResponse.data;
-                    // const totalCpu = await cpuResponse.data;
-                    _a.dashboard = (_b.totalNamespaces = _c.sent(),
+                    _a.dashboard = (_b.totalNamespaces = [_c.sent()],
                         _b);
                     return [2 /*return*/, next()];
                 case 13:

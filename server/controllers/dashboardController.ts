@@ -42,12 +42,12 @@ const dashboardController: DashboardController = {
         `http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`
       );
       res.locals.dashboard = {
-        totalCpu: await cpuResponse.data.data.result[0].values,
-        totalMem: await memResponse.data.data.result[0].values,
-        totalPods: await podsResponse.data.data.result[0].values[0][1],
-        totalTransmit: await transmitResponse.data.data.result[0].values,
-        totalReceive: await receiveData.data.data.result[0].values,
-        totalNamespaces: await namespacesResponse.data.data.result[0].values[0][1]
+        totalCpu: [await cpuResponse.data.data.result[0].values],
+        totalMem: [await memResponse.data.data.result[0].values],
+        totalPods: [await podsResponse.data.data.result[0].values[0][1]],
+        totalTransmit: [await transmitResponse.data.data.result[0].values],
+        totalReceive: [await receiveData.data.data.result[0].values],
+        totalNamespaces: [await namespacesResponse.data.data.result[0].values[0][1]]
       }
       return next(); 
     } catch (err) {

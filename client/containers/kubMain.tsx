@@ -46,6 +46,8 @@ const KubPage = ({ namespaces }: KubType) => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
+      console.log('url',url)
+      console.log('kube data', data);
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
@@ -62,6 +64,7 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
+
       setPods(['Error Fetching Pods']);
       console.log(err);
     }

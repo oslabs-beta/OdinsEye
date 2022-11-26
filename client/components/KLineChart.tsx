@@ -103,6 +103,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   useEffect(() => {
     if (data.length !== 0) {
       const metrics = data[0];
+      console.log('metrics1',metrics)
       //converting that long number into an actual time :D
       const xAxis = metrics.map((value: [number, string]) => {
         const currentTime = new Date(value[0] * 1000);

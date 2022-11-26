@@ -43,8 +43,8 @@ type LineChartDataType = {
 
 const LineChart = (props: LineChartDataType) => {
   const [loadErr, setLoadErr] = useState(false);
-  const [loaded, setLoaded] = useState(true);
-  const [chartLoading, setChartLoading] = useState(false);
+  // const [loaded, setLoaded] = useState(true);
+  // const [chartLoading, setChartLoading] = useState(false);
   const initialData: ChartData<'line'> = {
     datasets: [],
   };
@@ -109,7 +109,6 @@ const LineChart = (props: LineChartDataType) => {
       .then((res) => res.json())
       .then((data) => {
         const metrics = data[props.obj]
-        console.log('metrics',metrics)
         //converting that long number into an actual time :D
         const xAxis = metrics.map((value: [number, string]) => {
           const currentTime = new Date(value[0] * 1000);
