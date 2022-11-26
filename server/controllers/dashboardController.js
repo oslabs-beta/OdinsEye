@@ -56,60 +56,69 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 var dashboardController = {
     getAllMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var cpuResponse, memResponse, podsResponse, transmitResponse, receiveData, namespacesResponse, _a, err_1;
-        var _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var cpuResponse, memResponse, podsResponse, notReadyPodsResponse, transmitResponse, receiveData, namespacesResponse, _a, _b, _c, _d, err_1;
+        var _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
                 case 0:
-                    _c.trys.push([0, 13, , 14]);
+                    _f.trys.push([0, 15, , 16]);
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
-                    cpuResponse = _c.sent();
+                    cpuResponse = _f.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 2:
-                    memResponse = _c.sent();
+                    memResponse = _f.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 3:
-                    podsResponse = _c.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    podsResponse = _f.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition=\"false\"})&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 4:
-                    transmitResponse = _c.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
+                    notReadyPodsResponse = _f.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 5:
-                    receiveData = _c.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    transmitResponse = _f.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
                 case 6:
-                    namespacesResponse = _c.sent();
-                    _a = res.locals;
-                    _b = {};
-                    return [4 /*yield*/, cpuResponse.data.data.result[0].values];
+                    receiveData = _f.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 7:
-                    _b.totalCpu = [_c.sent()];
-                    return [4 /*yield*/, memResponse.data.data.result[0].values];
+                    namespacesResponse = _f.sent();
+                    _a = res.locals;
+                    _e = {};
+                    return [4 /*yield*/, cpuResponse.data.data.result[0].values];
                 case 8:
-                    _b.totalMem = [_c.sent()];
-                    return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
+                    _e.totalCpu = [_f.sent()];
+                    return [4 /*yield*/, memResponse.data.data.result[0].values];
                 case 9:
-                    _b.totalPods = [_c.sent()];
-                    return [4 /*yield*/, transmitResponse.data.data.result[0].values];
+                    _e.totalMem = [_f.sent()];
+                    _b = parseInt;
+                    return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
                 case 10:
-                    _b.totalTransmit = [_c.sent()];
-                    return [4 /*yield*/, receiveData.data.data.result[0].values];
+                    _e.totalPods = [_b.apply(void 0, [_f.sent()])];
+                    _c = parseInt;
+                    return [4 /*yield*/, notReadyPodsResponse.data.data.result[0].values[0][1]];
                 case 11:
-                    _b.totalReceive = [_c.sent()];
-                    return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
+                    _e.notReadyPods = [_c.apply(void 0, [_f.sent()])];
+                    return [4 /*yield*/, transmitResponse.data.data.result[0].values];
                 case 12:
-                    _a.dashboard = (_b.totalNamespaces = [_c.sent()],
-                        _b);
-                    return [2 /*return*/, next()];
+                    _e.totalTransmit = [_f.sent()];
+                    return [4 /*yield*/, receiveData.data.data.result[0].values];
                 case 13:
-                    err_1 = _c.sent();
+                    _e.totalReceive = [_f.sent()];
+                    _d = parseInt;
+                    return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
+                case 14:
+                    _a.dashboard = (_e.totalNamespaces = [_d.apply(void 0, [_f.sent()])],
+                        _e);
+                    return [2 /*return*/, next()];
+                case 15:
+                    err_1 = _f.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getAllMetrics: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving dashboard all metrics data'
                         })];
-                case 14: return [2 /*return*/];
+                case 16: return [2 /*return*/];
             }
         });
     }); },

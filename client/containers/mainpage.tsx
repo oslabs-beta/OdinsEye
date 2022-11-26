@@ -16,13 +16,15 @@ import { currentPage } from '../rootReducer';
 import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
 import KLineChart from '../components/KLineChart';
+import KDonutChart from '../components/KDonutChart'
 
 type MainDataType = {
   totalCpu: any[];
   totalMem: any[];
   totalTransmit: any[];
   totalReceive: any[];
-  totalPods: string;
+  totalPods: number;
+  notReadyPods: number;
   totalNamespaces: string;
 };
 
@@ -35,7 +37,8 @@ const MainPage = () => {
     totalMem: [],
     totalTransmit: [],
     totalReceive: [],
-    totalPods: '',
+    totalPods: 0,
+    notReadyPods: 0,
     totalNamespaces: '',
   });
 
@@ -105,11 +108,9 @@ const MainPage = () => {
             </div>
             )}
             <div id='total-pods'>
-              <DoughnutChart
-                path='/api/dashboard/totalPods'
-                path2='/api/kubernetesMetrics/podsNotReady'
+              <KDonutChart
+                data={[data.totalPods - data.notReadyPods, data.notReadyPods]}
                 label='Total Pods'
-                tag='total-pod-chart'
               />
             </div>
           </div>

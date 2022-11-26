@@ -32,6 +32,9 @@ const dashboardController: DashboardController = {
       const podsResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
       );
+      const notReadyPodsResponse = await axios.get(
+        `http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition="false"})&start=${start}&end=${end}&step=5m`
+      );
       const transmitResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
       );
@@ -44,10 +47,11 @@ const dashboardController: DashboardController = {
       res.locals.dashboard = {
         totalCpu: [await cpuResponse.data.data.result[0].values],
         totalMem: [await memResponse.data.data.result[0].values],
-        totalPods: [await podsResponse.data.data.result[0].values[0][1]],
+        totalPods: [parseInt(await podsResponse.data.data.result[0].values[0][1])],
+        notReadyPods: [parseInt(await notReadyPodsResponse.data.data.result[0].values[0][1])],
         totalTransmit: [await transmitResponse.data.data.result[0].values],
         totalReceive: [await receiveData.data.data.result[0].values],
-        totalNamespaces: [await namespacesResponse.data.data.result[0].values[0][1]]
+        totalNamespaces: [parseInt(await namespacesResponse.data.data.result[0].values[0][1])]
       }
       return next(); 
     } catch (err) {
