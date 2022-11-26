@@ -32,7 +32,6 @@ const rootReducer = createReducer(initialState, (builder) =>
       return { ...state, dark };
     })
     .addCase(saveNamespace, (state, action) => {
-      console.log('hhiihihihihihi', action.payload);
       let currentNamespace = action.payload;
       return {
         ...state,

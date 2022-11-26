@@ -11,8 +11,6 @@ import {
   ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import axios from 'axios';
-import { NONAME } from 'dns';
 
 ChartJS.register(
   CategoryScale,
@@ -77,6 +75,7 @@ const BarChart = (props: any) => {
       },
     },
   };
+
   useEffect(() => {
     fetch('/api/dashboard/cpuUsage')
       .then((res) => res.json())
