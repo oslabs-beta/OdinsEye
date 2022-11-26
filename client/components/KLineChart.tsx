@@ -100,8 +100,6 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     },
   };
 
-
-
   useEffect(() => {
     if (data.length !== 0) {
       const metrics = data[0];

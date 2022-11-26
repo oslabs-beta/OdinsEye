@@ -84,6 +84,7 @@ const MainPage = () => {
               <div className='line' id='total-cpu'>
                 <LineChart
                   url='/api/dashboard/totalCpu'
+                  obj='totalCpu'
                   label='Cpu Usage'
                   yAxis='%'
                   title='Total CPU % Usage'
@@ -93,6 +94,7 @@ const MainPage = () => {
               <div className='line' id='total-memory-use'>
                 <LineChart
                   url='/api/dashboard/totalMem'
+                  obj='totalMem'
                   label='Mem Usage'
                   yAxis='Kilobytes'
                   title='Total Memory Usage (kB)'
@@ -104,6 +106,7 @@ const MainPage = () => {
               <div className='line' id='net-rec'>
                 <LineChart
                   url='/api/dashboard/totalReceive'
+                  obj='totalReceive'
                   label='Mem Usage'
                   yAxis='Kilobytes'
                   title='Network Transmitted (kB)'
@@ -113,6 +116,7 @@ const MainPage = () => {
               <div className='line' id='net-trans'>
                 <LineChart
                   url='/api/dashboard/totalTransmit'
+                  obj='totalTransmit'
                   label='Mem Usage'
                   yAxis='Kilobytes'
                   title='Network Received (kB)'

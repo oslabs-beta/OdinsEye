@@ -55,161 +55,178 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 //https://github.com/siimon/prom-client
 client.collectDefaultMetrics();
 var dashboardController = {
-    totalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, _a, err_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+    getAllMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var cpuResponse, memResponse, podsResponse, transmitResponse, receiveData, namespacesResponse, _a, err_1;
+        var _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    _c.trys.push([0, 13, , 14]);
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
                 case 1:
-                    response = _b.sent();
-                    _a = res.locals;
-                    return [4 /*yield*/, response.data];
-                case 2:
-                    _a.totalCpu = _b.sent();
-                    // console.log(res.locals.cpu);
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_1 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_1),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard cpu data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
-    totalMem: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, _a, err_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    cpuResponse = _c.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 1:
-                    response = _b.sent();
-                    _a = res.locals;
-                    return [4 /*yield*/, response.data];
                 case 2:
-                    _a.totalMem = _b.sent();
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_2 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_2),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard mem data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
-    totalPods: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, _a, err_3;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 3, , 4]);
+                    memResponse = _c.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 1:
-                    response = _b.sent();
-                    // console.log(response.data.data.result[0].values[0]);
-                    _a = res.locals;
-                    return [4 /*yield*/, response.data];
-                case 2:
-                    // console.log(response.data.data.result[0].values[0]);
-                    _a.totalPods = _b.sent();
-                    return [2 /*return*/, next()];
                 case 3:
-                    err_3 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_3),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard pods data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
-    totalReceive: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var data, response, err_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
-                case 1:
-                    data = _a.sent();
-                    return [4 /*yield*/, data.data];
-                case 2:
-                    response = _a.sent();
-                    res.locals.totalReceive = response;
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_4 = _a.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_4),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard receive data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
-    totalTransmit: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, data, err_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
+                    podsResponse = _c.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response];
-                case 2:
-                    data = _a.sent();
-                    res.locals.totalTransmit = data.data;
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_5 = _a.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_5),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard transmit data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
-    totalNamespaces: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var response, _a, err_6;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _b.trys.push([0, 3, , 4]);
+                case 4:
+                    transmitResponse = _c.sent();
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
+                case 5:
+                    receiveData = _c.sent();
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 1:
-                    response = _b.sent();
+                case 6:
+                    namespacesResponse = _c.sent();
+                    // const totalNamespaces = await namespacesResponse.data;
+                    // const totalReceive = await receiveData.data;
+                    // const totalTransmit = await transmitResponse.data;
+                    // // console.log(response.data.data.result[0].values[0]);
+                    // const totalPods = await podsResponse.data;
+                    // const totalMem = await memResponse.data;
+                    // const totalCpu = await cpuResponse.data;
                     _a = res.locals;
-                    return [4 /*yield*/, response];
-                case 2:
-                    _a.totalNamespaces = _b.sent();
+                    _b = {};
+                    return [4 /*yield*/, cpuResponse.data.data.result[0].values];
+                case 7:
+                    _b.totalCpu = _c.sent();
+                    return [4 /*yield*/, memResponse.data.data.result[0].values];
+                case 8:
+                    _b.totalMem = _c.sent();
+                    return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
+                case 9:
+                    _b.totalPods = _c.sent();
+                    return [4 /*yield*/, transmitResponse.data.data.result[0].values];
+                case 10:
+                    _b.totalTransmit = _c.sent();
+                    return [4 /*yield*/, receiveData.data.data.result[0].values];
+                case 11:
+                    _b.totalReceive = _c.sent();
+                    return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
+                case 12:
+                    // const totalNamespaces = await namespacesResponse.data;
+                    // const totalReceive = await receiveData.data;
+                    // const totalTransmit = await transmitResponse.data;
+                    // // console.log(response.data.data.result[0].values[0]);
+                    // const totalPods = await podsResponse.data;
+                    // const totalMem = await memResponse.data;
+                    // const totalCpu = await cpuResponse.data;
+                    _a.dashboard = (_b.totalNamespaces = _c.sent(),
+                        _b);
                     return [2 /*return*/, next()];
-                case 3:
-                    err_6 = _b.sent();
+                case 13:
+                    err_1 = _c.sent();
                     return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_6),
+                            log: "Error in dashboardController.getAllMetrics: ".concat(err_1),
                             status: 500,
-                            message: 'Error occured while retrieving dashboard transmit data'
+                            message: 'Error occured while retrieving dashboard all metrics data'
                         })];
-                case 4: return [2 /*return*/];
+                case 14: return [2 /*return*/];
             }
         });
     }); },
+    // totalCpu: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`
+    //     );
+    //     const totalCpu = await response.data;
+    //     res.locals.dashboard = totalCpu.data.result[0].values
+    //     // console.log(res.locals.cpu);
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard cpu data',
+    //     });
+    //   }
+    // },
+    // totalMem: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=${start}&end=${end}&step=5m`
+    //     );
+    //     const totalMem = await response.data;
+    //     res.locals.dashboard = totalMem.data.result[0].values
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard mem data',
+    //     });
+    //   }
+    // },
+    // totalPods: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
+    //     );
+    //     // console.log(response.data.data.result[0].values[0]);
+    //     const totalPods = await response.data;
+    //     res.locals.dashboard.totalPods = totalPods.data.result[0].values[0][1]
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard pods data',
+    //     });
+    //   }
+    // },
+    // totalReceive: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const data = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
+    //     );
+    //     const totalReceive = await data.data;
+    //     res.locals.dashboard.totalReceive = totalReceive.data.result[0].values
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard receive data',
+    //     });
+    //   }
+    // },
+    // totalTransmit: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
+    //     );
+    //     const totalTransmit = await response.data;
+    //     res.locals.dashboard.totalTransmit = totalTransmit.data.result[0].values
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard transmit data',
+    //     });
+    //   }
+    // },
+    // totalNamespaces: async (req: Request, res: Response, next: NextFunction) => {
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`
+    //     );
+    //     const totalNamespaces = await response.data;
+    //     res.locals.dashboard.totalNamespaces = totalNamespaces.data.result[0].values[0][1]
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in dashboardController.getTotalCpu: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving dashboard transmit data',
+    //     });
+    //   }
+    // },
     cpuUsageOverTotalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var totalCpuUage, totalCore, percentageOfCore, cpuUsageOverTotalCpu, totalCoreInCluster, percent, err_7;
+        var totalCpuUage, totalCore, percentageOfCore, cpuUsageOverTotalCpu, totalCoreInCluster, percent, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -239,9 +256,9 @@ var dashboardController = {
                     };
                     return [2 /*return*/, next()];
                 case 7:
-                    err_7 = _a.sent();
+                    err_2 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_7),
+                            log: "Error in dashboardController.getTotalCpu: ".concat(err_2),
                             status: 500,
                             message: 'Error occured while retrieving dashboard transmit data'
                         })];
