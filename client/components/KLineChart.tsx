@@ -47,6 +47,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   };
   const [lineChartData, setLineChartData] = useState<any>(initialData);
   const [loadErr, setLoadErr] = useState(false);
+  // const [missingData, setMissingData] = useState<any>('')
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -105,7 +106,6 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   useEffect(() => {
     if (data.length !== 0) {
       const metrics = data[0];
-      console.log('metrics K', metrics)
       //converting that long number into an actual time :D
       const xAxis = metrics.map((value: [number, string]) => {
         const currentTime = new Date(value[0] * 1000);
@@ -145,12 +145,13 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       };
       setLineChartData(newData);
     }
+
     //error handling for when no data exist
     if(data == undefined){
       setLoadErr(true);
     }  
   }, [data]);
-
+//console.log(lineChartData,'linechartData')
   if(loadErr) {
     return (
       <div id='error'>
@@ -160,10 +161,13 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   } else {
     return (
       <div className='line-chart-container'>
-        <Line className='line-chart' options={options} data={lineChartData} />
+        {lineChartData.datasets.length > 0
+        ? <Line className='line-chart' options={options} data={lineChartData} />
+        : <h2 className = 'missing-data'>There is no data to present</h2>}
       </div>
     );
   }
 };
 
 export default KLineChart;
+//<Line className='line-chart' options={options} data={lineChartData} />

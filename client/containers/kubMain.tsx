@@ -41,27 +41,31 @@ const KubPage = ({ namespaces }: KubType) => {
   // const [podState, setPodState] = useState<boolean>(false);
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
+  // const [noDataMetrics, setNoDataMetrics ]= useState<string[]>([]);
+
   const podsArray: JSX.Element[] = [];
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
-      console.log(data, 'data')
-      const dataArray = [];
-      for (const metric in data){
-        console.log(data[metric])
-        if (data[metric].length === 0){
-          dataArray.push(metric)
-        }
-      }
-      console.log(dataArray)
-
+      
+      // console.log(data, 'data')
+      // const dataArray = [];
+      // for (const metric in data){
+      //   //console.log(data[metric])
+      //   if (data[metric].length === 0){
+      //     dataArray.push(metric)
+      //   }
+      // }
+      // console.log(dataArray)
+      // console.log('data', data)
+      // setNoDataMetrics(dataArray)
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
-      console.log('podData', podData)
+      //console.log('podData', podData)
       setPods(podData);
       const badPods: any[] = [];
       if (data.notReady > 0) {
@@ -175,6 +179,7 @@ const KubPage = ({ namespaces }: KubType) => {
   let theme: string;
 
   dark ? (theme = 'lightMode') : (theme = 'darkMode');
+
   return (
     <div id='main-container' className={theme}>
       <div className='header'>
@@ -227,11 +232,11 @@ const KubPage = ({ namespaces }: KubType) => {
           <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
-                data={data.reception}
-                label='kB'
-                yAxis='Kilobytes'
-                title='Network Received (kB)'
-              />
+              data={data.reception}
+              label='kB'
+              yAxis='Kilobytes'
+              title='Network Received (kB)'
+            />
             </div>
             <div id='net-trans' className='line'>
               <KLineChart
