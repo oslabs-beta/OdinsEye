@@ -21,13 +21,7 @@ export type KubernetesController = {
 };
 
 export type MongoController = {
-  opCounter: RequestHandler;
-  connections: RequestHandler;
-  queue: RequestHandler;
-  latency: RequestHandler;
-  uptime: RequestHandler;
-  memory: RequestHandler;
-  processes: RequestHandler;
+  mongoMetrics: RequestHandler;
 };
 
 export type State = {

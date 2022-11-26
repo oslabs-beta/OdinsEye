@@ -45,6 +45,7 @@ const KubPage = ({ namespaces }: KubType) => {
       const response = await axios.get(url);
       const data = await response.data;
       setData(data);
+      console.log(data)
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });

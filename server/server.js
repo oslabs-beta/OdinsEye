@@ -4,6 +4,7 @@ var path = require('path');
 var express = require('express');
 var dashboard_1 = require("./routes/dashboard");
 var kubernetes_1 = require("./routes/kubernetes");
+var mongo_1 = require("./routes/mongo");
 var cors = require('cors');
 var app = express();
 var PORT = 3000;
@@ -21,6 +22,7 @@ app.use('/mongo', function (req, res) {
 });
 app.use('/api/dashboard', dashboard_1["default"]);
 app.use('/api/kubernetesMetrics', kubernetes_1["default"]);
+app.use('/api/mongodb', mongo_1["default"]);
 app.get('/dashboard', function (req, res) {
     return res.status(200).send('hi');
 });
