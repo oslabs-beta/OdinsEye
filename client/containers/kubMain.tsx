@@ -60,6 +60,10 @@ const KubPage = ({ namespaces }: KubType) => {
       // console.log(dataArray)
       // console.log('data', data)
       // setNoDataMetrics(dataArray)
+
+      console.log('url',url)
+      console.log('kube data', data);
+      
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
@@ -67,7 +71,7 @@ const KubPage = ({ namespaces }: KubType) => {
       const podData: string[] = await podResponse.data;
       //console.log('podData', podData)
       setPods(podData);
-      const badPods: any[] = [];
+      const badPods: string[] = [];
       if (data.notReady > 0) {
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
@@ -77,6 +81,7 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
+
       setPods(['Error Fetching Pods']);
       console.log(err);
     }
@@ -103,24 +108,13 @@ const KubPage = ({ namespaces }: KubType) => {
     }
   }, [page]);
 
+  //Upon changing the namespace page, will save and update to current
   const handleChange = (newName: string) => {
     setCurrentPage(newName);
+    //persists the current namespace selection when switching pages
     dispatch(saveNamespace(newName));
   };
   const [buttonPopup, setButtonPopup] = useState(false);
-  // const sse = new EventSource('http://localhost:3000/test/default');
-
-  // useEffect(() => {
-  //   sse.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     // console.log(data[0]);
-  //     // logs.push(data[0]);
-  //     const logs = document.getElementById('logs');
-  //     if (logs) {
-  //       logs.insertAdjacentText('beforeend', JSON.stringify(event.data));
-  //     }
-  //   };
-  // });
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
