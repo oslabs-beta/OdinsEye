@@ -275,6 +275,7 @@ const kubernetesController: KubernetesController = {
       }
 
       res.locals.podData = objectData;
+      //console.log('res.locals.podData', res.locals.podData)
       return next();
     } catch (err) {
       return next({
