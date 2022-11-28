@@ -47,6 +47,7 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   };
   const [lineChartData, setLineChartData] = useState<any>(initialData);
   const [loadErr, setLoadErr] = useState(false);
+  // const [missingData, setMissingData] = useState<any>('')
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -103,8 +104,8 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   useEffect(() => {
     if (data.length !== 0) {
       const metrics = data[0];
-      console.log('metrics1',metrics)
-      //converting that long number into an actual time :D
+      console.log('metrics1', metrics);
+      //converting that long number into an actual time
       const xAxis = metrics.map((value: [number, string]) => {
         const currentTime = new Date(value[0] * 1000);
         let time = currentTime.toLocaleString('en-GB');
@@ -143,22 +144,30 @@ const KLineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
       };
       setLineChartData(newData);
     }
-    //error handling for when no data exist
-    if(data == undefined){
-      setLoadErr(true);
-    }  
-  }, [data]);
 
-  if(loadErr) {
+    //error handling for when no data exist
+    if (data == undefined) {
+      setLoadErr(true);
+    }
+  }, [data]);
+  //console.log(lineChartData,'linechartData')
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected Prometheus API</h5>
       </div>
-    )
+    );
   } else {
     return (
       <div className='line-chart-container'>
         <Line className='line-chart' options={options} data={lineChartData} />
+        {lineChartData.datasets.length === 0 ? (
+          <div className='missing-data'>
+            <h3>No Data to Display</h3>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

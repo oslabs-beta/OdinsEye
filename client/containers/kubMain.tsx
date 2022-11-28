@@ -40,6 +40,8 @@ const KubPage = ({ namespaces }: KubType) => {
   });
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
+  // const [noDataMetrics, setNoDataMetrics ]= useState<string[]>([]);
+
   const podsArray: JSX.Element[] = [];
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
@@ -47,11 +49,14 @@ const KubPage = ({ namespaces }: KubType) => {
       const data = await response.data;
       console.log('url', url);
       console.log('kube data', data);
+
       setData(data);
+      console.log(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
+      //console.log('podData', podData)
       setPods(podData);
       const badPods: string[] = [];
       if (data.notReady > 0) {
@@ -139,6 +144,7 @@ const KubPage = ({ namespaces }: KubType) => {
   let theme: string;
 
   dark ? (theme = 'lightMode') : (theme = 'darkMode');
+
   return (
     <div id='main-container' className={theme}>
       <div className='header'>
@@ -238,5 +244,3 @@ const KubPage = ({ namespaces }: KubType) => {
 };
 
 export default KubPage;
-
-//need to send: namespace, and if want specific pod metric: pod-name
