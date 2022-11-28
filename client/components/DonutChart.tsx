@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { State } from '../../types';
 
@@ -12,41 +11,24 @@ import {
   ChartOptions,
   ChartData,
 } from 'chart.js';
+import { totalmem } from 'os';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
-  path: string;
-  path2?: string;
+  data: number[];
   label: string;
-  tag: string;
 };
 
-const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
+//display total number active and non active pods
+const DoughnutChart = ({ data }: DoughnutType) => {
   const dark = useSelector((state: State) => state.dark);
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
 
   const [chartData, setChartData] = useState<number[]>([]);
-  const getData = async (url: string, url2?: string): Promise<any> => {
-    try {
-      const response = await axios.get(url);
-      const data = await response.data;
-      const copy = chartData.slice();
-      copy.push(data);
-      if (url2) {
-        const response2 = await axios.get(url2);
-        const data2 = await response2.data;
-        copy.push(data2);
-      }
-      copy[0] = copy[0] - copy[1];
-      setChartData(copy);
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  //
+  const [loadErr, setLoadErr] = useState<boolean>(false);
+
   const initialData: ChartData<'doughnut'> = {
     labels: [`Pods Ready: ${chartData[0]}`, `Not Ready: ${chartData[1]}`],
     datasets: [
@@ -57,18 +39,22 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
           'rgba(54, 133, 181, 0.6)',
           ' rgb(172, 128, 160, 0.6)',
         ],
-        borderColor: ['rgba(54, 133, 181, 1)', ' rgb(172, 128, 160, 1)'],
+        borderColor: ['rgba(54, 133, 181, 1)', ' rgb(172, 128, 160, 1.2)'],
         borderWidth: 1,
       },
     ],
   };
+
+  //data is being passed from kubmain and mainpage
   useEffect(() => {
-    if (!path2) {
-      getData(path);
-    } else {
-      getData(path, path2);
+    if (data.length > 0) {
+      setChartData(data);
     }
-  }, []);
+    if (data === undefined){
+      setLoadErr(true)
+    }
+  }, [data]);
+
   const options: ChartOptions<'doughnut'> = {
     animation: {
       easing: 'easeInQuad',
@@ -83,29 +69,41 @@ const DoughnutChart = ({ path, path2, label, tag }: DoughnutType) => {
     },
     plugins: {
       legend: {
+        display: true,
+        position: 'top',
         labels: {
           color: fontColor,
         },
-        position: 'top',
       },
       title: {
         display: true,
         text: `Total Pods`,
         color: fontColor,
       },
-      //turn off display of data inside the chart
-      //not sure why it is throwing an error, so i commented it out
-      // datalabels: {
-      //     display: false,
-      // }
     },
   };
 
-  return (
-    <div id={tag}>
-      <Doughnut data={initialData} options={options} />
-    </div>
-  );
+  //error handling for when server isn't connected to prometheus api
+  if(loadErr){
+    return (
+      <div id='error'>
+        <h5>Not Connected to Prometheus API</h5>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2
+          style={{
+            margin: 'auto auto',
+            color: fontColor,
+            marginBottom: '10px',
+          }}
+        ></h2>
+        <Doughnut data={initialData} options={options} />
+      </div>
+    );
+  }
 };
 
 export default DoughnutChart;

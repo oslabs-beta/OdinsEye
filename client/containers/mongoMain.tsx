@@ -1,5 +1,5 @@
 const React = require('react');
-import NavBar from '../components/navbar';
+import NavBar from '../components/Navbar';
 import { currentPage } from '../rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';

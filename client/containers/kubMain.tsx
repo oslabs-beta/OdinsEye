@@ -1,15 +1,15 @@
 const React = require('react');
-import NavBar from '../components/navbar';
+import NavBar from '../components/Navbar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
-import KLineChart from '../components/KLineChart';
+import KLineChart from '../components/LineChart';
 import Popup from '../components/PopUp';
-import KDoughnutChart from '../components/KDonutChart';
+import DoughnutChart from '../components/DonutChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
 import { currentPage, saveNamespace } from '../rootReducer';
-import PodName from '../components/podName';
+import PodName from '../components/PodName';
 
 type KubType = {
   namespaces: string[] | null;
@@ -83,7 +83,7 @@ const KubPage = ({ namespaces }: KubType) => {
     } catch (err) {
 
       setPods(['Error Fetching Pods']);
-      console.log(err);
+      console.log('Kubernetes Page: ',err);
     }
   };
 
@@ -194,7 +194,7 @@ const KubPage = ({ namespaces }: KubType) => {
             handleChange={handleChange}
           />
           <div id='kube-total-pods'>
-            <KDoughnutChart
+            <DoughnutChart
               data={[pods.length - data.notReady, data.notReady]}
               label='Total Pods'
             />

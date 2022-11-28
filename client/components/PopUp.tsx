@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import KLineChart from './KLineChart';
+import KLineChart from './LineChart';
 import axios from 'axios';
 const styles = require('../styles/popup.scss');
 
