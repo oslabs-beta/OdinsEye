@@ -38,7 +38,6 @@ const KubPage = ({ namespaces }: KubType) => {
     restarts: [],
     transmission: [],
   });
-  // const [podState, setPodState] = useState<boolean>(false);
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
   const podsArray: JSX.Element[] = [];
@@ -46,7 +45,7 @@ const KubPage = ({ namespaces }: KubType) => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
-      console.log('url',url)
+      console.log('url', url);
       console.log('kube data', data);
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
@@ -64,7 +63,6 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
-
       setPods(['Error Fetching Pods']);
       console.log(err);
     }
@@ -86,8 +84,6 @@ const KubPage = ({ namespaces }: KubType) => {
       if (page !== 'None') {
         getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
       }
-    } else {
-      setPods(['No Pods']);
     }
   }, [page]);
 
@@ -101,22 +97,9 @@ const KubPage = ({ namespaces }: KubType) => {
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
-      // if (!pod) {
-      //   setPodState(true);
-      //   <div key={pod[1]}>
-      //     <a
-      //       className='pod-list-load'
-      //       onClick={() => {
-      //         setCurrentPod(pod[1]);
-      //         setButtonPopup(true);
-      //       }}
-      //     >
-      //       {pod[1] + '- Loading'}
-      //     </a>
-      //     <br />
-      //   </div>;
-      // }
-      if (Array.isArray(pod)) {
+      if (pod === 'Error Fetching Pods' || pod === 'No Pods') {
+        podsArray.push(<a>{pod}</a>);
+      } else if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
           podsArray.push(
             <PodName
@@ -170,14 +153,29 @@ const KubPage = ({ namespaces }: KubType) => {
       />
       <div className='data-container'>
         <div id='kube-list-data'>
-          <DropDown
-            namespaces={namespaces}
-            current={page}
-            handleChange={handleChange}
-          />
+          {namespaces ? (
+            namespaces.length > 0 ? (
+              <DropDown
+                namespaces={namespaces}
+                current={page}
+                handleChange={handleChange}
+              />
+            ) : (
+              <div id='dropdown'>
+                <button id='dropdown-but'>None</button>
+              </div>
+            )
+          ) : (
+            <div></div>
+          )}
+
           <div id='kube-total-pods'>
             <KDoughnutChart
-              data={[pods.length - data.notReady, data.notReady]}
+              data={
+                pods[0] === 'Error Fetching Pods'
+                  ? 0
+                  : [pods.length - data.notReady, data.notReady]
+              }
               label='Total Pods'
             />
           </div>

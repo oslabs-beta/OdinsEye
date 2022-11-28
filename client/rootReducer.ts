@@ -5,7 +5,6 @@ import {
   current,
 } from '@reduxjs/toolkit';
 import { State } from '../types';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { addNamespaces } from './getData';
 
 //ACTIONS
@@ -19,7 +18,6 @@ const initialState: State = {
   data: null,
   currentPage: 'main',
   currentNamespace: '',
-  //possible global state values: user, total pods, namespaces?
 };
 
 //REDUCER

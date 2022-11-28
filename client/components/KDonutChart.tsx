@@ -16,7 +16,7 @@ import { totalmem } from 'os';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
-  data: number[];
+  data: number[] | number;
   label: string;
 };
 
@@ -44,11 +44,11 @@ const KDoughnutChart = ({ data }: DoughnutType) => {
     ],
   };
   useEffect(() => {
-    if (data.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       setChartData(data);
     }
-    if (data === undefined){
-      setLoadErr(true)
+    if (data === undefined) {
+      setLoadErr(true);
     }
   }, [data]);
   const options: ChartOptions<'doughnut'> = {
@@ -76,20 +76,15 @@ const KDoughnutChart = ({ data }: DoughnutType) => {
         text: `Total Pods`,
         color: fontColor,
       },
-      //turn off display of data inside the chart
-      //not sure why it is throwing an error, so i commented it out
-      // datalabels: {
-      //     display: false,
-      // }
     },
   };
 
-  if(loadErr){
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected Prometheus API</h5>
       </div>
-    )
+    );
   } else {
     return (
       <div>

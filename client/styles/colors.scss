@@ -177,7 +177,6 @@ body[data-theme='light'] {
   }
   .bar-chart {
     @include themify($themes) {
-      box-shadow: themed('box-shadow'), themed('box-shadow2');
       background-color: themed('chart-back');
     }
   }
