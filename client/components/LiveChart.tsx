@@ -35,28 +35,19 @@ type LineChartDataType = {
   label: string;
   eventSource: string;
   title: string;
-  color: string;
+  type: string;
 };
 
-const LiveChart = ({ label, eventSource, title, color }: LineChartDataType) => {
+const LiveChart = ({ label, eventSource, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
   let sse: EventSource;
-  //   let event = 0;
-  //   if (event === 0) {
-  //     sse = new EventSource(eventSource);
-  //     event++;
-  //   }
   useEffect(() => {
     sse = new EventSource(eventSource);
   }, []);
 
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
-
-  //   const currentTime = new Date();
-  //   let now: string = currentTime.toLocaleString('en-GB');
-  //   now = now.slice(now.indexOf(',') + 1).trim();
 
   const initialData: ChartData<'line'> = {
     datasets: [
@@ -94,7 +85,7 @@ const LiveChart = ({ label, eventSource, title, color }: LineChartDataType) => {
         axis: 'y',
         title: {
           display: true,
-          text: 'Kilobytes',
+          text: type,
         },
         ticks: {
           color: fontColor,

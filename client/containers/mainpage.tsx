@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
-// import LineChart from '../components/LineChart';
 import DoughnutChart from '../components/DonutChart';
 import BarChart from '../components/BarChart';
 import { currentPage } from '../rootReducer';
@@ -85,7 +84,6 @@ const MainPage = () => {
       </div>
       <NavBar />
       <div className='data-container'>
-        {/* <div id='small-graphs'> */}
         <div id='list-data'>
           {loaded && !firstLoad ? (
             <BounceLoader
@@ -123,30 +121,21 @@ const MainPage = () => {
               label={'Network Received'}
               eventSource={'http://localhost:3000/live/received'}
               title='Live Network Received'
-              color='#363946'
+              type='Kilobytes'
             />
           </div>
           <div className='line'>
             <LiveChart
               label={'Network Transmitted'}
-              // yAxis={'test'}
               eventSource={'http://localhost:3000/live/transmit'}
               title='Live Network Transmitted'
-              color='rgba(136, 217, 230, 0.8)'
+              type='Kilobytes'
             />
           </div>
         </div>
         <div className='charts'>
           <div className='line-graph'>
             <div className='line' id='total-cpu'>
-              {/* <LineChart
-                  url='/api/dashboard/totalCpu'
-                  obj='totalCpu'
-                  label='Cpu Usage'
-                  yAxis='%'
-                  title='Total CPU % Usage'
-                  color='rgba(137, 170, 230, 0.8)'
-                /> */}
               <KLineChart
                 data={data.totalCpu}
                 label='Cpu Usage'
@@ -155,14 +144,6 @@ const MainPage = () => {
               />
             </div>
             <div className='line' id='total-memory-use'>
-              {/* <LineChart
-                  url='/api/dashboard/totalMem'
-                  obj='totalMem'
-                  label='Mem Usage'
-                  yAxis='Kilobytes'
-                  title='Total Memory Usage (kB)'
-                  color='rgba(54, 133, 181, 0.8)'
-                /> */}
               <KLineChart
                 data={data.totalMem}
                 label='Mem Usage'
@@ -173,14 +154,6 @@ const MainPage = () => {
           </div>
           <div className='line-graph'>
             <div className='line' id='net-rec'>
-              {/* <LineChart
-                  url='/api/dashboard/totalReceive'
-                  obj='totalReceive'
-                  label='Mem Usage'
-                  yAxis='Kilobytes'
-                  title='Network Transmitted (kB)'
-                  color='rgba(4, 113, 166, 0.8)'
-                /> */}
               <KLineChart
                 data={data.totalReceive}
                 label='Byte Usage'
@@ -189,14 +162,6 @@ const MainPage = () => {
               />
             </div>
             <div className='line' id='net-trans'>
-              {/* <LineChart
-                  url='/api/dashboard/totalTransmit'
-                  obj='totalTransmit'
-                  label='Mem Usage'
-                  yAxis='Kilobytes'
-                  title='Network Received (kB)'
-                  color='rgba(51, 153, 137, 0.7)'
-                /> */}
               <KLineChart
                 data={data.totalTransmit}
                 label='Byte Usage'
