@@ -37,47 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var axios_1 = require("axios");
-//const k8s = require('@kubernetes/client-node');
-//prometheus client for node.js
-//const client = require('prom-client');
 var start = new Date(Date.now() - 1440 * 60000).toISOString();
 var end = new Date(Date.now()).toISOString();
-// const kc = new k8s.KubeConfig();
-// kc.loadFromDefault();
-// const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-// const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
-// const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client
-//https://github.com/siimon/prom-client
-// client.collectDefaultMetrics();
 var kubernetesController = {
-    totalRestarts: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var restartQuery, response, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    restartQuery = 'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
-                case 2:
-                    response = _a.sent();
-                    res.locals.restarts = response.data;
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_1 = _a.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getTotalRestarts: ".concat(err_1),
-                            status: 500,
-                            message: 'Error occured while retrieving total restarts data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
     namespaceNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var namespaceQuery, response, array, namespaceArray_1, err_2;
+        var namespaceQuery, response, array, namespaceArray_1, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -96,9 +60,9 @@ var kubernetesController = {
                     res.locals.namespaceNames = namespaceArray_1;
                     return [2 /*return*/, next()];
                 case 3:
-                    err_2 = _a.sent();
+                    err_1 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.nameSpaceNames: ".concat(err_2),
+                            log: "Error in kuberenetesController.nameSpaceNames: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving namespace names data'
                         })];
@@ -107,7 +71,7 @@ var kubernetesController = {
         });
     }); },
     podNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var namespace, podNameQuery, response, array, podNameArray_1, err_3;
+        var namespace, podNameQuery, response, array, podNameArray_1, err_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -127,9 +91,9 @@ var kubernetesController = {
                     res.locals.names = podNameArray_1;
                     return [2 /*return*/, next()];
                 case 3:
-                    err_3 = _a.sent();
+                    err_2 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.podNames: ".concat(err_3),
+                            log: "Error in kuberenetesController.podNames: ".concat(err_2),
                             status: 500,
                             message: 'Error occured while retrieving pod names'
                         })];
@@ -138,7 +102,7 @@ var kubernetesController = {
         });
     }); },
     podsNotReady: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var readyQuery, response, err_4;
+        var readyQuery, response, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -152,13 +116,61 @@ var kubernetesController = {
                     res.locals.ready = response.data;
                     return [2 /*return*/, next()];
                 case 3:
-                    err_4 = _a.sent();
+                    err_3 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_4),
+                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_3),
                             status: 500,
                             message: 'Error occured while retrieving pods not ready data'
                         })];
                 case 4: return [2 /*return*/];
+            }
+        });
+    }); },
+    podsNotReadyNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+        var _a, namespace, podData, promises;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _a = req.query, namespace = _a.namespace, podData = _a.podData;
+                    if (!Array.isArray(podData)) return [3 /*break*/, 2];
+                    promises = podData.map(function (name) { return __awaiter(void 0, void 0, void 0, function () {
+                        var readyQuery, response, status_1, err_4;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    readyQuery = "sum(kube_pod_status_ready{condition=\"false\",namespace=\"".concat(namespace, "\",pod=\"").concat(name, "\"})");
+                                    _a.label = 1;
+                                case 1:
+                                    _a.trys.push([1, 3, , 4]);
+                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                                case 2:
+                                    response = _a.sent();
+                                    if (!response) {
+                                        return [2 /*return*/, [undefined, name]];
+                                    }
+                                    status_1 = response.data.data.result[0].values[0][1];
+                                    if (parseInt(status_1) > 0) {
+                                        return [2 /*return*/, [status_1, name]];
+                                    }
+                                    return [3 /*break*/, 4];
+                                case 3:
+                                    err_4 = _a.sent();
+                                    return [2 /*return*/, next({
+                                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_4),
+                                            status: 500,
+                                            message: 'Error occured while retrieving pods not ready data'
+                                        })];
+                                case 4: return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                    return [4 /*yield*/, Promise.all(promises).then(function (data) {
+                            res.locals.status = data;
+                        })];
+                case 1:
+                    _b.sent();
+                    _b.label = 2;
+                case 2: return [2 /*return*/, next()];
             }
         });
     }); },
@@ -336,54 +348,6 @@ var kubernetesController = {
                             message: 'Error occured while retrieving getMetrics data'
                         })];
                 case 9: return [2 /*return*/];
-            }
-        });
-    }); },
-    podsNotReadyNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, namespace, podData, promises;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = req.query, namespace = _a.namespace, podData = _a.podData;
-                    if (!Array.isArray(podData)) return [3 /*break*/, 2];
-                    promises = podData.map(function (name) { return __awaiter(void 0, void 0, void 0, function () {
-                        var readyQuery, response, status_1, err_7;
-                        return __generator(this, function (_a) {
-                            switch (_a.label) {
-                                case 0:
-                                    readyQuery = "sum(kube_pod_status_ready{condition=\"false\",namespace=\"".concat(namespace, "\",pod=\"").concat(name, "\"})");
-                                    _a.label = 1;
-                                case 1:
-                                    _a.trys.push([1, 3, , 4]);
-                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
-                                case 2:
-                                    response = _a.sent();
-                                    if (!response) {
-                                        return [2 /*return*/, [undefined, name]];
-                                    }
-                                    status_1 = response.data.data.result[0].values[0][1];
-                                    if (parseInt(status_1) > 0) {
-                                        return [2 /*return*/, [status_1, name]];
-                                    }
-                                    return [3 /*break*/, 4];
-                                case 3:
-                                    err_7 = _a.sent();
-                                    return [2 /*return*/, next({
-                                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_7),
-                                            status: 500,
-                                            message: 'Error occured while retrieving pods not ready data'
-                                        })];
-                                case 4: return [2 /*return*/];
-                            }
-                        });
-                    }); });
-                    return [4 /*yield*/, Promise.all(promises).then(function (data) {
-                            res.locals.status = data;
-                        })];
-                case 1:
-                    _b.sent();
-                    _b.label = 2;
-                case 2: return [2 /*return*/, next()];
             }
         });
     }); }

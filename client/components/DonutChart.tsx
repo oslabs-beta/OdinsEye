@@ -16,7 +16,7 @@ import { totalmem } from 'os';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type DoughnutType = {
-  data: number[];
+  data: number[] | number;
   label: string;
 };
 
@@ -47,7 +47,7 @@ const DoughnutChart = ({ data }: DoughnutType) => {
 
   //data is being passed from kubmain and mainpage
   useEffect(() => {
-    if (data.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       setChartData(data);
     }
     if (data === undefined){

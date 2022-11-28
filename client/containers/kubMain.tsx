@@ -163,14 +163,28 @@ const KubPage = ({ namespaces }: KubType) => {
       />
       <div className='data-container'>
         <div id='kube-list-data'>
-          <DropDown
-            namespaces={namespaces}
-            current={page}
-            handleChange={handleChange}
-          />
+        {namespaces ? (
+            namespaces.length > 0 ? (
+              <DropDown
+                namespaces={namespaces}
+                current={page}
+                handleChange={handleChange}
+              />
+            ) : (
+              <div id='dropdown'>
+                <button id='dropdown-but'>None</button>
+              </div>
+            )
+          ) : (
+            <div></div>
+          )}
           <div id='kube-total-pods'>
             <DoughnutChart
-              data={[pods.length - data.notReady, data.notReady]}
+              data={
+                pods[0] === 'Error Fetching Pods'
+                  ? 0
+                  : [pods.length - data.notReady, data.notReady]
+              }
               label='Total Pods'
             />
           </div>

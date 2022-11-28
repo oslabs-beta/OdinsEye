@@ -155,10 +155,15 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     //conditionally render either a line chart if data is present or 
     //a separate div if no data is being sent back
     return (
-      <div className='line-chart-container'>
-        {lineChartData.datasets.length > 0 && !loadErr
-        ? <Line className='line-chart' options={options} data={lineChartData} />
-        : <h2 className = 'missing-data'>There is no data to present</h2>}
+<div className='line-chart-container'>
+        <Line className='line-chart' options={options} data={lineChartData} />
+        {lineChartData.datasets.length === 0 ? (
+          <div className='missing-data'>
+            <h3>No Data to Display</h3>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

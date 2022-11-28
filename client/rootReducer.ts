@@ -18,7 +18,7 @@ const initialState: State = {
   namespaces: [],
   data: null,
   currentPage: 'main',
-  currentNamespace: '',
+  currentNamespace: 'None',
   //possible global state values: user, total pods, namespaces?
 };
 

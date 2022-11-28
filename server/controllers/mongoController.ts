@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { MongoController } from '../../types';
 import axios from 'axios';
-import { parse } from 'path';
+
 
 const start = new Date(Date.now() - 1440 * 60000).toISOString();
 const end = new Date(Date.now()).toISOString();
 
 const mongoController: MongoController = {
     mongoMetrics: async (req: Request, res: Response, next: NextFunction) => {
-        const queryObject: any = {
+        const queryObject: { [key: string] : string } = {
             opcounter: 'sum(rate(mongodb_ss_opcounters[5m]))',
             connections: 'mongodb_ss_connections{conn_type="active"}',
             queues: 'sum(mongodb_ss_globalLock_currentQueue)',
@@ -30,8 +30,8 @@ const mongoController: MongoController = {
     },
 };
 
-const DataObjectBuilder = async (obj: any) => {
-    const objectData: any = {};
+const DataObjectBuilder = async (obj: { [key: string] : string }): Promise<{ [key: string] : string[] } | unknown> => {
+    const objectData: { [key: string] : string[] } = {};
     try {
         for (let key in obj) {
             const response = await axios.get(
