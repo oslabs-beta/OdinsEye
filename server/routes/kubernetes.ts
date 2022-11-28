@@ -4,13 +4,13 @@ import kubernetesController from '../controllers/kubernetesController';
 
 const kubernetesRouter = express.Router();
 
-kubernetesRouter.get(
-  '/totalRestarts',
-  kubernetesController.totalRestarts,
-  (req: Request, res: Response) => {
-    return res.status(200).json(res.locals.restarts);
-  }
-);
+// kubernetesRouter.get(
+//   '/totalRestarts',
+//   kubernetesController.totalRestarts,
+//   (req: Request, res: Response) => {
+//     return res.status(200).json(res.locals.restarts);
+//   }
+// );
 kubernetesRouter.get(
   '/namespaceNames',
   kubernetesController.namespaceNames,

@@ -7,28 +7,16 @@ type DropDownType = {
   handleChange: (name: string) => void;
 };
 
-const useOutsideClick = (cb: Function) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const handleClick = (event: any) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        cb();
-      }
-    };
-    document.addEventListener('click', handleClick);
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, []);
-  return ref;
-};
 
 const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
-  const [open, setOpen] = useState(false);
+  //react hook to open/close the dropdown
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleOpen = (): void => {
     setOpen(!open);
   };
 
+  //creates array of html button elements of each namespaces
   const nameSpaceArr: any = [];
   if (namespaces) {
     namespaces.forEach((name) => {
@@ -47,14 +35,15 @@ const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
       );
     });
   }
+  //function to close menu after selection click
   const handleMenu = (name: string) => {
     setOpen(false);
   };
 
-  const handleClickOutside = () => {
+  const ref = useOutsideClick(() => {
     setOpen(false);
-  };
-  const ref = useOutsideClick(handleClickOutside);
+  });
+
   return (
     <div id='dropdown'>
       <button id='dropdown-but' ref={ref} onClick={handleOpen}>
@@ -64,5 +53,22 @@ const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
     </div>
   );
 };
+
+  //helper function to close dropdown if click is outside of the dropdown
+  const useOutsideClick = (cb: Function) => {
+    const ref = useRef<HTMLButtonElement>(null);
+    useEffect(() => {
+      const handleClick = (event: any) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          cb();
+        }
+      };
+      document.addEventListener('click', handleClick);
+      return () => {
+        document.removeEventListener('click', handleClick);
+      };
+    }, []);
+    return ref;
+  };
 
 export default DropDown;

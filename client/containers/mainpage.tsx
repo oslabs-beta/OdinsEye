@@ -1,5 +1,5 @@
 const React = require('react');
-import NavBar from '../components/navbar';
+import NavBar from '../components/Navbar';
 const styles = require('../styles/index.scss');
 const styles2 = require('../styles/colors.scss');
 import { useState, useEffect } from 'react';
@@ -7,14 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
-import DoughnutChart from '../components/DonutChart';
 import BarChart from '../components/BarChart';
 import { currentPage } from '../rootReducer';
 import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
-import KLineChart from '../components/KLineChart';
-import KDonutChart from '../components/KDonutChart';
+import LineChart from '../components/LineChart';
 import LiveChart from '../components/LiveChart';
+import DoughnutChart from '../components/DonutChart'
 
 type MainDataType = {
   totalCpu: any[];
@@ -29,6 +28,7 @@ type MainDataType = {
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [loaded, setLoaded] = useState(true);
+  //the bounce loader will only render the first time the page loads
   const [firstLoad, setfirstLoad] = useState(false);
   const [data, setData] = useState<MainDataType>({
     totalCpu: [],
@@ -40,33 +40,32 @@ const MainPage = () => {
     totalNamespaces: '',
   });
 
+  //helper function to grab metrics 
   const getData = async (url: string): Promise<any> => {
     try {
       const response = await axios.get(url);
-      console.log(response);
       const metrics = await response.data;
-      console.log(data);
       setData(metrics);
-    } catch (err) {
-      console.log(err);
+    } catch(err) {
+      console.log('Main page: ',err);
     }
   };
 
+  //grab all metrics from our server on first load
   useEffect(() => {
     getData('/api/dashboard/getAllMetrics');
   }, []);
-  console.log('data', data.totalCpu);
 
   useEffect(() => {
+    //invoking addNamespace function from root reducer
+    dispatch(addNamespaces());
+    //highlight navbar main page button
+    dispatch(currentPage('main'));
+    setfirstLoad(true);
+    //to wait 6s before the namespace number loads
     setTimeout(() => {
       setLoaded(false);
     }, 6000);
-  }, []);
-
-  useEffect(() => {
-    dispatch(addNamespaces());
-    dispatch(currentPage('main'));
-    setfirstLoad(true);
   }, []);
 
   const namespaces = useSelector((state: State) => state.namespaces);
@@ -75,7 +74,6 @@ const MainPage = () => {
     nameLength = namespaces.length;
   }
   let theme: string;
-  // console.log(firstLoad);
 
   return (
     <div id='main-container'>
@@ -104,11 +102,15 @@ const MainPage = () => {
             </div>
           )}
           <div className='bar-chart'>
-            <BarChart />
+            <BarChart 
+            title={'Cluster Core Cpu Usage'}
+            url={'/api/dashboard/cpuUsage'}
+            labels={['Core Usage', 'Total Core Cpu']}
+            />
           </div>
           <div id='total-pods'>
             <div id='total-pods'>
-              <KDonutChart
+              <DoughnutChart
                 data={[data.totalPods - data.notReadyPods, data.notReadyPods]}
                 label='Total Pods'
               />
@@ -119,7 +121,7 @@ const MainPage = () => {
           <div className='line'>
             <LiveChart
               label={'Network Received'}
-              eventSource={'http://localhost:3000/live/received'}
+              path={'http://localhost:3000/live/received'}
               title='Live Network Received'
               type='Kilobytes'
             />
@@ -127,7 +129,7 @@ const MainPage = () => {
           <div className='line'>
             <LiveChart
               label={'Network Transmitted'}
-              eventSource={'http://localhost:3000/live/transmit'}
+              path={'http://localhost:3000/live/transmit'}
               title='Live Network Transmitted'
               type='Kilobytes'
             />
@@ -136,7 +138,7 @@ const MainPage = () => {
         <div className='charts'>
           <div className='line-graph'>
             <div className='line' id='total-cpu'>
-              <KLineChart
+              <LineChart
                 data={data.totalCpu}
                 label='Cpu Usage'
                 yAxis='Percent'
@@ -144,7 +146,7 @@ const MainPage = () => {
               />
             </div>
             <div className='line' id='total-memory-use'>
-              <KLineChart
+              <LineChart
                 data={data.totalMem}
                 label='Mem Usage'
                 yAxis='Kilobytes'
@@ -154,7 +156,7 @@ const MainPage = () => {
           </div>
           <div className='line-graph'>
             <div className='line' id='net-rec'>
-              <KLineChart
+              <LineChart
                 data={data.totalReceive}
                 label='Byte Usage'
                 yAxis='Kilobytes'
@@ -162,7 +164,7 @@ const MainPage = () => {
               />
             </div>
             <div className='line' id='net-trans'>
-              <KLineChart
+              <LineChart
                 data={data.totalTransmit}
                 label='Byte Usage'
                 yAxis='Kilobytes'

@@ -1,19 +1,4 @@
-// $nav: #1d1b1d;
-// $header: #1d1b1d;
 $border: #353636;
-// $MiddleBlueGreen: rgba(125, 226, 209);
-// $PersianGreen: rgb(51, 153, 137);
-// $PacificBlue: rgb(80, 178, 192);
-// $OperaMauve: rgb(172, 128, 160);
-// $LittleBoyBlue: rgb(137, 170, 230);
-// $BlueNCS: rgb(54, 133, 181);
-// $HonoluluBlue: rgb(4, 113, 166);
-// $RichBlack: rgb(6, 24, 38);
-// $background: rgb(31, 28, 30);
-// $fontColor: rgba(136, 217, 230, 0.8);
-// $Celeste: rgb(197, 255, 253);
-// $MiddleBlue: rgb(136, 217, 230);
-// $CoolGrey: rgb(139, 139, 174);
 $font: 'Playfair Display', serif;
 
 * {
@@ -24,16 +9,13 @@ $font: 'Playfair Display', serif;
   display: grid;
   grid-template-areas:
     'head head'
-    // 'navb drop'
     'navb main'
     'navb main';
   grid-template-columns: 300px 1fr;
   height: 100em;
 
-  // color: $fontColor;
   font-family: $font;
   .header {
-    // background-color: $header;
     font-size: 30px;
     text-align: center;
     grid-area: head;
@@ -42,13 +24,10 @@ $font: 'Playfair Display', serif;
     width: 100%;
     position: fixed;
     border: 1px solid $border;
-    // color: $fontColor;
-    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    z-index: 1;
   }
 
   #dropdown {
-    // grid-area: drop;
     padding-top: 10px;
     padding-bottom: 20px;
     padding-left: 50px;
@@ -57,11 +36,9 @@ $font: 'Playfair Display', serif;
       font-size: 20px;
       font-family: $font;
       background-color: transparent;
-      // color: $PersianGreen;
       border: 1px solid $border;
       padding: 5px 15px;
       &:hover {
-        // background-color: rgba(159, 155, 158, 0.2);
         cursor: pointer;
       }
     }
@@ -78,14 +55,7 @@ $font: 'Playfair Display', serif;
 
     .menu > li {
       margin: 0;
-      // background-color: $background;
-      // color: $PersianGreen;
     }
-
-    // .menu > li:hover {
-    //   background-color: rgb(151, 150, 150);
-    //   color: #1d1b1d;
-    // }
 
     .menu > li > button {
       width: 100%;
@@ -102,7 +72,6 @@ $font: 'Playfair Display', serif;
   }
 
   #nav-bar {
-    // background-color: $nav;
     min-width: 300px;
     align-items: center;
     top: 201px;
@@ -114,13 +83,10 @@ $font: 'Playfair Display', serif;
     height: 100%;
     padding-top: 20px;
     border: 1px solid $border;
-    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
     .link-div {
       display: flex;
       width: 300px;
       justify-content: center;
-      // padding: 5px;
     }
     .link {
       padding: 5px;
@@ -146,7 +112,6 @@ $font: 'Playfair Display', serif;
     justify-content: start;
     align-items: center;
     font-size: 12.5px;
-    // color: #666666;
     font-family: Helvetica;
     font-weight: bolder;
     padding-top: 20px;
@@ -156,10 +121,7 @@ $font: 'Playfair Display', serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    // padding-top: 20px;
-    // -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
     font-size: 210px;
-    // color: rgba(54, 133, 181, 0.6);
   }
 
   //pods & namespaces
@@ -172,8 +134,6 @@ $font: 'Playfair Display', serif;
     padding: 10px -35px 20px 5px;
     height: 342px;
     max-height: 342px;
-    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
   //mongo charts
   #mongo-charts {
@@ -185,9 +145,10 @@ $font: 'Playfair Display', serif;
     align-items: center;
     height: 200px;
     align-self: center;
+    border: none;
+    box-shadow: none;
   }
 
-  //line chart
   .charts {
     display: flex;
     flex-direction: column;
@@ -207,8 +168,6 @@ $font: 'Playfair Display', serif;
     margin: 30px 20px 20px 0;
     border: 1px solid $border;
     padding: 5px;
-    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
     width: 700px;
     height: auto;
   }
@@ -218,7 +177,6 @@ $font: 'Playfair Display', serif;
     width: 200px;
     height: 200px;
     padding-top: 60px;
-    // color: rgba(136, 217, 230, 0.8);
   }
 
   #kube-main-dash {
@@ -234,28 +192,23 @@ $font: 'Playfair Display', serif;
     margin: 0 24px 0 24px;
     margin-top: 125px;
     padding: 5px 5px 5px 5px;
-    padding-bottom: 25px;
-    max-height: 310px;
-    // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-    //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
-
-  // #logs {
-  //   background-color: rgb(218, 178, 246);
-  //   min-width: 800px;
-  //   width: 100%;
-  //   height: 400px;
-  // }
-  
+  .line-chart-container {
+    display: grid;
+    height: auto;
+  }
   .missing-data {
+    height: 350px;
+    width: 700px;
+    background: rgba(255, 255, 255, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 160px;
-    margin-bottom: 160px;
-    color: #5d536b
+    color: #1b013f;
+    position: absolute;
   }
 }
+
 
 #error {
   display: flex;
@@ -264,13 +217,6 @@ $font: 'Playfair Display', serif;
   margin-top: 160px;
   margin-bottom: 160px;
 }
-
-// #logs {
-//   background-color: rgb(218, 178, 246);
-//   min-width: 800px;
-//   width: 100%;
-//   height: 400px;
-// }
 
 #logo {
   display: flex;
@@ -281,7 +227,6 @@ $font: 'Playfair Display', serif;
   padding-bottom: 20px;
 }
 #eyepatch {
-  // background-color: transparent;
   position: fixed;
   height: 50px;
   width: 50px;
@@ -290,9 +235,6 @@ $font: 'Playfair Display', serif;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    // background-color: $background;
-    // box-shadow: 0 0 20px 20px $background,
-    // /* inner white */ /* middle magenta */ 0 0 100px 40px #0ff; /* outer cyan */
     cursor: pointer;
   }
   bottom: 3%;
@@ -322,6 +264,7 @@ $font: 'Playfair Display', serif;
   }
 }
 ::-webkit-scrollbar {
+  height:10px;
   width: 10px;
 }
 

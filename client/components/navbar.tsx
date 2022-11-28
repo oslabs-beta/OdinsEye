@@ -5,16 +5,22 @@ import { darkMode, currentPage } from '../rootReducer';
 import { State } from '../../types';
 
 const NavBar = () => {
+  //Dispatch action for toggling light/dark mode in global state
   const dispatch = useDispatch();
   const dark = useSelector((state: State) => state.dark);
+
   let classInfo: string;
 
   dark ? (classInfo = 'open') : (classInfo = 'closed');
+
+  //helper function to toggle class name for theme on the root component
   function toggleTheme() {
     const main = document.getElementById('root');
+    //main component changes
     if (main) {
       dark ? (main.className = 'theme-dark') : (main.className = 'theme-light');
     }
+    //Used to grab the body and alter the theme for the body html element
     const body = Array.from(document.getElementsByTagName('body'))[0];
     if (body) {
       dark
@@ -22,6 +28,7 @@ const NavBar = () => {
         : body.setAttribute('data-theme', 'light');
     }
   }
+
   return (
     <nav id='nav-bar'>
       <div id='logo'>

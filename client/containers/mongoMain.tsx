@@ -1,15 +1,11 @@
 const React = require('react');
-import NavBar from '../components/navbar';
+import NavBar from '../components/Navbar';
 import axios from 'axios';
-import KLineChart from '../components/KLineChart';
+import KLineChart from '../components/LineChart';
 import { useState, useEffect } from 'react';
 import { currentPage } from '../rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
-
-type AppProps = {
-  name: string;
-};
 
 type MongoDataType = {
   opcounter: any[];
@@ -23,9 +19,11 @@ type MongoDataType = {
 
 const MongoPage = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(currentPage('mongo'));
   }, []);
+
   const initialData = {
     opcounter: [],
     connections: [],
@@ -37,17 +35,19 @@ const MongoPage = () => {
   };
 
   const[data, setData] = useState<MongoDataType>(initialData);
+
+  // helper function to fetch mongodb data
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
       setData(data);
-      console.log(data)
     } catch (err) {
-      (['Error Fetching Pods']);
+      console.log(err)
     }
   }
 
+  // fetch data on load
   useEffect(() => {
     getData('/api/mongodb/mongoMetrics');
   }, []);

@@ -21,11 +21,18 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = (props: any) => {
-  const [loadErr, setLoadErr] = useState(false);
+type BarType = {
+  title: string,
+  url: string,
+  labels: string[]
+}
+
+const BarChart = ({ title, url, labels}: BarType) => {
+  const [loadErr, setLoadErr] = useState<boolean>(false);
   const initialData: ChartData<'bar'> = {
     datasets: [],
   };
+  
   ChartJS.defaults.datasets.bar.barThickness = 35;
   const [barChartData, setBarChartData] = useState<any>(initialData);
   const option: ChartOptions<'bar'> = {
@@ -46,7 +53,7 @@ const BarChart = (props: any) => {
       },
       title: {
         display: true,
-        text: 'Cluster Core Cpu Usage',
+        text: title,
         color: 'rgb(53,162,235)',
       },
     },
@@ -76,8 +83,9 @@ const BarChart = (props: any) => {
     },
   };
 
+  //main use case for bar chart is to display overall core cpu usage over total cpu usage
   useEffect(() => {
-    fetch('/api/dashboard/cpuUsage')
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
         const metrics = data;
@@ -89,13 +97,13 @@ const BarChart = (props: any) => {
           labels: xAxis,
           datasets: [
             {
-              label: 'Core Usage',
+              label: labels[0],
               data: yAxis,
               backgroundColor: 'rgb(52,162,235)',
               borderColor: 'rgb(52,162,235)',
             },
             {
-              label: 'Total Core Cpu',
+              label: labels[1],
               data: yAxis[1],
               backgroundColor: 'rgba(54, 133, 181, 1)',
               borderColor: 'rgba(54, 133, 181, 1)',
@@ -109,10 +117,11 @@ const BarChart = (props: any) => {
         setLoadErr(true);
       });
   }, []);
+
   if (loadErr) {
     return (
       <div id='error'>
-        <h5>Not Connected Prometheus API</h5>
+        <h5>Not Connected to Prometheus API</h5>
       </div>
     );
   } else {

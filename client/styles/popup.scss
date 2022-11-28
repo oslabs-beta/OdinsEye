@@ -73,6 +73,7 @@ $themes: (
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index:1;
 
   #popup-inner {
     position: relative;
@@ -84,6 +85,7 @@ $themes: (
     width: 90%;
     overflow: scroll;
     align-content: center;
+    z-index:1;
     @include themify($themes) {
       background-color: themed('nav-back');
     }

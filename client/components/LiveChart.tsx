@@ -33,17 +33,21 @@ ChartJS.register(
 
 type LineChartDataType = {
   label: string;
-  eventSource: string;
+  path: string;
   title: string;
   type: string;
 };
 
-const LiveChart = ({ label, eventSource, title, type }: LineChartDataType) => {
+
+const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
+  const [loadErr, setLoadErr] = useState<boolean>(false);
   let sse: EventSource;
+
+  //effect to set up connection to server sent event
   useEffect(() => {
-    sse = new EventSource(eventSource);
+    sse = new EventSource(path);
   }, []);
 
   let fontColor;
@@ -61,6 +65,7 @@ const LiveChart = ({ label, eventSource, title, type }: LineChartDataType) => {
   };
 
   const [lineChartData, setLineChartData] = useState<any>(initialData);
+
   const options: ChartOptions<'line'> = {
     plugins: {
       legend: {
@@ -110,6 +115,8 @@ const LiveChart = ({ label, eventSource, title, type }: LineChartDataType) => {
       },
     },
   };
+
+  //function to add data to the datasets
   useEffect(() => {
     if (sse) {
       sse.onmessage = (event) => {
@@ -125,12 +132,21 @@ const LiveChart = ({ label, eventSource, title, type }: LineChartDataType) => {
         liveChart.current?.update('quiet');
       };
       sse.onerror = (event) => {
+        setLoadErr(true);
         sse.close();
       };
     }
   });
-
+  //Conditionally render if there is a load error
+  if(loadErr) {
+    return (
+      <div id='error'>
+        <h5>Not Connected to Prometheus API</h5>
+      </div>
+    )
+  } else {
   return <Line ref={liveChart} data={lineChartData} options={options} />;
-};
+  };
+}
 
 export default LiveChart;

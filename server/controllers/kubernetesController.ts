@@ -1,43 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-
 import { KubernetesController } from '../../types';
-
 import axios from 'axios';
-import { parse } from 'path';
-//const k8s = require('@kubernetes/client-node');
-//prometheus client for node.js
-//const client = require('prom-client');
+
+
 const start = new Date(Date.now() - 1440 * 60000).toISOString();
 const end = new Date(Date.now()).toISOString();
 
-// const kc = new k8s.KubeConfig();
-// kc.loadFromDefault();
-
-// const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-// const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
-// const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client
-//https://github.com/siimon/prom-client
-// client.collectDefaultMetrics();
 
 const kubernetesController: KubernetesController = {
-  totalRestarts: async (req: Request, res: Response, next: NextFunction) => {
-    const restartQuery =
-      'sum+by+(namespace)(changes(kube_pod_status_ready{condition="true"}[5m]))';
-    try {
-      const response = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=${restartQuery}&start=${start}&end=${end}&step=5m`
-      );
-      res.locals.restarts = response.data;
-      return next();
-    } catch (err) {
-      return next({
-        log: `Error in kuberenetesController.getTotalRestarts: ${err}`,
-        status: 500,
-        message: 'Error occured while retrieving total restarts data',
-      });
-    }
-  },
+
   namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
@@ -59,6 +30,7 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
+
   podNames: async (req: Request, res: Response, next: NextFunction) => {
     const namespace = req.query.namespace;
     const podNameQuery = `sum by (pod)(kube_pod_info{namespace="${namespace}"})`;
@@ -81,6 +53,7 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
+
   podsNotReady: async (req: Request, res: Response, next: NextFunction) => {
     const readyQuery =
       'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
@@ -98,6 +71,42 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
+
+  podsNotReadyNames: async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { namespace, podData } = req.query;
+    if (Array.isArray(podData)) {
+      const promises = podData.map(async (name) => {
+        const readyQuery = `sum(kube_pod_status_ready{condition="false",namespace="${namespace}",pod="${name}"})`;
+        try {
+          const response = await axios.get(
+            `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
+          );
+          if (!response) {
+            return [undefined, name];
+          }
+          const status = response.data.data.result[0].values[0][1];
+          if (parseInt(status) > 0) {
+            return [status, name];
+          }
+        } catch (err) {
+          return next({
+            log: `Error in kuberenetesController.podsNotReady: ${err}`,
+            status: 500,
+            message: 'Error occured while retrieving pods not ready data',
+          });
+        }
+      });
+      await Promise.all(promises).then((data) => {
+        res.locals.status = data;
+      });
+    }
+    return next();
+  },
+
   getNameSpaceMetrics: async (
     req: Request,
     res: Response,
@@ -193,6 +202,7 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
+  
   getPodMetrics: async (req: Request, res: Response, next: NextFunction) => {
     const objectData: any = {};
     const { podName } = req.params;
@@ -285,40 +295,7 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
-  podsNotReadyNames: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const { namespace, podData } = req.query;
-    if (Array.isArray(podData)) {
-      const promises = podData.map(async (name) => {
-        const readyQuery = `sum(kube_pod_status_ready{condition="false",namespace="${namespace}",pod="${name}"})`;
-        try {
-          const response = await axios.get(
-            `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
-          );
-          if (!response) {
-            return [undefined, name];
-          }
-          const status = response.data.data.result[0].values[0][1];
-          if (parseInt(status) > 0) {
-            return [status, name];
-          }
-        } catch (err) {
-          return next({
-            log: `Error in kuberenetesController.podsNotReady: ${err}`,
-            status: 500,
-            message: 'Error occured while retrieving pods not ready data',
-          });
-        }
-      });
-      await Promise.all(promises).then((data) => {
-        res.locals.status = data;
-      });
-    }
-    return next();
-  },
+  
 };
 
 export default kubernetesController;
