@@ -326,6 +326,7 @@ var kubernetesController = {
                         objectData.transmission = transmitArray;
                     }
                     res.locals.podData = objectData;
+                    //console.log('res.locals.podData', res.locals.podData)
                     return [2 /*return*/, next()];
                 case 8:
                     err_6 = _a.sent();
@@ -357,6 +358,9 @@ var kubernetesController = {
                                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
                                 case 2:
                                     response = _a.sent();
+                                    if (!response) {
+                                        return [2 /*return*/, [undefined, name]];
+                                    }
                                     status_1 = response.data.data.result[0].values[0][1];
                                     if (parseInt(status_1) > 0) {
                                         return [2 /*return*/, [status_1, name]];

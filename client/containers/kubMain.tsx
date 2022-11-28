@@ -8,7 +8,8 @@ import Popup from '../components/PopUp';
 import KDoughnutChart from '../components/KDonutChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
-import { currentPage } from '../rootReducer';
+import { currentPage, saveNamespace } from '../rootReducer';
+import PodName from '../components/podName';
 
 type KubType = {
   namespaces: string[] | null;
@@ -26,8 +27,9 @@ type KubDataType = {
 
 const KubPage = ({ namespaces }: KubType) => {
   const dispatch = useDispatch();
-  const [page, setCurrentPage] = useState('default');
-  const initialData = {
+  const currName = useSelector((state: State) => state.currentNamespace);
+  const [page, setCurrentPage] = useState<string>('None');
+  const [data, setData] = useState<KubDataType>({
     cpu: [],
     memory: [],
     notReady: 0,
@@ -35,23 +37,42 @@ const KubPage = ({ namespaces }: KubType) => {
     reception: [],
     restarts: [],
     transmission: [],
-  };
-  const [data, setData] = useState<KubDataType>(initialData);
+  });
+  // const [podState, setPodState] = useState<boolean>(false);
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
+  // const [noDataMetrics, setNoDataMetrics ]= useState<string[]>([]);
+
   const podsArray: JSX.Element[] = [];
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
+      
+      // console.log(data, 'data')
+      // const dataArray = [];
+      // for (const metric in data){
+      //   //console.log(data[metric])
+      //   if (data[metric].length === 0){
+      //     dataArray.push(metric)
+      //   }
+      // }
+      // console.log(dataArray)
+      // console.log('data', data)
+      // setNoDataMetrics(dataArray)
+
+      console.log('url',url)
+      console.log('kube data', data);
+      
       setData(data);
       console.log(data)
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
+      //console.log('podData', podData)
       setPods(podData);
-      const badPods: any[] = [];
+      const badPods: string[] = [];
       if (data.notReady > 0) {
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
@@ -61,85 +82,89 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
+
       setPods(['Error Fetching Pods']);
+      console.log(err);
     }
   };
 
   //runs effect on first render
   useEffect(() => {
     dispatch(currentPage('kubernetes'));
-    if (namespaces && page === 'default') {
-      setCurrentPage(namespaces[0]);
-    }
+    currName !== ''
+      ? setCurrentPage(currName)
+      : namespaces
+      ? setCurrentPage(namespaces[0])
+      : setCurrentPage('None');
   }, []);
 
   //runs effect on namespace change
   useEffect(() => {
-    if (
-      (page === 'default' && namespaces?.includes('default')) ||
-      page !== 'default'
-    ) {
-      getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+    if (namespaces) {
+      if (page !== 'None') {
+        getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
+      }
     } else {
       setPods(['No Pods']);
     }
   }, [page]);
 
+  //Upon changing the namespace page, will save and update to current
   const handleChange = (newName: string) => {
     setCurrentPage(newName);
+    //persists the current namespace selection when switching pages
+    dispatch(saveNamespace(newName));
   };
-
   const [buttonPopup, setButtonPopup] = useState(false);
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
+      // if (!pod) {
+      //   setPodState(true);
+      //   <div key={pod[1]}>
+      //     <a
+      //       className='pod-list-load'
+      //       onClick={() => {
+      //         setCurrentPod(pod[1]);
+      //         setButtonPopup(true);
+      //       }}
+      //     >
+      //       {pod[1] + '- Loading'}
+      //     </a>
+      //     <br />
+      //   </div>;
+      // }
       if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
           podsArray.push(
-            <div key={pod[1]}>
-              <a
-                className='pod-list-bad'
-                onClick={() => {
-                  setCurrentPod(pod[1]);
-                  setButtonPopup(true);
-                }}
-              >
-                {pod[1]}
-              </a>
-              <br />
-            </div>
+            <PodName
+              key={pod[1]}
+              pod={pod[1]}
+              ready={false}
+              setCurrentPod={setCurrentPod}
+              setButtonPopup={setButtonPopup}
+            />
           );
         } else {
           podsArray.push(
-            <div key={pod[1]}>
-              <a
-                className='pod-list'
-                onClick={() => {
-                  setCurrentPod(pod[1]);
-                  setButtonPopup(true);
-                  handleChange(page);
-                }}
-              >
-                {pod}
-              </a>
-              <br />
-            </div>
+            <PodName
+              key={pod[1]}
+              pod={pod[1]}
+              ready={true}
+              setCurrentPod={setCurrentPod}
+              setButtonPopup={setButtonPopup}
+            />
           );
         }
       } else {
         podsArray.push(
-          <div key={pod}>
-            <a
-              className='pod-list'
-              onClick={() => {
-                setCurrentPod(pod);
-                setButtonPopup(true);
-              }}
-            >
-              {pod}
-            </a>
-            <br />
-          </div>
+          <PodName
+            key={pod}
+            pod={pod}
+            ready={true}
+            setCurrentPod={setCurrentPod}
+            setButtonPopup={setButtonPopup}
+          />
         );
       }
     });
@@ -149,6 +174,7 @@ const KubPage = ({ namespaces }: KubType) => {
   let theme: string;
 
   dark ? (theme = 'lightMode') : (theme = 'darkMode');
+
   return (
     <div id='main-container' className={theme}>
       <div className='header'>
@@ -201,11 +227,11 @@ const KubPage = ({ namespaces }: KubType) => {
           <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
-                data={data.ready}
-                label='kB'
-                yAxis='Kilobytes'
-                title='Network Received (kB)'
-              />
+              data={data.reception}
+              label='kB'
+              yAxis='Kilobytes'
+              title='Network Received (kB)'
+            />
             </div>
             <div id='net-trans' className='line'>
               <KLineChart
@@ -221,13 +247,12 @@ const KubPage = ({ namespaces }: KubType) => {
               <KLineChart
                 data={data.restarts}
                 label='Restarts'
-                yAxis='restarts'
+                yAxis='Restarts'
                 title='Pod Restarts'
               />
             </div>
           </div>
         </div>
-        {/* <div id='logs'>logs</div> */}
       </div>
     </div>
   );

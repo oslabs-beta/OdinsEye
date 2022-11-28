@@ -2,12 +2,14 @@
 import { RequestHandler } from 'express';
 //type alias
 export type DashboardController = {
-  totalMem: RequestHandler;
-  totalCpu: RequestHandler;
-  totalTransmit: RequestHandler;
-  totalReceive: RequestHandler;
-  totalPods: RequestHandler;
-  totalNamespaces: RequestHandler;
+  getAllMetrics: RequestHandler;
+  // totalMem: RequestHandler;
+  // totalCpu: RequestHandler;
+  // totalTransmit: RequestHandler;
+  // totalReceive: RequestHandler;
+  // totalPods: RequestHandler;
+  // totalNamespaces: RequestHandler;
+  cpuUsageOverTotalCpu: RequestHandler;
 };
 
 export type KubernetesController = {
@@ -29,6 +31,7 @@ export type State = {
   namespaces: string[] | null;
   data: null | [];
   currentPage: string;
+  currentNamespace: string;
 };
 
 export type ErrorType = {

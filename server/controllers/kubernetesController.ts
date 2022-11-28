@@ -275,6 +275,7 @@ const kubernetesController: KubernetesController = {
       }
 
       res.locals.podData = objectData;
+      //console.log('res.locals.podData', res.locals.podData)
       return next();
     } catch (err) {
       return next({
@@ -297,6 +298,9 @@ const kubernetesController: KubernetesController = {
           const response = await axios.get(
             `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
           );
+          if (!response) {
+            return [undefined, name];
+          }
           const status = response.data.data.result[0].values[0][1];
           if (parseInt(status) > 0) {
             return [status, name];

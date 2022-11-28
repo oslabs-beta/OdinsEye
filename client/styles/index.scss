@@ -126,6 +126,11 @@ $font: 'Playfair Display', serif;
       padding: 5px;
       align-self: center;
     }
+    #eyepatch {
+      display: flex;
+      position: relative;
+      margin-top: 350px;
+    }
   }
 }
 
@@ -151,7 +156,7 @@ $font: 'Playfair Display', serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 20px;
+    // padding-top: 20px;
     // -webkit-text-stroke: 1px rgba(54, 133, 181, 1);
     font-size: 210px;
     // color: rgba(54, 133, 181, 0.6);
@@ -163,16 +168,23 @@ $font: 'Playfair Display', serif;
     flex-direction: row;
     justify-content: space-evenly;
     border: 1px solid $border;
-    margin: 0 24px 0 24px;
-    padding: 10px 5px 20px 5px;
+    margin: 125px 24px 0 24px;
+    padding: 10px -35px 20px 5px;
+    height: 342px;
     max-height: 342px;
     // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
     //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
-
   //mongo charts
   #mongo-charts {
     margin-top: 125px
+  }
+  .bar-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    align-self: center;
   }
 
   //line chart
@@ -181,7 +193,7 @@ $font: 'Playfair Display', serif;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin: 5px 5px 5px 5px;
+    margin: 5px 25px 5px 25px;
   }
 
   .line-graph {
@@ -205,6 +217,7 @@ $font: 'Playfair Display', serif;
     display: flex;
     width: 200px;
     height: 200px;
+    padding-top: 60px;
     // color: rgba(136, 217, 230, 0.8);
   }
 
@@ -233,7 +246,31 @@ $font: 'Playfair Display', serif;
   //   width: 100%;
   //   height: 400px;
   // }
+  
+  .missing-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 160px;
+    margin-bottom: 160px;
+    color: #5d536b
+  }
 }
+
+#error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 160px;
+  margin-bottom: 160px;
+}
+
+// #logs {
+//   background-color: rgb(218, 178, 246);
+//   min-width: 800px;
+//   width: 100%;
+//   height: 400px;
+// }
 
 #logo {
   display: flex;
@@ -300,6 +337,11 @@ $font: 'Playfair Display', serif;
   cursor: pointer;
 }
 
+#total-pods {
+  padding-top: 20px;
+  align-self: center;
+}
+
 #kube-total-pods {
   margin-left: -100px;
 }
@@ -317,6 +359,8 @@ $font: 'Playfair Display', serif;
 }
 
 #temp {
+  margin: 300px;
   display: flex;
   justify-content: center;
 }
+

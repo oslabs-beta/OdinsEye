@@ -169,6 +169,18 @@ body[data-theme='light'] {
     }
   }
 
+  .live {
+    @include themify($themes) {
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+      background-color: themed('chart-back');
+    }
+  }
+  .bar-chart {
+    @include themify($themes) {
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+      background-color: themed('chart-back');
+    }
+  }
   #total-names {
     @include themify($themes) {
       color: themed('font');

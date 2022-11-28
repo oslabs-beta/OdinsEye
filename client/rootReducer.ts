@@ -11,12 +11,14 @@ import { addNamespaces } from './getData';
 //ACTIONS
 const darkMode = createAction<boolean, 'darkMode'>('darkMode');
 const currentPage = createAction<string, 'currentPage'>('currentPage');
+const saveNamespace = createAction<string, 'saveNamespace'>('saveNamespace');
 
 const initialState: State = {
   dark: true,
   namespaces: [],
   data: null,
   currentPage: 'main',
+  currentNamespace: '',
   //possible global state values: user, total pods, namespaces?
 };
 
@@ -28,6 +30,13 @@ const rootReducer = createReducer(initialState, (builder) =>
       let dark;
       action.payload ? (dark = false) : (dark = true);
       return { ...state, dark };
+    })
+    .addCase(saveNamespace, (state, action) => {
+      let currentNamespace = action.payload;
+      return {
+        ...state,
+        currentNamespace,
+      };
     })
     .addCase(currentPage, (state, action) => {
       let previous = document.getElementById(state.currentPage);
@@ -42,7 +51,7 @@ const rootReducer = createReducer(initialState, (builder) =>
       return { ...state, currentPage };
     })
     .addCase(addNamespaces.pending, (state, action) => {
-      console.log('pending');
+      console.log('Retrieving namespaces...');
       return { ...state };
     })
     .addCase(addNamespaces.fulfilled, (state, action) => {
@@ -57,4 +66,4 @@ const rootReducer = createReducer(initialState, (builder) =>
 
 export default rootReducer;
 
-export { darkMode, currentPage, addNamespaces };
+export { darkMode, currentPage, addNamespaces, saveNamespace };
