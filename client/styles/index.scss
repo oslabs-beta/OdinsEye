@@ -175,7 +175,10 @@ $font: 'Playfair Display', serif;
     // box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
     //   rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
   }
-
+  //mongo charts
+  #mongo-charts {
+    margin-top: 125px
+  }
   .bar-chart {
     display: flex;
     justify-content: center;

@@ -41,6 +41,7 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var dashboard_1 = require("./routes/dashboard");
 var kubernetes_1 = require("./routes/kubernetes");
+var mongo_1 = require("./routes/mongo");
 var axios_1 = require("axios");
 var cors = require('cors');
 var app = express();
@@ -49,7 +50,6 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// set cookie to help page persist through refresh
 app.use(function (req, res, next) {
     var cookie = req.cookies.cookieName;
     if (cookie == undefined) {
@@ -70,6 +70,7 @@ app.use('/mongo', function (req, res) {
 });
 app.use('/api/dashboard', dashboard_1["default"]);
 app.use('/api/kubernetesMetrics', kubernetes_1["default"]);
+app.use('/api/mongodb', mongo_1["default"]);
 app.get('/dashboard', function (req, res) {
     return res.status(200).send('hi');
 });
