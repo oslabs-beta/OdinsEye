@@ -168,6 +168,12 @@ body[data-theme='light'] {
     }
   }
 
+  .live {
+    @include themify($themes) {
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+      background-color: themed('chart-back');
+    }
+  }
   .bar-chart {
     @include themify($themes) {
       background-color: themed('chart-back');

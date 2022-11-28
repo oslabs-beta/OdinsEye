@@ -38,6 +38,7 @@ type LineChartDataType = {
   type: string;
 };
 
+
 const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
