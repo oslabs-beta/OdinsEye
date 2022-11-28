@@ -8,11 +8,13 @@ type PodNameType = {
   setButtonPopup: (on: boolean) => void;
 };
 
+//Component to render the div containing pod name, will trigger pop up upon click
 const PodName = ({
   pod,
   ready,
   setCurrentPod,
   setButtonPopup,
+
 }: PodNameType) => {
   let className;
   ready ? (className = 'pod-list') : (className = 'pod-list-bad');

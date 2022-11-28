@@ -4,21 +4,10 @@ import { KubernetesController } from '../../types';
 
 import axios from 'axios';
 import { parse } from 'path';
-//const k8s = require('@kubernetes/client-node');
-//prometheus client for node.js
-//const client = require('prom-client');
+
 const start = new Date(Date.now() - 1440 * 60000).toISOString();
 const end = new Date(Date.now()).toISOString();
 
-// const kc = new k8s.KubeConfig();
-// kc.loadFromDefault();
-
-// const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
-// const k8sApi1 = kc.makeApiClient(k8s.AppsV1Api);
-// const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
-//to collect default metrics directly from prometheus client
-//https://github.com/siimon/prom-client
-// client.collectDefaultMetrics();
 
 const kubernetesController: KubernetesController = {
   totalRestarts: async (req: Request, res: Response, next: NextFunction) => {

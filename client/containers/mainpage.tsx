@@ -28,6 +28,7 @@ type MainDataType = {
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [loaded, setLoaded] = useState(true);
+  //the bounce loader will only render the first time the page loads
   const [firstLoad, setfirstLoad] = useState(false);
   const [data, setData] = useState<MainDataType>({
     totalCpu: [],
@@ -50,14 +51,18 @@ const MainPage = () => {
     }
   };
 
+  //grab all metrics from our server on first load
   useEffect(() => {
     getData('/api/dashboard/getAllMetrics');
   }, []);
 
   useEffect(() => {
+    //invoking addNamespace function from root reducer
     dispatch(addNamespaces());
+    //highlight navbar main page button
     dispatch(currentPage('main'));
     setfirstLoad(true);
+    //to wait 6s before the namespace number loads
     setTimeout(() => {
       setLoaded(false);
     }, 6000);

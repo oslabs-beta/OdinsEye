@@ -4,7 +4,6 @@ import axios from 'axios';
 const styles = require('../styles/popup.scss');
 
 type PopupType = {
-  namespace: string;
   podName: string | undefined;
   trigger: boolean;
   setTrigger: (arg: boolean) => void;
@@ -19,7 +18,8 @@ type PopUpDataType = {
   transmission: any[];
 };
 
-const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
+const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
+
   const initialData = {
     cpu: [],
     memory: [],
@@ -30,6 +30,7 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
   };
 
   const [data, setData] = useState<PopUpDataType>(initialData);
+  
   const getData = async (name: string): Promise<void> => {
     try {
       const response = await axios.get(
@@ -41,6 +42,7 @@ const Popup = ({ namespace, podName, trigger, setTrigger }: PopupType) => {
       console.log(err);
     }
   };
+  
   useEffect(() => {
     if (podName) {
       getData(podName);

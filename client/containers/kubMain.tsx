@@ -27,7 +27,16 @@ type KubDataType = {
 
 const KubPage = ({ namespaces }: KubType) => {
   const dispatch = useDispatch();
+
+  //dark mode toggling
+  const dark = useSelector((state: State) => state.dark);
+  let theme: string;
+  dark ? (theme = 'lightMode') : (theme = 'darkMode');
+
+  //state of the current namespace
   const currName = useSelector((state: State) => state.currentNamespace);
+
+  //page represents current namespace being displayed
   const [page, setCurrentPage] = useState<string>('None');
   const [data, setData] = useState<KubDataType>({
     cpu: [],
@@ -38,38 +47,23 @@ const KubPage = ({ namespaces }: KubType) => {
     restarts: [],
     transmission: [],
   });
-  // const [podState, setPodState] = useState<boolean>(false);
+  
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
-  // const [noDataMetrics, setNoDataMetrics ]= useState<string[]>([]);
 
   const podsArray: JSX.Element[] = [];
+
+  //helper function to grab metrics
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
-      
-      // console.log(data, 'data')
-      // const dataArray = [];
-      // for (const metric in data){
-      //   //console.log(data[metric])
-      //   if (data[metric].length === 0){
-      //     dataArray.push(metric)
-      //   }
-      // }
-      // console.log(dataArray)
-      // console.log('data', data)
-      // setNoDataMetrics(dataArray)
 
-      console.log('url',url)
-      console.log('kube data', data);
-      
       setData(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
-      //console.log('podData', podData)
       setPods(podData);
       const badPods: string[] = [];
       if (data.notReady > 0) {
@@ -118,21 +112,6 @@ const KubPage = ({ namespaces }: KubType) => {
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
-      // if (!pod) {
-      //   setPodState(true);
-      //   <div key={pod[1]}>
-      //     <a
-      //       className='pod-list-load'
-      //       onClick={() => {
-      //         setCurrentPod(pod[1]);
-      //         setButtonPopup(true);
-      //       }}
-      //     >
-      //       {pod[1] + '- Loading'}
-      //     </a>
-      //     <br />
-      //   </div>;
-      // }
       if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
           podsArray.push(
@@ -168,11 +147,7 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     });
   }
-  const dark = useSelector((state: State) => state.dark);
 
-  let theme: string;
-
-  dark ? (theme = 'lightMode') : (theme = 'darkMode');
 
   return (
     <div id='main-container' className={theme}>
@@ -181,7 +156,6 @@ const KubPage = ({ namespaces }: KubType) => {
       </div>
       <NavBar />
       <Popup
-        namespace={page}
         podName={currentPod}
         setTrigger={setButtonPopup}
         trigger={buttonPopup}
