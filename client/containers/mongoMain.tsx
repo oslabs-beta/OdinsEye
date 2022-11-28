@@ -60,7 +60,25 @@ const MongoPage = () => {
       <NavBar />
       <div className='data-container'>
         {/* <div id='list-data'></div> */}
-        <div className='charts'>
+        <div id='mongo-charts' className='charts'>
+          <div className='line-graph'>
+            <div id='uptime' className='line'>
+              <KLineChart
+                data={data.uptime}
+                label='Uptime'
+                yAxis='Current'
+                title='Current Uptime'
+              />
+            </div>
+            <div id='memory' className='line'>
+              <KLineChart
+                data={data.memory}
+                label='Memory'
+                yAxis='Current'
+                title='Current Memory'
+              />
+            </div>
+          </div>
           <div className='line-graph'>
             <div id='opcounter' className='line'>
               <KLineChart
@@ -88,6 +106,16 @@ const MongoPage = () => {
                 title='Current Queue'
               />
             </div>
+            <div id='processes' className='line'>
+              <KLineChart
+                data={data.processes}
+                label='Processes'
+                yAxis='Current'
+                title='Current Processes'
+              />
+            </div>
+          </div>
+          <div className='line-graph'>
             <div id='latency' className='line'>
               <KLineChart
                 data={data.queues}
@@ -97,34 +125,6 @@ const MongoPage = () => {
               />
             </div>
           </div>
-          <div className='line-graph'>
-            <div id='uptime' className='line'>
-              <KLineChart
-                data={data.uptime}
-                label='Uptime'
-                yAxis='Current'
-                title='Current Uptime'
-              />
-            </div>
-            <div id='memory' className='line'>
-              <KLineChart
-                data={data.memory}
-                label='Memory'
-                yAxis='Current'
-                title='Current Memory'
-              />
-            </div>
-          </div>
-          {/* <div className='line-graph'>
-            <div id='processes' className='line'>
-              <KLineChart
-                data={data.processes}
-                label='Processes'
-                yAxis='Current'
-                title='Current Processes'
-              />
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
