@@ -326,6 +326,7 @@ var kubernetesController = {
                         objectData.transmission = transmitArray;
                     }
                     res.locals.podData = objectData;
+                    //console.log('res.locals.podData', res.locals.podData)
                     return [2 /*return*/, next()];
                 case 8:
                     err_6 = _a.sent();
