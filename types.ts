@@ -22,6 +22,10 @@ export type KubernetesController = {
   podsNotReadyNames?: RequestHandler;
 };
 
+export type MongoController = {
+  mongoMetrics: RequestHandler;
+};
+
 export type State = {
   dark: boolean;
   namespaces: string[] | null;
