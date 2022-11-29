@@ -38,16 +38,23 @@ type LineChartDataType = {
   type: string;
 };
 
-
 const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
   const [loadErr, setLoadErr] = useState<boolean>(false);
+  const currentPage = useSelector((state: State) => state.currentPage);
   let sse: EventSource;
 
   //effect to set up connection to server sent event
   useEffect(() => {
     sse = new EventSource(path);
+    const links = Array.from(document.getElementsByClassName('link'));
+    links.map((link) => {
+      link.addEventListener('click', () => {
+        sse.close();
+      });
+    });
+    console.log(links);
   }, []);
 
   let fontColor;
@@ -133,20 +140,20 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
       };
       sse.onerror = (event) => {
         setLoadErr(true);
-        sse.close();
+        return sse.close();
       };
     }
   });
   //Conditionally render if there is a load error
-  if(loadErr) {
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected to Prometheus API</h5>
       </div>
-    )
+    );
   } else {
-  return <Line ref={liveChart} data={lineChartData} options={options} />;
-  };
-}
+    return <Line ref={liveChart} data={lineChartData} options={options} />;
+  }
+};
 
 export default LiveChart;

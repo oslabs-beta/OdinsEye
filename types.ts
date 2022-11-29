@@ -1,7 +1,7 @@
 //request handle is a function that will be executed every time the server receives a particular request
 import { RequestHandler } from 'express';
 
-//type aliases 
+//type aliases
 export type DashboardController = {
   getAllMetrics: RequestHandler;
   cpuUsageOverTotalCpu: RequestHandler;
@@ -10,7 +10,7 @@ export type DashboardController = {
 export type KubernetesController = {
   namespaceNames: RequestHandler;
   podNames: RequestHandler;
-  podsNotReady: RequestHandler;
+  // podsNotReady: RequestHandler;
   getNameSpaceMetrics: RequestHandler;
   getPodMetrics: RequestHandler;
   podsNotReadyNames?: RequestHandler;
