@@ -154,7 +154,7 @@ $font: 'Playfair Display', serif;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin: 5px 25px 5px 25px;
+    margin: 0px 25px 5px 25px;
   }
 
   .line-graph {
@@ -191,6 +191,7 @@ $font: 'Playfair Display', serif;
     margin: 0 24px 0 24px;
     margin-top: 125px;
     padding: 5px 5px 5px 5px;
+    padding-bottom: 29px;
   }
   .line-chart-container {
     display: grid;
@@ -271,7 +272,7 @@ $font: 'Playfair Display', serif;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #97b1a6;
+  background: #6c887c;
 }
 
 .pod-list:hover {

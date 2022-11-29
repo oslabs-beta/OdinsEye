@@ -3,7 +3,7 @@ import NavBar from '../components/Navbar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
-import KLineChart from '../components/LineChart';
+import LineChart from '../components/LineChart';
 import Popup from '../components/PopUp';
 import DoughnutChart from '../components/DonutChart';
 import { useSelector, useDispatch } from 'react-redux';
@@ -48,22 +48,29 @@ const KubPage = ({ namespaces }: KubType) => {
     transmission: [],
   });
 
+  //set pods for podsArray to spread within div
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
 
-  const podsArray: JSX.Element[] = [];
+  //button to trigger popup
+  const [buttonPopup, setButtonPopup] = useState(false);
 
   //helper function to grab metrics
   const getData = async (url: string): Promise<void> => {
     try {
+      //first step grabs all data for the current namespace
       const response = await axios.get(url);
       const data = await response.data;
       setData(data);
+
+      //second step grabs all pod names for current namespace and updates pod state
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
       setPods(podData);
+
+      //thrid step checks the data that was retrieved, if num of pods NOT ready > 0 runs the following
       const badPods: string[] = [];
       if (data.notReady > 0) {
         const badPodResponse = await axios.get(
@@ -71,6 +78,7 @@ const KubPage = ({ namespaces }: KubType) => {
           { params: { namespace: page, podData: podData } }
         );
         const badPodData = await badPodResponse.data;
+        //data returned will be an array of arrays, ex: []
         setPods(badPodData);
       }
     } catch (err) {
@@ -104,7 +112,9 @@ const KubPage = ({ namespaces }: KubType) => {
     //persists the current namespace selection when switching pages
     dispatch(saveNamespace(newName));
   };
-  const [buttonPopup, setButtonPopup] = useState(false);
+
+  //Creates array of pod names
+  const podsArray: JSX.Element[] = [];
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
@@ -190,7 +200,7 @@ const KubPage = ({ namespaces }: KubType) => {
         <div className='charts'>
           <div className='line-graph'>
             <div id='total-cpu' className='line'>
-              <KLineChart
+              <LineChart
                 data={data.cpu}
                 label='Percent'
                 yAxis='%'
@@ -198,7 +208,7 @@ const KubPage = ({ namespaces }: KubType) => {
               />
             </div>
             <div id='total-memory-use' className='line'>
-              <KLineChart
+              <LineChart
                 data={data.memory}
                 label='kB'
                 yAxis='Kilobytes'
@@ -208,7 +218,7 @@ const KubPage = ({ namespaces }: KubType) => {
           </div>
           <div className='line-graph'>
             <div id='net-rec' className='line'>
-              <KLineChart
+              <LineChart
                 data={data.reception}
                 label='kB'
                 yAxis='Kilobytes'
@@ -216,7 +226,7 @@ const KubPage = ({ namespaces }: KubType) => {
               />
             </div>
             <div id='net-trans' className='line'>
-              <KLineChart
+              <LineChart
                 data={data.transmission}
                 label='kB'
                 yAxis='Kilobytes'
@@ -226,7 +236,7 @@ const KubPage = ({ namespaces }: KubType) => {
           </div>
           <div className='line-graph'>
             <div id='retarts' className='line'>
-              <KLineChart
+              <LineChart
                 data={data.restarts}
                 label='Restarts'
                 yAxis='Restarts'

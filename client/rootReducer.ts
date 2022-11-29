@@ -31,6 +31,7 @@ const rootReducer = createReducer(initialState, (builder) =>
     })
     .addCase(saveNamespace, (state, action) => {
       let currentNamespace = action.payload;
+      console.log(currentNamespace, 'namespacechange');
       return {
         ...state,
         currentNamespace,
@@ -54,11 +55,7 @@ const rootReducer = createReducer(initialState, (builder) =>
     })
     .addCase(addNamespaces.fulfilled, (state, action) => {
       const namespaces = action.payload;
-      let currentNamespace;
-      if (namespaces) {
-        currentNamespace = action.payload[0];
-      }
-      return { ...state, namespaces, currentNamespace };
+      return { ...state, namespaces };
     })
     .addCase(addNamespaces.rejected, (state, action) => {
       console.log('Error, rejected');

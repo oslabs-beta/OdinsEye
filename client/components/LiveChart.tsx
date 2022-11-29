@@ -55,14 +55,14 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
     });
   }, []);
 
-  let fontColor;
-  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+  let fontColor = '#6c887c';
 
   const initialData: ChartData<'line'> = {
     datasets: [
       {
         data: [{ x: 0, y: 0 }],
         backgroundColor: '#97b1a6',
+        borderColor: '#97b1a6',
         label: label,
         fill: true,
       },
@@ -70,8 +70,14 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   };
 
   const [lineChartData, setLineChartData] = useState<any>(initialData);
+  const [maxY, setMax] = useState<number>(0);
 
   const options: ChartOptions<'line'> = {
+    layout: {
+      padding: {
+        // top: 10,
+      },
+    },
     plugins: {
       legend: {
         position: 'top',
