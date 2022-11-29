@@ -54,7 +54,11 @@ const rootReducer = createReducer(initialState, (builder) =>
     })
     .addCase(addNamespaces.fulfilled, (state, action) => {
       const namespaces = action.payload;
-      return { ...state, namespaces };
+      let currentNamespace;
+      if (namespaces) {
+        currentNamespace = action.payload[0];
+      }
+      return { ...state, namespaces, currentNamespace };
     })
     .addCase(addNamespaces.rejected, (state, action) => {
       console.log('Error, rejected');

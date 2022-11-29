@@ -54,13 +54,11 @@ const KubPage = ({ namespaces }: KubType) => {
   const podsArray: JSX.Element[] = [];
 
   //helper function to grab metrics
-  const getData = async (url: string, podsName?: boolean): Promise<void> => {
+  const getData = async (url: string): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
-
       setData(data);
-      console.log(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
@@ -94,7 +92,7 @@ const KubPage = ({ namespaces }: KubType) => {
   //runs effect on namespace change
   useEffect(() => {
     if (namespaces) {
-      if (page !== 'None') {
+      if (page !== 'None' && page) {
         getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
       }
     }

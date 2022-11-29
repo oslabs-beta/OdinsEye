@@ -42,19 +42,17 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
   const [loadErr, setLoadErr] = useState<boolean>(false);
-  const currentPage = useSelector((state: State) => state.currentPage);
   let sse: EventSource;
 
   //effect to set up connection to server sent event
   useEffect(() => {
     sse = new EventSource(path);
-    const links = Array.from(document.getElementsByClassName('link'));
+    const links = Array.from(document.getElementsByClassName('link')).slice(1);
     links.map((link) => {
       link.addEventListener('click', () => {
         sse.close();
       });
     });
-    console.log(links);
   }, []);
 
   let fontColor;
