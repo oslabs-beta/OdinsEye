@@ -37,7 +37,7 @@ const KubPage = ({ namespaces }: KubType) => {
   const currName = useSelector((state: State) => state.currentNamespace);
 
   //page represents current namespace being displayed
-  const [page, setCurrentPage] = useState<string>('None');
+  const [page, setCurrentPage] = useState<string>('');
   const [data, setData] = useState<KubDataType>({
     cpu: [],
     memory: [],
@@ -47,7 +47,7 @@ const KubPage = ({ namespaces }: KubType) => {
     restarts: [],
     transmission: [],
   });
-  
+
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
 
@@ -60,7 +60,7 @@ const KubPage = ({ namespaces }: KubType) => {
       const data = await response.data;
 
       setData(data);
-      console.log(data)
+      console.log(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });
@@ -76,9 +76,8 @@ const KubPage = ({ namespaces }: KubType) => {
         setPods(badPodData);
       }
     } catch (err) {
-
       setPods(['Error Fetching Pods']);
-      console.log('Kubernetes Page: ',err);
+      console.log('Kubernetes Page: ', err);
     }
   };
 
@@ -98,8 +97,6 @@ const KubPage = ({ namespaces }: KubType) => {
       if (page !== 'None') {
         getData(`/api/kubernetesMetrics/namespaceMetrics/${page}`);
       }
-    } else {
-      setPods(['No Pods']);
     }
   }, [page]);
 
@@ -149,7 +146,6 @@ const KubPage = ({ namespaces }: KubType) => {
     });
   }
 
-
   return (
     <div id='main-container' className={theme}>
       <div className='header'>
@@ -163,7 +159,7 @@ const KubPage = ({ namespaces }: KubType) => {
       />
       <div className='data-container'>
         <div id='kube-list-data'>
-        {namespaces ? (
+          {namespaces ? (
             namespaces.length > 0 ? (
               <DropDown
                 namespaces={namespaces}
@@ -215,11 +211,11 @@ const KubPage = ({ namespaces }: KubType) => {
           <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
-              data={data.reception}
-              label='kB'
-              yAxis='Kilobytes'
-              title='Network Received (kB)'
-            />
+                data={data.reception}
+                label='kB'
+                yAxis='Kilobytes'
+                title='Network Received (kB)'
+              />
             </div>
             <div id='net-trans' className='line'>
               <KLineChart
@@ -247,5 +243,3 @@ const KubPage = ({ namespaces }: KubType) => {
 };
 
 export default KubPage;
-
-//need to send: namespace, and if want specific pod metric: pod-name

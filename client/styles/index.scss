@@ -95,7 +95,7 @@ $font: 'Playfair Display', serif;
     #eyepatch {
       display: flex;
       position: relative;
-      margin-top: 350px;
+      margin-top: 60px;
     }
   }
 }
@@ -137,7 +137,7 @@ $font: 'Playfair Display', serif;
   }
   //mongo charts
   #mongo-charts {
-    margin-top: 125px
+    margin-top: 125px;
   }
   .bar-chart {
     display: flex;
@@ -169,7 +169,6 @@ $font: 'Playfair Display', serif;
     border: 1px solid $border;
     padding: 5px;
     width: 700px;
-    height: auto;
   }
 
   #total-names {
@@ -208,7 +207,6 @@ $font: 'Playfair Display', serif;
     position: absolute;
   }
 }
-
 
 #error {
   display: flex;
@@ -264,7 +262,7 @@ $font: 'Playfair Display', serif;
   }
 }
 ::-webkit-scrollbar {
-  height:10px;
+  height: 10px;
   width: 10px;
 }
 
@@ -306,4 +304,3 @@ $font: 'Playfair Display', serif;
   display: flex;
   justify-content: center;
 }
-

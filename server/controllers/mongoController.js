@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -75,33 +75,36 @@ var mongoController = {
     }); }
 };
 var DataObjectBuilder = function (obj) { return __awaiter(void 0, void 0, void 0, function () {
-    var objectData, _a, _b, _i, key, response, err_2;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var objectData, _a, _b, _c, _i, key, response, err_2;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
                 objectData = {};
-                _c.label = 1;
+                _d.label = 1;
             case 1:
-                _c.trys.push([1, 6, , 7]);
-                _a = [];
-                for (_b in obj)
-                    _a.push(_b);
+                _d.trys.push([1, 6, , 7]);
+                _a = obj;
+                _b = [];
+                for (_c in _a)
+                    _b.push(_c);
                 _i = 0;
-                _c.label = 2;
+                _d.label = 2;
             case 2:
-                if (!(_i < _a.length)) return [3 /*break*/, 5];
-                key = _a[_i];
+                if (!(_i < _b.length)) return [3 /*break*/, 5];
+                _c = _b[_i];
+                if (!(_c in _a)) return [3 /*break*/, 4];
+                key = _c;
                 return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key], "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
             case 3:
-                response = _c.sent();
+                response = _d.sent();
                 objectData[key] = [response.data.data.result[0].values];
-                _c.label = 4;
+                _d.label = 4;
             case 4:
                 _i++;
                 return [3 /*break*/, 2];
             case 5: return [3 /*break*/, 7];
             case 6:
-                err_2 = _c.sent();
+                err_2 = _d.sent();
                 return [2 /*return*/, err_2];
             case 7: return [2 /*return*/, objectData];
         }

@@ -15,7 +15,7 @@ type MongoDataType = {
   uptime: any[];
   memory: any[];
   processes: any[];
-}
+};
 
 const MongoPage = () => {
   const dispatch = useDispatch();
@@ -31,10 +31,10 @@ const MongoPage = () => {
     latency: [],
     uptime: [],
     memory: [],
-    processes: []
+    processes: [],
   };
 
-  const[data, setData] = useState<MongoDataType>(initialData);
+  const [data, setData] = useState<MongoDataType>(initialData);
 
   // helper function to fetch mongodb data
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
@@ -43,9 +43,9 @@ const MongoPage = () => {
       const data = await response.data;
       setData(data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   // fetch data on load
   useEffect(() => {

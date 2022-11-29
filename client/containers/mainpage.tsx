@@ -13,7 +13,7 @@ import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
 import LineChart from '../components/LineChart';
 import LiveChart from '../components/LiveChart';
-import DoughnutChart from '../components/DonutChart'
+import DoughnutChart from '../components/DonutChart';
 
 type MainDataType = {
   totalCpu: any[];
@@ -40,14 +40,14 @@ const MainPage = () => {
     totalNamespaces: '',
   });
 
-  //helper function to grab metrics 
+  //helper function to grab metrics
   const getData = async (url: string): Promise<any> => {
     try {
       const response = await axios.get(url);
       const metrics = await response.data;
       setData(metrics);
-    } catch(err) {
-      console.log('Main page: ',err);
+    } catch (err) {
+      console.log('Main page: ', err);
     }
   };
 
@@ -102,10 +102,10 @@ const MainPage = () => {
             </div>
           )}
           <div className='bar-chart'>
-            <BarChart 
-            title={'Cluster Core Cpu Usage'}
-            url={'/api/dashboard/cpuUsage'}
-            labels={['Core Usage', 'Total Core Cpu']}
+            <BarChart
+              title={'Cluster Core Cpu Usage'}
+              url={'/api/dashboard/cpuUsage'}
+              labels={['Core Usage', 'Total Core Cpu']}
             />
           </div>
           <div id='total-pods'>
