@@ -1,15 +1,15 @@
 const React = require('react');
-import NavBar from '../components/navbar';
+import NavBar from '../components/Navbar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
-import KLineChart from '../components/KLineChart';
+import KLineChart from '../components/LineChart';
 import Popup from '../components/PopUp';
-import KDoughnutChart from '../components/KDonutChart';
+import DoughnutChart from '../components/DonutChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
 import { currentPage, saveNamespace } from '../rootReducer';
-import PodName from '../components/podName';
+import PodName from '../components/PodName';
 
 type KubType = {
   namespaces: string[] | null;
@@ -27,8 +27,17 @@ type KubDataType = {
 
 const KubPage = ({ namespaces }: KubType) => {
   const dispatch = useDispatch();
+
+  //dark mode toggling
+  const dark = useSelector((state: State) => state.dark);
+  let theme: string;
+  dark ? (theme = 'lightMode') : (theme = 'darkMode');
+
+  //state of the current namespace
   const currName = useSelector((state: State) => state.currentNamespace);
-  const [page, setCurrentPage] = useState<string>('None');
+
+  //page represents current namespace being displayed
+  const [page, setCurrentPage] = useState<string>('');
   const [data, setData] = useState<KubDataType>({
     cpu: [],
     memory: [],
@@ -38,17 +47,17 @@ const KubPage = ({ namespaces }: KubType) => {
     restarts: [],
     transmission: [],
   });
+
   const [pods, setPods] = useState<string[]>([]);
   const [currentPod, setCurrentPod] = useState<string>();
-  // const [noDataMetrics, setNoDataMetrics ]= useState<string[]>([]);
 
   const podsArray: JSX.Element[] = [];
+
+  //helper function to grab metrics
   const getData = async (url: string, podsName?: boolean): Promise<void> => {
     try {
       const response = await axios.get(url);
       const data = await response.data;
-      console.log('url', url);
-      console.log('kube data', data);
 
       setData(data);
       console.log(data);
@@ -56,7 +65,6 @@ const KubPage = ({ namespaces }: KubType) => {
         params: { namespace: page },
       });
       const podData: string[] = await podResponse.data;
-      //console.log('podData', podData)
       setPods(podData);
       const badPods: string[] = [];
       if (data.notReady > 0) {
@@ -69,7 +77,7 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     } catch (err) {
       setPods(['Error Fetching Pods']);
-      console.log(err);
+      console.log('Kubernetes Page: ', err);
     }
   };
 
@@ -102,9 +110,7 @@ const KubPage = ({ namespaces }: KubType) => {
 
   if (pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
-      if (pod === 'Error Fetching Pods' || pod === 'No Pods') {
-        podsArray.push(<a>{pod}</a>);
-      } else if (Array.isArray(pod)) {
+      if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
           podsArray.push(
             <PodName
@@ -139,11 +145,6 @@ const KubPage = ({ namespaces }: KubType) => {
       }
     });
   }
-  const dark = useSelector((state: State) => state.dark);
-
-  let theme: string;
-
-  dark ? (theme = 'lightMode') : (theme = 'darkMode');
 
   return (
     <div id='main-container' className={theme}>
@@ -152,7 +153,6 @@ const KubPage = ({ namespaces }: KubType) => {
       </div>
       <NavBar />
       <Popup
-        namespace={page}
         podName={currentPod}
         setTrigger={setButtonPopup}
         trigger={buttonPopup}
@@ -174,9 +174,8 @@ const KubPage = ({ namespaces }: KubType) => {
           ) : (
             <div></div>
           )}
-
           <div id='kube-total-pods'>
-            <KDoughnutChart
+            <DoughnutChart
               data={
                 pods[0] === 'Error Fetching Pods'
                   ? 0

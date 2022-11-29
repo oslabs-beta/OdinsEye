@@ -100,6 +100,11 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["client/**/*", "server/**/*", "globals.d.ts"],
+  "include": [
+    "client/**/*",
+    "server/**/*",
+    "globals.d.ts",
+    "__test__/puppeteer.test.js"
+  ],
   "exclude": ["node_modules"]
 }

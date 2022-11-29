@@ -161,7 +161,6 @@ body[data-theme='light'] {
   }
 
   //line chart
-
   .line {
     @include themify($themes) {
       box-shadow: themed('box-shadow'), themed('box-shadow2');

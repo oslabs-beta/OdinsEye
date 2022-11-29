@@ -3,9 +3,13 @@ exports.__esModule = true;
 var express = require('express');
 var kubernetesController_1 = require("../controllers/kubernetesController");
 var kubernetesRouter = express.Router();
-kubernetesRouter.get('/totalRestarts', kubernetesController_1["default"].totalRestarts, function (req, res) {
-    return res.status(200).json(res.locals.restarts);
-});
+// kubernetesRouter.get(
+//   '/totalRestarts',
+//   kubernetesController.totalRestarts,
+//   (req: Request, res: Response) => {
+//     return res.status(200).json(res.locals.restarts);
+//   }
+// );
 kubernetesRouter.get('/namespaceNames', kubernetesController_1["default"].namespaceNames, function (req, res) {
     return res.status(200).json(res.locals.namespaceNames);
 });
