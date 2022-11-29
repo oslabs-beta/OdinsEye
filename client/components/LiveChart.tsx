@@ -38,7 +38,6 @@ type LineChartDataType = {
   type: string;
 };
 
-
 const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   const liveChart = useRef<ChartJS<'line', [{ x: string; y: number }]>>();
   const dark = useSelector((state: State) => state.dark);
@@ -48,16 +47,22 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   //effect to set up connection to server sent event
   useEffect(() => {
     sse = new EventSource(path);
+    const links = Array.from(document.getElementsByClassName('link')).slice(1);
+    links.map((link) => {
+      link.addEventListener('click', () => {
+        sse.close();
+      });
+    });
   }, []);
 
-  let fontColor;
-  dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
+  let fontColor = '#6c887c';
 
   const initialData: ChartData<'line'> = {
     datasets: [
       {
         data: [{ x: 0, y: 0 }],
         backgroundColor: '#97b1a6',
+        borderColor: '#97b1a6',
         label: label,
         fill: true,
       },
@@ -65,8 +70,14 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
   };
 
   const [lineChartData, setLineChartData] = useState<any>(initialData);
+  const [maxY, setMax] = useState<number>(0);
 
   const options: ChartOptions<'line'> = {
+    layout: {
+      padding: {
+        // top: 10,
+      },
+    },
     plugins: {
       legend: {
         position: 'top',
@@ -133,20 +144,20 @@ const LiveChart = ({ label, path, title, type }: LineChartDataType) => {
       };
       sse.onerror = (event) => {
         setLoadErr(true);
-        sse.close();
+        return sse.close();
       };
     }
   });
   //Conditionally render if there is a load error
-  if(loadErr) {
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected to Prometheus API</h5>
       </div>
-    )
+    );
   } else {
-  return <Line ref={liveChart} data={lineChartData} options={options} />;
-  };
-}
+    return <Line ref={liveChart} data={lineChartData} options={options} />;
+  }
+};
 
 export default LiveChart;

@@ -120,7 +120,7 @@ const MainPage = () => {
         <div id='live-data' className='line-graph'>
           <div className='line'>
             <LiveChart
-              label={'Network Received'}
+              label={'Byte Usage'}
               path={'http://localhost:3000/live/received'}
               title='Live Network Received'
               type='Kilobytes'
@@ -128,7 +128,7 @@ const MainPage = () => {
           </div>
           <div className='line'>
             <LiveChart
-              label={'Network Transmitted'}
+              label={'Byte Usage'}
               path={'http://localhost:3000/live/transmit'}
               title='Live Network Transmitted'
               type='Kilobytes'

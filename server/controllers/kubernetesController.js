@@ -101,31 +101,23 @@ var kubernetesController = {
             }
         });
     }); },
-    podsNotReady: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var readyQuery, response, err_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    readyQuery = 'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
-                case 2:
-                    response = _a.sent();
-                    res.locals.ready = response.data;
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_3 = _a.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_3),
-                            status: 500,
-                            message: 'Error occured while retrieving pods not ready data'
-                        })];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); },
+    // podsNotReady: async (req: Request, res: Response, next: NextFunction) => {
+    //   const readyQuery =
+    //     'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
+    //   try {
+    //     const response = await axios.get(
+    //       `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
+    //     );
+    //     res.locals.ready = response.data;
+    //     return next();
+    //   } catch (err) {
+    //     return next({
+    //       log: `Error in kuberenetesController.podsNotReady: ${err}`,
+    //       status: 500,
+    //       message: 'Error occured while retrieving pods not ready data',
+    //     });
+    //   }
+    // },
     podsNotReadyNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, namespace, podData, promises;
         return __generator(this, function (_b) {
@@ -134,7 +126,7 @@ var kubernetesController = {
                     _a = req.query, namespace = _a.namespace, podData = _a.podData;
                     if (!Array.isArray(podData)) return [3 /*break*/, 2];
                     promises = podData.map(function (name) { return __awaiter(void 0, void 0, void 0, function () {
-                        var readyQuery, response, status_1, err_4;
+                        var readyQuery, response, status_1, err_3;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
@@ -154,9 +146,9 @@ var kubernetesController = {
                                     }
                                     return [3 /*break*/, 4];
                                 case 3:
-                                    err_4 = _a.sent();
+                                    err_3 = _a.sent();
                                     return [2 /*return*/, next({
-                                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_4),
+                                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_3),
                                             status: 500,
                                             message: 'Error occured while retrieving pods not ready data'
                                         })];
@@ -175,7 +167,7 @@ var kubernetesController = {
         });
     }); },
     getNameSpaceMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var objectData, namespaceName, restartQuery, readyQuery, notReadyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, notReadyResponse, arrayNot, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_5;
+        var objectData, namespaceName, restartQuery, readyQuery, notReadyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, notReadyResponse, arrayNot, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -253,9 +245,9 @@ var kubernetesController = {
                     res.locals.namespaceData = objectData;
                     return [2 /*return*/, next()];
                 case 9:
-                    err_5 = _a.sent();
+                    err_4 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getMetrics: ".concat(err_5),
+                            log: "Error in kuberenetesController.getMetrics: ".concat(err_4),
                             status: 500,
                             message: 'Error occured while retrieving getMetrics data'
                         })];
@@ -264,7 +256,7 @@ var kubernetesController = {
         });
     }); },
     getPodMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var objectData, podName, ccPodName, restartQuery, readyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_6;
+        var objectData, podName, ccPodName, restartQuery, readyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -341,9 +333,9 @@ var kubernetesController = {
                     //console.log('res.locals.podData', res.locals.podData)
                     return [2 /*return*/, next()];
                 case 8:
-                    err_6 = _a.sent();
+                    err_5 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getPodMetrics: ".concat(err_6),
+                            log: "Error in kuberenetesController.getPodMetrics: ".concat(err_5),
                             status: 500,
                             message: 'Error occured while retrieving getMetrics data'
                         })];
