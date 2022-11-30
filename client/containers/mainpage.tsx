@@ -1,5 +1,9 @@
 const React = require('react');
 import NavBar from '../components/Navbar';
+import BarChart from '../components/BarChart';
+import LineChart from '../components/LineChart';
+import LiveChart from '../components/LiveChart';
+import DoughnutChart from '../components/DonutChart';
 const styles = require('../styles/index.scss');
 const styles2 = require('../styles/colors.scss');
 import { useState, useEffect } from 'react';
@@ -7,13 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
-import BarChart from '../components/BarChart';
 import { currentPage } from '../rootReducer';
 import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
-import LineChart from '../components/LineChart';
-import LiveChart from '../components/LiveChart';
-import DoughnutChart from '../components/DonutChart';
 
 type MainDataType = {
   totalCpu: any[];

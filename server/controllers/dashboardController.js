@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        while (_) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var axios_1 = require("axios");
+var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 var client = require('prom-client');
@@ -56,110 +56,70 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 var dashboardController = {
     getAllMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var cpuResponse, memResponse, podsResponse, notReadyPodsResponse, transmitResponse, receiveData, namespacesResponse, _a, _b, _c, _d, err_1;
-        var _e;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+        var queryObject, _a, err_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _f.trys.push([0, 15, , 16]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    queryObject = {
+                        linegraph: {
+                            totalCpu: 'sum(rate(container_cpu_usage_seconds_total[10m]))*100',
+                            totalMem: 'sum(container_memory_usage_bytes)',
+                            totalTransmit: 'sum(rate(node_network_transmit_bytes_total[10m]))',
+                            totalReceive: 'sum(rate(node_network_receive_bytes_total[10m]))'
+                        },
+                        donutint: {
+                            totalPods: 'count(kube_pod_info)',
+                            notReadyPods: 'sum(kube_pod_status_ready{condition="false"})',
+                            totalNamespaces: 'count(kube_namespace_created)'
+                        }
+                    };
+                    _b.label = 1;
                 case 1:
-                    cpuResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 2:
-                    memResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 3:
-                    podsResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition=\"false\"})&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 4:
-                    notReadyPodsResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 5:
-                    transmitResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
-                case 6:
-                    receiveData = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 7:
-                    namespacesResponse = _f.sent();
+                    _b.trys.push([1, 3, , 4]);
                     _a = res.locals;
-                    _e = {};
-                    return [4 /*yield*/, cpuResponse.data.data.result[0].values];
-                case 8:
-                    _e.totalCpu = [_f.sent()];
-                    return [4 /*yield*/, memResponse.data.data.result[0].values];
-                case 9:
-                    _e.totalMem = [_f.sent()];
-                    _b = parseInt;
-                    return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
-                case 10:
-                    _e.totalPods = [_b.apply(void 0, [_f.sent()])];
-                    _c = parseInt;
-                    return [4 /*yield*/, notReadyPodsResponse.data.data.result[0].values[0][1]];
-                case 11:
-                    _e.notReadyPods = [_c.apply(void 0, [_f.sent()])];
-                    return [4 /*yield*/, transmitResponse.data.data.result[0].values];
-                case 12:
-                    _e.totalTransmit = [_f.sent()];
-                    return [4 /*yield*/, receiveData.data.data.result[0].values];
-                case 13:
-                    _e.totalReceive = [_f.sent()];
-                    _d = parseInt;
-                    return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
-                case 14:
-                    _a.dashboard = (_e.totalNamespaces = [_d.apply(void 0, [_f.sent()])],
-                        _e);
+                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
+                case 2:
+                    _a.dashboard = _b.sent();
                     return [2 /*return*/, next()];
-                case 15:
-                    err_1 = _f.sent();
+                case 3:
+                    err_1 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getAllMetrics: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving dashboard all metrics data'
                         })];
-                case 16: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); },
     cpuUsageOverTotalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var totalCpuUage, totalCore, percentageOfCore, cpuUsageOverTotalCpu, totalCoreInCluster, percent, err_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var queryObject, _a, err_2;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 7, , 8]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 1:
-                    totalCpuUage = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 2:
-                    totalCore = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
-                case 3:
-                    percentageOfCore = _a.sent();
-                    return [4 /*yield*/, totalCpuUage];
-                case 4:
-                    cpuUsageOverTotalCpu = _a.sent();
-                    return [4 /*yield*/, totalCore];
-                case 5:
-                    totalCoreInCluster = _a.sent();
-                    return [4 /*yield*/, percentageOfCore];
-                case 6:
-                    percent = _a.sent();
-                    res.locals.cpuUsageOverTotalCpu = {
-                        cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
-                        core: totalCoreInCluster.data.data.result[0].values[1][1],
-                        percent: percent.data.data.result[0].values[1][1]
+                    queryObject = {
+                        cpubarchart: {
+                            cpu: 'sum(rate(container_cpu_usage_seconds_total[5m]))',
+                            core: 'sum(machine_cpu_cores)',
+                            percent: 'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100'
+                        }
                     };
+                    _b.label = 1;
+                case 1:
+                    _b.trys.push([1, 3, , 4]);
+                    _a = res.locals;
+                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
+                case 2:
+                    _a.cpuUsageOverTotalCpu = _b.sent();
                     return [2 /*return*/, next()];
-                case 7:
-                    err_2 = _a.sent();
+                case 3:
+                    err_2 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in dashboardController.getTotalCpu: ".concat(err_2),
                             status: 500,
                             message: 'Error occured while retrieving dashboard transmit data'
                         })];
-                case 8: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); }

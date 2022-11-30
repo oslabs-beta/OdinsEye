@@ -10,7 +10,6 @@ export type DashboardController = {
 export type KubernetesController = {
   namespaceNames: RequestHandler;
   podNames: RequestHandler;
-  // podsNotReady: RequestHandler;
   getNameSpaceMetrics: RequestHandler;
   getPodMetrics: RequestHandler;
   podsNotReadyNames?: RequestHandler;
@@ -18,6 +17,10 @@ export type KubernetesController = {
 
 export type MongoController = {
   mongoMetrics: RequestHandler;
+};
+
+export type graphDataObject = {
+  [key: string] : {[key: string] : string}
 };
 
 export type State = {

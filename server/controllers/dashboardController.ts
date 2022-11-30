@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { DashboardController } from '../../types';
+import { graphDataObject } from '../../types';
+import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
@@ -22,37 +24,21 @@ client.collectDefaultMetrics();
 
 const dashboardController: DashboardController = {
   getAllMetrics: async (req: Request, res: Response, next: NextFunction) => {
-    try{
-      const cpuResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`
-      );
-      const memResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=${start}&end=${end}&step=5m`
-      );
-      const podsResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=${start}&end=${end}&step=5m`
-      );
-      const notReadyPodsResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition="false"})&start=${start}&end=${end}&step=5m`
-      );
-      const transmitResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
-      );
-      const receiveData = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=${start}&end=${end}&step=10m`
-      );
-      const namespacesResponse = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=${start}&end=${end}&step=5m`
-      );
-      res.locals.dashboard = {
-        totalCpu: [await cpuResponse.data.data.result[0].values],
-        totalMem: [await memResponse.data.data.result[0].values],
-        totalPods: [parseInt(await podsResponse.data.data.result[0].values[0][1])],
-        notReadyPods: [parseInt(await notReadyPodsResponse.data.data.result[0].values[0][1])],
-        totalTransmit: [await transmitResponse.data.data.result[0].values],
-        totalReceive: [await receiveData.data.data.result[0].values],
-        totalNamespaces: [parseInt(await namespacesResponse.data.data.result[0].values[0][1])]
+    const queryObject: graphDataObject = {
+      linegraph: {
+        totalCpu: 'sum(rate(container_cpu_usage_seconds_total[10m]))*100',
+        totalMem: 'sum(container_memory_usage_bytes)',
+        totalTransmit: 'sum(rate(node_network_transmit_bytes_total[10m]))',
+        totalReceive: 'sum(rate(node_network_receive_bytes_total[10m]))',
+      },
+      donutint: {
+        totalPods: 'count(kube_pod_info)',
+        notReadyPods: 'sum(kube_pod_status_ready{condition="false"})',
+        totalNamespaces: 'count(kube_namespace_created)',
       }
+  }
+    try{
+      res.locals.dashboard = await DataObjectBuilder(queryObject);
       return next(); 
     } catch (err) {
       return next({
@@ -64,24 +50,15 @@ const dashboardController: DashboardController = {
   },
   
   cpuUsageOverTotalCpu: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const totalCpuUage = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=${start}&end=${end}&step=5m`
-      );
-      const totalCore = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=${start}&end=${end}&step=5m`
-      );
-      const percentageOfCore = await axios.get(
-        `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=${start}&end=${end}&step=5m`
-      );
-      const cpuUsageOverTotalCpu = await totalCpuUage;
-      const totalCoreInCluster = await totalCore;
-      const percent = await percentageOfCore;
-      res.locals.cpuUsageOverTotalCpu = {
-        cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
-        core: totalCoreInCluster.data.data.result[0].values[1][1],
-        percent: percent.data.data.result[0].values[1][1]
+    const queryObject: graphDataObject = {
+      cpubarchart: {
+        cpu: 'sum(rate(container_cpu_usage_seconds_total[5m]))',
+        core: 'sum(machine_cpu_cores)',
+        percent: 'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100',
       }
+    }
+    try {
+      res.locals.cpuUsageOverTotalCpu = await DataObjectBuilder(queryObject);
       return next();
     } catch (err) {
       return next({
