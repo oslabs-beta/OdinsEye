@@ -31,6 +31,7 @@ const rootReducer = createReducer(initialState, (builder) =>
     })
     .addCase(saveNamespace, (state, action) => {
       let currentNamespace = action.payload;
+      console.log(currentNamespace, 'namespacechange');
       return {
         ...state,
         currentNamespace,

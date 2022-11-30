@@ -22,17 +22,17 @@ ChartJS.register(
 );
 
 type BarType = {
-  title: string,
-  url: string,
-  labels: string[]
-}
+  title: string;
+  url: string;
+  labels: string[];
+};
 
-const BarChart = ({ title, url, labels}: BarType) => {
+const BarChart = ({ title, url, labels }: BarType) => {
   const [loadErr, setLoadErr] = useState<boolean>(false);
   const initialData: ChartData<'bar'> = {
     datasets: [],
   };
-  
+
   ChartJS.defaults.datasets.bar.barThickness = 35;
   const [barChartData, setBarChartData] = useState<any>(initialData);
   const option: ChartOptions<'bar'> = {

@@ -7,7 +7,6 @@ type DropDownType = {
   handleChange: (name: string) => void;
 };
 
-
 const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
   //react hook to open/close the dropdown
   const [open, setOpen] = useState<boolean>(false);
@@ -54,21 +53,21 @@ const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
   );
 };
 
-  //helper function to close dropdown if click is outside of the dropdown
-  const useOutsideClick = (cb: Function) => {
-    const ref = useRef<HTMLButtonElement>(null);
-    useEffect(() => {
-      const handleClick = (event: any) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-          cb();
-        }
-      };
-      document.addEventListener('click', handleClick);
-      return () => {
-        document.removeEventListener('click', handleClick);
-      };
-    }, []);
-    return ref;
-  };
+//helper function to close dropdown if click is outside of the dropdown
+const useOutsideClick = (cb: Function) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const handleClick = (event: any) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        cb();
+      }
+    };
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+  return ref;
+};
 
 export default DropDown;

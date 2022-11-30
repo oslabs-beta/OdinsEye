@@ -18,7 +18,6 @@ kubernetesRouter.get('/namespaceNames', kubernetesController_1["default"].namesp
 kubernetesRouter.get('/podNames', kubernetesController_1["default"].podNames, function (req, res) {
     return res.status(200).json(res.locals.names);
 });
-// kubmain
 kubernetesRouter.get('/namespaceMetrics/:namespaceName', kubernetesController_1["default"].getNameSpaceMetrics, function (req, res) {
     return res.status(200).json(res.locals.namespaceData);
 });

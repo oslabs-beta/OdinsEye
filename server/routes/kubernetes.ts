@@ -28,8 +28,6 @@ kubernetesRouter.get(
     return res.status(200).json(res.locals.names);
   }
 );
-
-// kubmain
 kubernetesRouter.get(
   '/namespaceMetrics/:namespaceName',
   kubernetesController.getNameSpaceMetrics,

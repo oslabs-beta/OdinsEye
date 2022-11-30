@@ -4,13 +4,10 @@ import { graphDataObject } from '../../types';
 import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 
-
 const start = new Date(Date.now() - 1440 * 60000).toISOString();
 const end = new Date(Date.now()).toISOString();
 
-
 const kubernetesController: KubernetesController = {
-
   namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
@@ -119,7 +116,7 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
-  
+
   getPodMetrics: async (req: Request, res: Response, next: NextFunction) => {
     const { podName } = req.params;
     const queryObject: graphDataObject = {
@@ -143,7 +140,6 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
-  
 };
 
 export default kubernetesController;

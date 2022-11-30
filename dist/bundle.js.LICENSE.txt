@@ -12,6 +12,13 @@
  * Released under the MIT License
  */
 
+/*!
+ * chartjs-plugin-streaming v2.0.0
+ * https://nagix.github.io/chartjs-plugin-streaming
+ * (c) 2017-2021 Akihiko Kusanagi
+ * Released under the MIT license
+ */
+
 /**
  * @license React
  * react-dom.production.min.js

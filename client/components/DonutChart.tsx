@@ -50,8 +50,8 @@ const DoughnutChart = ({ data }: DoughnutType) => {
     if (Array.isArray(data) && data.length > 0) {
       setChartData(data);
     }
-    if (data === undefined){
-      setLoadErr(true)
+    if (data === undefined) {
+      setLoadErr(true);
     }
   }, [data]);
 
@@ -84,12 +84,12 @@ const DoughnutChart = ({ data }: DoughnutType) => {
   };
 
   //error handling for when server isn't connected to prometheus api
-  if(loadErr){
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected to Prometheus API</h5>
       </div>
-    )
+    );
   } else {
     return (
       <div>
