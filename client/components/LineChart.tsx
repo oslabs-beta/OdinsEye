@@ -41,7 +41,6 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   const dark = useSelector((state: State) => state.dark);
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
-
   const initialData: ChartData<'line'> = {
     datasets: [],
   };
@@ -53,6 +52,11 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     responsive: true,
     interaction: {
       intersect: false,
+    },
+    layout: {
+      padding: {
+        right: 15,
+      },
     },
     plugins: {
       legend: {
@@ -97,27 +101,29 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
   };
 
   useEffect(() => {
-    if (data.length !== 0) {
+    if (data) {
       const metrics = data[0];
-      //convert long number metric from prometheus into a readable time stamp
-      const xAxis = metrics.map((value: [number, string]) => {
-        const currentTime = new Date(value[0] * 1000);
-        let time = currentTime.toLocaleString('en-GB');
-        time = time.slice(time.indexOf(',') + 1).trim();
-        return time;
-      });
-      
       let yAxisData: number[] = [];
-      switch (yAxis) {
-        case 'Kilobytes':
-          yAxisData = metrics.map(
-            (value: [number, string]) => Number(value[1]) / 1000000
-          );
-          break;
-        default:
-          yAxisData = metrics.map((value: [number, string]) =>
-            Number(value[1])
-          );
+      let xAxis = metrics;
+      if (data.length > 0) {
+        //convert long number metric from prometheus into a readable time stamp
+        xAxis = metrics.map((value: [number, string]) => {
+          const currentTime = new Date(value[0] * 1000);
+          let time = currentTime.toLocaleString('en-GB');
+          time = time.slice(time.indexOf(',') + 1).trim();
+          return time;
+        });
+        switch (yAxis) {
+          case 'Kilobytes':
+            yAxisData = metrics.map(
+              (value: [number, string]) => Number(value[1]) / 1000000
+            );
+            break;
+          default:
+            yAxisData = metrics.map((value: [number, string]) =>
+              Number(value[1])
+            );
+        }
       }
       const newData: ChartData<'line'> = {
         labels: xAxis,
@@ -140,24 +146,24 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
     }
 
     //error handling for when no data exists
-    if(data == undefined){
+    if (data == undefined) {
       setLoadErr(true);
-    }  
+    }
   }, [data]);
-  
-  if(loadErr) {
+
+  if (loadErr) {
     return (
       <div id='error'>
         <h5>Not Connected to Prometheus API</h5>
       </div>
-    )
+    );
   } else {
-    //conditionally render either a line chart if data is present or 
+    //conditionally render either a line chart if data is present or
     //a separate div if no data is being sent back
     return (
-<div className='line-chart-container'>
+      <div className='line-chart-container'>
         <Line className='line-chart' options={options} data={lineChartData} />
-        {lineChartData.datasets.length === 0 ? (
+        {data.length === 0 ? (
           <div className='missing-data'>
             <h3>No Data to Display</h3>
           </div>
@@ -170,4 +176,3 @@ const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
 };
 
 export default LineChart;
-//<Line className='line-chart' options={options} data={lineChartData} />

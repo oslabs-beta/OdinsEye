@@ -19,7 +19,6 @@ type PopUpDataType = {
 };
 
 const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
-
   const initialData = {
     cpu: [],
     memory: [],
@@ -30,7 +29,7 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
   };
 
   const [data, setData] = useState<PopUpDataType>(initialData);
-  
+
   const getData = async (name: string): Promise<void> => {
     try {
       const response = await axios.get(
@@ -42,7 +41,7 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
       console.log(err);
     }
   };
-  
+
   useEffect(() => {
     if (podName) {
       getData(podName);
@@ -61,7 +60,7 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
             <div id='total-cpu' className='line'>
               <KLineChart
                 data={data.cpu}
-                label='test'
+                label='%'
                 yAxis='%'
                 title='Total CPU % Usage'
               />
@@ -74,8 +73,6 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
                 title='Total Memory Usage (kB)'
               />
             </div>
-          </div>
-          <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
                 data={data.ready}
@@ -92,8 +89,6 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
                 title='Network Transmitted (kB)'
               />
             </div>
-          </div>
-          <div className='line-graph'>
             <div id='retarts' className='line'>
               <KLineChart
                 data={data.restarts}

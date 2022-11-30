@@ -60,9 +60,8 @@ const KubPage = ({ namespaces }: KubType) => {
     try {
       //first step grabs all data for the current namespace
       const response = await axios.get(url);
-      const data = await response.data;
-      setData(data);
-
+      const newData = await response.data;
+      setData(newData);
       //second step grabs all pod names for current namespace and updates pod state
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
@@ -72,7 +71,7 @@ const KubPage = ({ namespaces }: KubType) => {
 
       //thrid step checks the data that was retrieved, if num of pods NOT ready > 0 runs the following
       const badPods: string[] = [];
-      if (data.notReady > 0) {
+      if (newData.notReady > 0) {
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
           { params: { namespace: page, podData: podData } }
@@ -116,7 +115,7 @@ const KubPage = ({ namespaces }: KubType) => {
   //Creates array of pod names
   const podsArray: JSX.Element[] = [];
 
-  if (pods.length > 0) {
+  if (Array.isArray(pods) && pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
       if (Array.isArray(pod)) {
         if (parseInt(pod[0]) > 0) {
@@ -197,52 +196,46 @@ const KubPage = ({ namespaces }: KubType) => {
             {podsArray}
           </div>
         </div>
-        <div className='charts'>
-          <div className='line-graph'>
-            <div id='total-cpu' className='line'>
-              <LineChart
-                data={data.cpu}
-                label='Percent'
-                yAxis='%'
-                title='Total CPU % Usage'
-              />
-            </div>
-            <div id='total-memory-use' className='line'>
-              <LineChart
-                data={data.memory}
-                label='kB'
-                yAxis='Kilobytes'
-                title='Total Memory Usage (kB)'
-              />
-            </div>
+        <div className='line-graph'>
+          <div id='total-cpu' className='line'>
+            <LineChart
+              data={data.cpu}
+              label='Percent'
+              yAxis='%'
+              title='Total CPU % Usage'
+            />
           </div>
-          <div className='line-graph'>
-            <div id='net-rec' className='line'>
-              <LineChart
-                data={data.reception}
-                label='kB'
-                yAxis='Kilobytes'
-                title='Network Received (kB)'
-              />
-            </div>
-            <div id='net-trans' className='line'>
-              <LineChart
-                data={data.transmission}
-                label='kB'
-                yAxis='Kilobytes'
-                title='Network Transmitted (kB)'
-              />
-            </div>
+          <div id='total-memory-use' className='line'>
+            <LineChart
+              data={data.memory}
+              label='kB'
+              yAxis='Kilobytes'
+              title='Total Memory Usage (kB)'
+            />
           </div>
-          <div className='line-graph'>
-            <div id='retarts' className='line'>
-              <LineChart
-                data={data.restarts}
-                label='Restarts'
-                yAxis='Restarts'
-                title='Pod Restarts'
-              />
-            </div>
+          <div id='net-rec' className='line'>
+            <LineChart
+              data={data.reception}
+              label='kB'
+              yAxis='Kilobytes'
+              title='Network Received (kB)'
+            />
+          </div>
+          <div id='net-trans' className='line'>
+            <LineChart
+              data={data.transmission}
+              label='kB'
+              yAxis='Kilobytes'
+              title='Network Transmitted (kB)'
+            />
+          </div>
+          <div id='retarts' className='line'>
+            <LineChart
+              data={data.restarts}
+              label='Restarts'
+              yAxis='Restarts'
+              title='Pod Restarts'
+            />
           </div>
         </div>
       </div>

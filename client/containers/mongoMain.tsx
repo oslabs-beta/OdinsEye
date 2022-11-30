@@ -1,7 +1,7 @@
 const React = require('react');
 import NavBar from '../components/Navbar';
 import axios from 'axios';
-import KLineChart from '../components/LineChart';
+import LineChart from '../components/LineChart';
 import { useState, useEffect } from 'react';
 import { currentPage } from '../rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
@@ -59,71 +59,62 @@ const MongoPage = () => {
       </div>
       <NavBar />
       <div className='data-container'>
-        {/* <div id='list-data'></div> */}
-        <div id='mongo-charts' className='charts'>
-          <div className='line-graph'>
-            <div id='uptime' className='line'>
-              <KLineChart
-                data={data.uptime}
-                label='Uptime'
-                yAxis='Current'
-                title='Current Uptime'
-              />
-            </div>
-            <div id='memory' className='line'>
-              <KLineChart
-                data={data.memory}
-                label='Memory'
-                yAxis='Current'
-                title='Current Memory'
-              />
-            </div>
+        <div id='mongo-charts' className='line-graph'>
+          <div id='uptime' className='line'>
+            <LineChart
+              data={data.uptime}
+              label='Uptime'
+              yAxis='Current'
+              title='Current Uptime'
+            />
           </div>
-          <div className='line-graph'>
-            <div id='opcounter' className='line'>
-              <KLineChart
-                data={data.opcounter}
-                label='Operations'
-                yAxis='Current'
-                title='Current Operations'
-              />
-            </div>
-            <div id='connections' className='line'>
-              <KLineChart
-                data={data.connections}
-                label='Connections'
-                yAxis='Current'
-                title='Current Connections'
-              />
-            </div>
+          <div id='memory' className='line'>
+            <LineChart
+              data={data.memory}
+              label='Memory'
+              yAxis='Current'
+              title='Current Memory'
+            />
           </div>
-          <div className='line-graph'>
-            <div id='queue' className='line'>
-              <KLineChart
-                data={data.queues}
-                label='Queue'
-                yAxis='Current'
-                title='Current Queue'
-              />
-            </div>
-            <div id='processes' className='line'>
-              <KLineChart
-                data={data.processes}
-                label='Processes'
-                yAxis='Current'
-                title='Current Processes'
-              />
-            </div>
+          <div id='opcounter' className='line'>
+            <LineChart
+              data={data.opcounter}
+              label='Operations'
+              yAxis='Current'
+              title='Current Operations'
+            />
           </div>
-          <div className='line-graph'>
-            <div id='latency' className='line'>
-              <KLineChart
-                data={data.queues}
-                label='Latency'
-                yAxis='Latency'
-                title='Current Latency'
-              />
-            </div>
+          <div id='connections' className='line'>
+            <LineChart
+              data={data.connections}
+              label='Connections'
+              yAxis='Current'
+              title='Current Connections'
+            />
+          </div>
+          <div id='queue' className='line'>
+            <LineChart
+              data={data.queues}
+              label='Queue'
+              yAxis='Current'
+              title='Current Queue'
+            />
+          </div>
+          <div id='processes' className='line'>
+            <LineChart
+              data={data.processes}
+              label='Processes'
+              yAxis='Current'
+              title='Current Processes'
+            />
+          </div>
+          <div id='latency' className='line'>
+            <LineChart
+              data={data.queues}
+              label='Latency'
+              yAxis='Latency'
+              title='Current Latency'
+            />
           </div>
         </div>
       </div>

@@ -100,7 +100,6 @@ $themes: (
       align-self: center;
     }
     .data-container {
-      margin-top: 60px;
       grid-area: main;
       display: flex;
       flex-direction: column;
@@ -108,7 +107,7 @@ $themes: (
     .close-btn {
       position: fixed;
       padding: 5px;
-      right: 7%;
+      right: 4%;
       top: 50px;
       background: transparent;
       @include themify($themes) {

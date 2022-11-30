@@ -134,43 +134,37 @@ const MainPage = () => {
               type='Kilobytes'
             />
           </div>
-        </div>
-        <div className='charts'>
-          <div className='line-graph'>
-            <div className='line' id='total-cpu'>
-              <LineChart
-                data={data.totalCpu}
-                label='Cpu Usage'
-                yAxis='Percent'
-                title='Total CPU % Usage'
-              />
-            </div>
-            <div className='line' id='total-memory-use'>
-              <LineChart
-                data={data.totalMem}
-                label='Mem Usage'
-                yAxis='Kilobytes'
-                title='Total Memory Usage (kB)'
-              />
-            </div>
+          <div className='line' id='total-cpu'>
+            <LineChart
+              data={data.totalCpu}
+              label='Cpu Usage'
+              yAxis='Percent'
+              title='Total CPU % Usage'
+            />
           </div>
-          <div className='line-graph'>
-            <div className='line' id='net-rec'>
-              <LineChart
-                data={data.totalReceive}
-                label='Byte Usage'
-                yAxis='Kilobytes'
-                title='Netword Received (kB)'
-              />
-            </div>
-            <div className='line' id='net-trans'>
-              <LineChart
-                data={data.totalTransmit}
-                label='Byte Usage'
-                yAxis='Kilobytes'
-                title='Netword Transmitted (kB)'
-              />
-            </div>
+          <div className='line' id='total-memory-use'>
+            <LineChart
+              data={data.totalMem}
+              label='Mem Usage'
+              yAxis='Kilobytes'
+              title='Total Memory Usage (kB)'
+            />
+          </div>
+          <div className='line' id='net-rec'>
+            <LineChart
+              data={data.totalReceive}
+              label='Byte Usage'
+              yAxis='Kilobytes'
+              title='Netword Received (kB)'
+            />
+          </div>
+          <div className='line' id='net-trans'>
+            <LineChart
+              data={data.totalTransmit}
+              label='Byte Usage'
+              yAxis='Kilobytes'
+              title='Netword Transmitted (kB)'
+            />
           </div>
         </div>
       </div>
