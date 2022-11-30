@@ -108,34 +108,7 @@ body[data-theme='light'] {
       background-color: lighten(themed('nav-back'), 10%);
     }
   }
-  #dropdown {
-    #dropdown-but {
-      @include themify($themes) {
-        color: themed('font');
-        &:hover {
-          background-color: themed('drop-hover');
-        }
-      }
-    }
-    .menu {
-      @include themify($themes) {
-        background-color: lighten(themed('header-back'), 10%);
-      }
-    }
-    .menu > li {
-      @include themify($themes) {
-        background-color: transparent;
-        color: themed('font');
-      }
-    }
 
-    .menu > li:hover {
-      color: #1d1b1d;
-      @include themify($themes) {
-        background-color: themed('drop-hover');
-      }
-    }
-  }
   #eyepatch {
     @include themify($themes) {
       &:hover {
@@ -217,6 +190,34 @@ body[data-theme='light'] {
           color: $OperaMauve;
           font-size: 20px;
         }
+      }
+    }
+  }
+  #dropdown {
+    #dropdown-but {
+      @include themify($themes) {
+        color: themed('font');
+        &:hover {
+          background-color: themed('drop-hover');
+        }
+      }
+    }
+    .menu {
+      @include themify($themes) {
+        background-color: lighten(themed('header-back'), 10%);
+      }
+    }
+    .menu > li {
+      @include themify($themes) {
+        background-color: transparent;
+        color: themed('font');
+      }
+    }
+
+    .menu > li:hover {
+      color: #1d1b1d;
+      @include themify($themes) {
+        background-color: themed('drop-hover');
       }
     }
   }
