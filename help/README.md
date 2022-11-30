@@ -28,7 +28,7 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 minikube start
 ```
 
-7. helm install prometheus
+7. helm install prometheus - replace the release field with the desired name for your prometheus monitoring pod, note that this will affect the command used to forward the port in the next step.
 
 ```sh
 helm install [release] prometheus-community/kube-prometheus-stack --namespace=prometheus --create-namespace --wait
@@ -51,7 +51,3 @@ kubectl apply -f mongodb.yaml —-namespace=prometheus
 ```sh
 helm install [release] prometheus-community/prometheus-mongodb-exporter --namespace=prometheus -f exporter-values.yaml
 ```
-
-11. After cloning Odin's Eye, npm install, npm run start, navigate to localhost:3000, should look like this: images
-
-12. If you want to add more metrics to the dashboard, portforward prometheus api at 9216, write and test new queries, then add them to relevant places in server and front end.
