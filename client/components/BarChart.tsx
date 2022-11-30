@@ -92,7 +92,6 @@ const BarChart = ({ title, url, labels}: BarType) => {
         const percentage = metrics.percent.slice(0, 4) + '%';
         const xAxis = [percentage];
         let yAxis = [metrics.cpu, metrics.core];
-        console.log(metrics);
         const newData: ChartData<'bar'> = {
           labels: xAxis,
           datasets: [

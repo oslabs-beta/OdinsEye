@@ -48,10 +48,12 @@ var dashboardRouter = express.Router();
 //     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
 //     return res.status(200).json(res.locals.dashboard);
 //   },
+//mainpage
 dashboardRouter.get('/cpuUsage', dashboardController_1["default"].cpuUsageOverTotalCpu, function (req, res) {
     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
     return res.status(200).json(res.locals.cpuUsageOverTotalCpu);
 });
+//mainpage
 dashboardRouter.get('/getAllMetrics', dashboardController_1["default"].getAllMetrics, function (req, res) {
     return res.status(200).json(res.locals.dashboard);
 });

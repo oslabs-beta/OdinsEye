@@ -1,15 +1,15 @@
 const React = require('react');
 import NavBar from '../components/Navbar';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
 import KLineChart from '../components/LineChart';
 import Popup from '../components/PopUp';
 import DoughnutChart from '../components/DonutChart';
+import PodName from '../components/PodName';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
 import { currentPage, saveNamespace } from '../rootReducer';
-import PodName from '../components/PodName';
+import axios from 'axios';
 
 type KubType = {
   namespaces: string[] | null;
@@ -60,7 +60,6 @@ const KubPage = ({ namespaces }: KubType) => {
       const data = await response.data;
 
       setData(data);
-      console.log(data);
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
       });

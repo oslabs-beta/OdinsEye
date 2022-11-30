@@ -55,8 +55,6 @@ const DoughnutChart = ({ data }: DoughnutType) => {
     }
   }, [data]);
 
-  console.log('kube', data);
-
   const options: ChartOptions<'doughnut'> = {
     animation: {
       easing: 'easeInQuad',
