@@ -160,12 +160,14 @@ var kubernetesController = {
                         linegraph: {
                             restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))"),
                             ready: "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})"),
-                            notReady: "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})"),
                             //cpuQuery : `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`,
                             cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
                             memory: "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
                             reception: "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))"),
                             transmission: "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))")
+                        },
+                        donutint: {
+                            notReady: "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})")
                         }
                     };
                     _b.label = 1;
