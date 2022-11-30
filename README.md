@@ -24,7 +24,7 @@ Monitoring Tool for Kubernetes and Containerized MongoDB
 3) MongoDB metrics exported to prometheus: 
  <br> a) ```helm install exporter prometheus-community/prometheus-mongodb-exporter```
 
-
+Refer to the help directory for a step-by-step walkthrough
 
 
 ## Installation
@@ -49,6 +49,16 @@ npm run start
 
 4. Navigate to http://localhost:3000
 
+## Technologies
+
+- [React](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Chart.js](https://www.chartjs.org/)
+- [Kubernetes](https://kubernetes.io/)
+- [Docker](https://www.docker.com/)
+- [Node](https://nodejs.org/en/)
+- [Prometheus/PromQL](https://prometheus.io/)
 
 ## Authors
 - Peter Choi [@prismatism](https://github.com/prismatism) | [Linkedin](https://www.linkedin.com/in/peterchoi3000/)
@@ -57,18 +67,6 @@ npm run start
 - Wendy Zheng [@wzhengg99](https://github.com/wzhengg99) | [Linkedin](https://www.linkedin.com/in/wzheng208/)
 
 
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 <b>Show your support  <br>
 Give a ⭐️ if this project helped you!
