@@ -73,8 +73,6 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
                 title='Total Memory Usage (kB)'
               />
             </div>
-          </div>
-          <div className='line-graph'>
             <div id='net-rec' className='line'>
               <KLineChart
                 data={data.ready}
@@ -91,8 +89,6 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
                 title='Network Transmitted (kB)'
               />
             </div>
-          </div>
-          <div className='line-graph'>
             <div id='retarts' className='line'>
               <KLineChart
                 data={data.restarts}

@@ -90,6 +90,24 @@ body[data-theme='light'] {
       box-shadow: themed('box-shadow'), themed('box-shadow2');
     }
   }
+}
+
+//navbar color themes
+#nav-bar {
+  @include themify($themes) {
+    background-color: themed('nav-back');
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    .link {
+      color: themed('font');
+      &:hover {
+        color: $OperaMauve;
+      }
+    }
+    .current {
+      background-color: lighten(themed('nav-back'), 10%);
+    }
+  }
   #dropdown {
     #dropdown-but {
       @include themify($themes) {
@@ -118,49 +136,19 @@ body[data-theme='light'] {
       }
     }
   }
-
-  #nav-bar {
+  #eyepatch {
     @include themify($themes) {
-      background-color: themed('nav-back');
-      box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
-        rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
-      .link {
-        color: themed('font');
-        &:hover {
-          color: $OperaMauve;
-        }
+      &:hover {
+        background-color: themed('nav-back');
+        box-shadow: 0 0 20px 20px themed('nav-back'),
+          /* inner white */ /* middle magenta */ 0 0 100px 30px #0ff; /* outer cyan */
       }
-      .current {
-        background-color: lighten(themed('nav-back'), 10%);
-      }
+      color: themed('font');
     }
   }
 }
 
 .data-container {
-  #total-names {
-    @include themify($themes) {
-      color: themed('font');
-    }
-  }
-
-  #names-num {
-    @include themify($themes) {
-      -webkit-text-stroke: 1px themed('chart-font');
-      color: themed('chart-font');
-    }
-  }
-
-  //pods & namespaces
-  #list-data {
-    @include themify($themes) {
-      background-color: themed('header-back');
-      color: themed('font');
-      box-shadow: themed('box-shadow'), themed('box-shadow2');
-    }
-  }
-
-  //line chart
   .line {
     @include themify($themes) {
       box-shadow: themed('box-shadow'), themed('box-shadow2');
@@ -184,23 +172,36 @@ body[data-theme='light'] {
       color: themed('font');
     }
   }
+}
 
-  #kube-list-data {
+//Main Page list data
+#list-data {
+  @include themify($themes) {
+    background-color: themed('header-back');
+    color: themed('font');
+    box-shadow: themed('box-shadow'), themed('box-shadow2');
+  }
+  #total-names {
     @include themify($themes) {
-      background-color: themed('header-back');
       color: themed('font');
-      box-shadow: themed('box-shadow') themed('box-shadow2');
     }
   }
 
-  // #logs {
-  //   // grid-area: log;
-  //   background-color: rgb(218, 178, 246);
-  //   min-width: 800px;
-  //   width: 100%;
-  //   height: 400px;
-  // }
+  #names-num {
+    @include themify($themes) {
+      -webkit-text-stroke: 1px themed('chart-font');
+      color: themed('chart-font');
+    }
+  }
+}
 
+//Kubernetes page list data
+#kube-list-data {
+  @include themify($themes) {
+    background-color: themed('header-back');
+    color: themed('font');
+    box-shadow: themed('box-shadow') themed('box-shadow2');
+  }
   #pod-names {
     @include themify($themes) {
       .pod-list {
@@ -221,6 +222,7 @@ body[data-theme='light'] {
   }
 }
 
+//Scrollbar colors
 ::-webkit-scrollbar-track {
   @include themify($themes) {
     background: themed('scroll-back');
@@ -230,22 +232,5 @@ body[data-theme='light'] {
 ::-webkit-scrollbar-thumb {
   @include themify($themes) {
     background: themed('scroll');
-  }
-}
-
-#eyepatch {
-  @include themify($themes) {
-    &:hover {
-      background-color: themed('nav-back');
-      box-shadow: 0 0 20px 20px themed('nav-back'),
-        /* inner white */ /* middle magenta */ 0 0 100px 30px #0ff; /* outer cyan */
-    }
-    color: themed('font');
-  }
-}
-
-#mongo {
-  @include themify($themes) {
-    color: themed('font');
   }
 }
