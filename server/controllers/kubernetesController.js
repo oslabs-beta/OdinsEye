@@ -62,7 +62,7 @@ var kubernetesController = {
                 case 3:
                     err_1 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.nameSpaceNames: ".concat(err_1),
+                            log: "Error in kubernetesController.nameSpaceNames: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving namespace names data'
                         })];
@@ -93,7 +93,7 @@ var kubernetesController = {
                 case 3:
                     err_2 = _a.sent();
                     return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.podNames: ".concat(err_2),
+                            log: "Error in kubernetesController.podNames: ".concat(err_2),
                             status: 500,
                             message: 'Error occured while retrieving pod names'
                         })];
@@ -131,7 +131,7 @@ var kubernetesController = {
                                 case 3:
                                     err_3 = _a.sent();
                                     return [2 /*return*/, next({
-                                            log: "Error in kuberenetesController.podsNotReady: ".concat(err_3),
+                                            log: "Error in kubernetesController.podsNotReady: ".concat(err_3),
                                             status: 500,
                                             message: 'Error occured while retrieving pods not ready data'
                                         })];

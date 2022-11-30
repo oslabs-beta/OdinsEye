@@ -36,7 +36,6 @@ type LineChartDataType = {
 };
 
 const LineChart = ({ data, label, yAxis, title }: LineChartDataType) => {
-  console.log(data);
   const dark = useSelector((state: State) => state.dark);
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');

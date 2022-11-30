@@ -1,10 +1,11 @@
 import { KubernetesController, start, end, req, res, next } from '../../types';
+import { Request, Response, NextFunction } from 'express';
 import { graphDataObject } from '../../types';
 import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 
 const kubernetesController: KubernetesController = {
-  namespaceNames: async (req, res, next) => {
+  namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
       const response = await axios.get(
@@ -19,7 +20,7 @@ const kubernetesController: KubernetesController = {
       return next();
     } catch (err) {
       return next({
-        log: `Error in kuberenetesController.nameSpaceNames: ${err}`,
+        log: `Error in kubernetesController.nameSpaceNames: ${err}`,
         status: 500,
         message: 'Error occured while retrieving namespace names data',
       });
@@ -42,7 +43,7 @@ const kubernetesController: KubernetesController = {
       return next();
     } catch (err) {
       return next({
-        log: `Error in kuberenetesController.podNames: ${err}`,
+        log: `Error in kubernetesController.podNames: ${err}`,
         status: 500,
         message: 'Error occured while retrieving pod names',
       });
@@ -67,7 +68,7 @@ const kubernetesController: KubernetesController = {
           }
         } catch (err) {
           return next({
-            log: `Error in kuberenetesController.podsNotReady: ${err}`,
+            log: `Error in kubernetesController.podsNotReady: ${err}`,
             status: 500,
             message: 'Error occured while retrieving pods not ready data',
           });
