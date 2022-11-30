@@ -60,9 +60,8 @@ const KubPage = ({ namespaces }: KubType) => {
     try {
       //first step grabs all data for the current namespace
       const response = await axios.get(url);
-      const data = await response.data;
-      setData(data);
-
+      const newData = await response.data;
+      setData(newData);
       //second step grabs all pod names for current namespace and updates pod state
       const podResponse = await axios.get('/api/kubernetesMetrics/podNames', {
         params: { namespace: page },
@@ -72,7 +71,7 @@ const KubPage = ({ namespaces }: KubType) => {
 
       //thrid step checks the data that was retrieved, if num of pods NOT ready > 0 runs the following
       const badPods: string[] = [];
-      if (data.notReady > 0) {
+      if (newData.notReady > 0) {
         const badPodResponse = await axios.get(
           '/api/kubernetesMetrics/podsNotReadyNames/',
           { params: { namespace: page, podData: podData } }
