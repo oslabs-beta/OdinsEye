@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var types_1 = require("../../types");
+var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var axios_1 = require("axios");
 var kubernetesController = {
     namespaceNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -149,179 +150,76 @@ var kubernetesController = {
         });
     }); },
     getNameSpaceMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var objectData, namespaceName, restartQuery, readyQuery, notReadyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, notReadyResponse, arrayNot, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_4;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var objectData, namespaceName, queryObject, _a, err_4;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     objectData = {};
                     namespaceName = req.params.namespaceName;
-                    restartQuery = "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))");
-                    readyQuery = "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})");
-                    notReadyQuery = "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})");
-                    cpuQuery = "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))");
-                    memQuery = "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))");
-                    receiveQuery = "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))");
-                    transmitQuery = "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))");
-                    _a.label = 1;
+                    queryObject = {
+                        linegraph: {
+                            restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))"),
+                            ready: "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})"),
+                            cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
+                            memory: "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
+                            reception: "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))"),
+                            transmission: "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))")
+                        },
+                        donutint: {
+                            notReady: "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})")
+                        }
+                    };
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 9, , 10]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
+                    _b.trys.push([1, 3, , 4]);
+                    _a = res.locals;
+                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
                 case 2:
-                    restartResponse = _a.sent();
-                    array1 = restartResponse.data.data.result;
-                    restartArray = [];
-                    restartArray.push(array1[0].values);
-                    objectData.restarts = restartArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 3:
-                    readyResponse = _a.sent();
-                    array2 = readyResponse.data.data.result;
-                    readyArray = [];
-                    readyArray.push(array2[0].values);
-                    objectData.ready = readyArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(notReadyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 4:
-                    notReadyResponse = _a.sent();
-                    arrayNot = notReadyResponse.data.data.result[0].values[0][1];
-                    // const notReadyArray = [];
-                    // notReadyArray.push(arrayNot[0].values);
-                    objectData.notReady = parseInt(arrayNot);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 5:
-                    cpuResponse = _a.sent();
-                    array3 = cpuResponse.data.data.result;
-                    cpuArray = [];
-                    cpuArray.push(array3[0].values);
-                    objectData.cpu = cpuArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 6:
-                    memResponse = _a.sent();
-                    array4 = memResponse.data.data.result;
-                    memArray = [];
-                    memArray.push(array4[0].values);
-                    objectData.memory = memArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 7:
-                    receiveResponse = _a.sent();
-                    array5 = receiveResponse.data.data.result;
-                    if (array5.length === 0) {
-                        objectData.reception = [];
-                    }
-                    else {
-                        receiveArray = [];
-                        receiveArray.push(array5[0].values);
-                        objectData.reception = receiveArray;
-                    }
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 8:
-                    transmitResponse = _a.sent();
-                    array6 = transmitResponse.data.data.result;
-                    if (array6.length === 0) {
-                        objectData.transmission = [];
-                    }
-                    else {
-                        transmitArray = [];
-                        transmitArray.push(array6[0].values);
-                        objectData.transmission = transmitArray;
-                    }
-                    res.locals.namespaceData = objectData;
+                    _a.namespaceData = _b.sent();
                     return [2 /*return*/, next()];
-                case 9:
-                    err_4 = _a.sent();
+                case 3:
+                    err_4 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in kuberenetesController.getMetrics: ".concat(err_4),
                             status: 500,
                             message: 'Error occured while retrieving getMetrics data'
                         })];
-                case 10: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); },
     getPodMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var objectData, podName, ccPodName, restartQuery, readyQuery, cpuQuery, memQuery, receiveQuery, transmitQuery, restartResponse, array1, restartArray, readyResponse, array2, readyArray, cpuResponse, array3, cpuArray, memResponse, array4, memArray, receiveResponse, array5, receiveArray, transmitResponse, array6, transmitArray, err_5;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var podName, queryObject, _a, err_5;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    objectData = {};
                     podName = req.params.podName;
-                    ccPodName = podName.replace(/-([a-z])/g, function (g) {
-                        return g[1].toUpperCase();
-                    });
-                    restartQuery = "sum(changes(kube_pod_status_ready{condition=\"true\", pod = \"".concat(podName, "\"}[5m]))");
-                    readyQuery = "sum(kube_pod_status_ready{condition=\"false\", pod = \"".concat(podName, "\"})");
-                    cpuQuery = "sum(rate(container_cpu_usage_seconds_total{container=\"\", pod=~\"".concat(podName, "\"}[10m]))");
-                    memQuery = "sum(rate(container_memory_usage_bytes{container=\"\", pod=~\"".concat(podName, "\"}[10m]))");
-                    receiveQuery = "sum(rate(node_network_receive_bytes_total{pod = \"".concat(podName, "\"}[10m]))");
-                    transmitQuery = "sum(rate(node_network_transmit_bytes_total{pod = \"".concat(podName, "\"}[10m]))");
-                    _a.label = 1;
+                    queryObject = {
+                        linegraph: {
+                            restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", pod = \"".concat(podName, "\"}[5m]))"),
+                            ready: "sum(kube_pod_status_ready{condition=\"false\", pod = \"".concat(podName, "\"})"),
+                            cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
+                            memory: "sum(rate(container_memory_usage_bytes{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
+                            reception: "sum(rate(node_network_receive_bytes_total{pod = \"".concat(podName, "\"}[10m]))"),
+                            transmission: "sum(rate(node_network_transmit_bytes_total{pod = \"".concat(podName, "\"}[10m]))")
+                        }
+                    };
+                    _b.label = 1;
                 case 1:
-                    _a.trys.push([1, 8, , 9]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
+                    _b.trys.push([1, 3, , 4]);
+                    _a = res.locals;
+                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
                 case 2:
-                    restartResponse = _a.sent();
-                    array1 = restartResponse.data.data.result;
-                    restartArray = [];
-                    // for (let i = 0; i<array1.length; i++){
-                    //     restartArray.push(array1[0].values[0][i][1])
-                    // }
-                    restartArray.push(array1[0].values);
-                    objectData.restarts = restartArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 3:
-                    readyResponse = _a.sent();
-                    array2 = readyResponse.data.data.result;
-                    readyArray = [];
-                    readyArray.push(array2[0].values);
-                    objectData.ready = readyArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 4:
-                    cpuResponse = _a.sent();
-                    array3 = cpuResponse.data.data.result;
-                    cpuArray = [];
-                    cpuArray.push(array3[0].values);
-                    objectData.cpu = cpuArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 5:
-                    memResponse = _a.sent();
-                    array4 = memResponse.data.data.result;
-                    memArray = [];
-                    memArray.push(array4[0].values);
-                    objectData.memory = memArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 6:
-                    receiveResponse = _a.sent();
-                    array5 = receiveResponse.data.data.result;
-                    if (array5.length === 0) {
-                        objectData.reception = [];
-                    }
-                    else {
-                        receiveArray = [];
-                        receiveArray.push(array5[0].values);
-                        objectData.reception = receiveArray;
-                    }
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-                case 7:
-                    transmitResponse = _a.sent();
-                    array6 = transmitResponse.data.data.result;
-                    if (array6.length === 0) {
-                        objectData.transmission = [];
-                    }
-                    else {
-                        transmitArray = [];
-                        transmitArray.push(array6[0].values);
-                        objectData.transmission = transmitArray;
-                    }
-                    res.locals.podData = objectData;
-                    //console.log('res.locals.podData', res.locals.podData)
+                    _a.podData = _b.sent();
                     return [2 /*return*/, next()];
-                case 8:
-                    err_5 = _a.sent();
+                case 3:
+                    err_5 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in kuberenetesController.getPodMetrics: ".concat(err_5),
                             status: 500,
                             message: 'Error occured while retrieving getMetrics data'
                         })];
-                case 9: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     }); }

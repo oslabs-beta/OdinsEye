@@ -1,5 +1,8 @@
 const React = require('react');
 import NavBar from '../components/Navbar';
+import BarChart from '../components/BarChart';
+import LineChart from '../components/LineChart';
+import LiveChart from '../components/LiveChart';
 const styles = require('../styles/index.scss');
 const styles2 = require('../styles/colors.scss');
 import { useState, useEffect } from 'react';
@@ -7,14 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { State } from '../../types';
 import { addNamespaces } from '../getData';
 import { AppDispatch } from '../store';
-import BarChart from '../components/BarChart';
 import { currentPage } from '../rootReducer';
 import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
-import LineChart from '../components/LineChart';
-import LiveChart from '../components/LiveChart';
 import DonutChart from '../components/DonutChart';
-import { Data, MainDataType } from '../../types';
+import { MainDataType } from '../../types';
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();

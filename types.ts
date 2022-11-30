@@ -28,6 +28,10 @@ export type MongoController = {
   mongoMetrics: RequestHandler;
 };
 
+export type graphDataObject = {
+  [key: string] : {[key: string] : string}
+};
+
 export type State = {
   dark: boolean;
   namespaces: string[] | null;

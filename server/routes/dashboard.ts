@@ -55,6 +55,7 @@ const dashboardRouter = express.Router();
 //     return res.status(200).json(res.locals.dashboard);
 //   },
 
+//mainpage
 dashboardRouter.get(
   '/cpuUsage',
   dashboardController.cpuUsageOverTotalCpu,
@@ -64,7 +65,7 @@ dashboardRouter.get(
   }
 ); 
 
-
+//mainpage
 dashboardRouter.get(
   '/getAllMetrics',
   dashboardController.getAllMetrics,

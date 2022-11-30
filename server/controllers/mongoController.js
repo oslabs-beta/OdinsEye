@@ -36,8 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var types_1 = require("../../types");
-var axios_1 = require("axios");
+var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var mongoController = {
     mongoMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var queryObject, _a, err_1;
@@ -45,19 +44,21 @@ var mongoController = {
             switch (_b.label) {
                 case 0:
                     queryObject = {
-                        opcounter: 'sum(rate(mongodb_ss_opcounters[5m]))',
-                        connections: 'mongodb_ss_connections{conn_type="active"}',
-                        queues: 'sum(mongodb_ss_globalLock_currentQueue)',
-                        latency: 'rate(mongodb_ss_opLatencies_latency[5m])',
-                        uptime: 'mongodb_ss_uptime',
-                        memory: 'mongodb_sys_memory_MemAvailable_kb',
-                        processes: 'mongodb_sys_cpu_procs_running'
+                        linegraph: {
+                            opcounter: 'sum(rate(mongodb_ss_opcounters[5m]))',
+                            connections: 'mongodb_ss_connections{conn_type="active"}',
+                            queues: 'sum(mongodb_ss_globalLock_currentQueue)',
+                            latency: 'rate(mongodb_ss_opLatencies_latency[5m])',
+                            uptime: 'mongodb_ss_uptime',
+                            memory: 'mongodb_sys_memory_MemAvailable_kb',
+                            processes: 'mongodb_sys_cpu_procs_running'
+                        }
                     };
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
                     _a = res.locals;
-                    return [4 /*yield*/, DataObjectBuilder(queryObject)];
+                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
                 case 2:
                     _a.mongoData = _b.sent();
                     return [2 /*return*/, next()];
@@ -73,40 +74,4 @@ var mongoController = {
         });
     }); }
 };
-var DataObjectBuilder = function (obj) { return __awaiter(void 0, void 0, void 0, function () {
-    var objectData, _a, _b, _c, _i, key, response, err_2;
-    return __generator(this, function (_d) {
-        switch (_d.label) {
-            case 0:
-                objectData = {};
-                _d.label = 1;
-            case 1:
-                _d.trys.push([1, 6, , 7]);
-                _a = obj;
-                _b = [];
-                for (_c in _a)
-                    _b.push(_c);
-                _i = 0;
-                _d.label = 2;
-            case 2:
-                if (!(_i < _b.length)) return [3 /*break*/, 5];
-                _c = _b[_i];
-                if (!(_c in _a)) return [3 /*break*/, 4];
-                key = _c;
-                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key], "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
-            case 3:
-                response = _d.sent();
-                objectData[key] = [response.data.data.result[0].values];
-                _d.label = 4;
-            case 4:
-                _i++;
-                return [3 /*break*/, 2];
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                err_2 = _d.sent();
-                return [2 /*return*/, err_2];
-            case 7: return [2 /*return*/, objectData];
-        }
-    });
-}); };
 exports["default"] = mongoController;
