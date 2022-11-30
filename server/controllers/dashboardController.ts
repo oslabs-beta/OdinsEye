@@ -1,13 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
-import { DashboardController } from '../../types';
-import { graphDataObject } from '../../types';
+import {
+  DashboardController,
+  graphDataObject,
+  start,
+  end,
+  res,
+  req,
+  next,
+} from '../../types';
 import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 const client = require('prom-client');
-const start = new Date(Date.now() - 1440 * 60000).toISOString();
-const end = new Date(Date.now()).toISOString();
 
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
@@ -23,7 +27,7 @@ const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 
 const dashboardController: DashboardController = {
-  getAllMetrics: async (req: Request, res: Response, next: NextFunction) => {
+  getAllMetrics: async (req, res, next) => {
     const queryObject: graphDataObject = {
       linegraph: {
         totalCpu: 'sum(rate(container_cpu_usage_seconds_total[10m]))*100',
@@ -35,11 +39,11 @@ const dashboardController: DashboardController = {
         totalPods: 'count(kube_pod_info)',
         notReadyPods: 'sum(kube_pod_status_ready{condition="false"})',
         totalNamespaces: 'count(kube_namespace_created)',
-      }
-  }
-    try{
+      },
+    };
+    try {
       res.locals.dashboard = await DataObjectBuilder(queryObject);
-      return next(); 
+      return next();
     } catch (err) {
       return next({
         log: `Error in dashboardController.getAllMetrics: ${err}`,
@@ -48,15 +52,16 @@ const dashboardController: DashboardController = {
       });
     }
   },
-  
-  cpuUsageOverTotalCpu: async (req: Request, res: Response, next: NextFunction) => {
+
+  cpuUsageOverTotalCpu: async (req, res, next) => {
     const queryObject: graphDataObject = {
       cpubarchart: {
         cpu: 'sum(rate(container_cpu_usage_seconds_total[5m]))',
         core: 'sum(machine_cpu_cores)',
-        percent: 'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100',
-      }
-    }
+        percent:
+          'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100',
+      },
+    };
     try {
       res.locals.cpuUsageOverTotalCpu = await DataObjectBuilder(queryObject);
       return next();
@@ -67,7 +72,7 @@ const dashboardController: DashboardController = {
         message: 'Error occured while retrieving dashboard transmit data',
       });
     }
-  }
+  },
 };
 
 export default dashboardController;

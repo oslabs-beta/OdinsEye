@@ -1,5 +1,4 @@
-const React = require('react');
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 type DropDownType = {
   namespaces: string[] | null;
@@ -16,7 +15,7 @@ const DropDown = ({ namespaces, current, handleChange }: DropDownType) => {
   };
 
   //creates array of html button elements of each namespaces
-  const nameSpaceArr: any = [];
+  const nameSpaceArr: JSX.Element[] = [];
   if (namespaces) {
     namespaces.forEach((name) => {
       nameSpaceArr.push(

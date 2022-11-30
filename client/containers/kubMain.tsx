@@ -1,28 +1,18 @@
-const React = require('react');
 import NavBar from '../components/Navbar';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import DropDown from '../components/Dropdown';
 import LineChart from '../components/LineChart';
 import Popup from '../components/PopUp';
-import DoughnutChart from '../components/DonutChart';
-import PodName from '../components/PodName';
-import { useState, useEffect } from 'react';
+import DonutChart from '../components/DonutChart';
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../types';
 import { currentPage, saveNamespace } from '../rootReducer';
-import axios from 'axios';
+import PodName from '../components/PodName';
+import { KubDataType } from '../../types';
 
 type KubType = {
   namespaces: string[] | null;
-};
-
-type KubDataType = {
-  cpu: any[];
-  memory: any[];
-  notReady: number;
-  ready: any[];
-  reception: any[];
-  restarts: any[];
-  transmission: any[];
 };
 
 const KubPage = ({ namespaces }: KubType) => {
@@ -117,42 +107,82 @@ const KubPage = ({ namespaces }: KubType) => {
 
   if (Array.isArray(pods) && pods.length > 0) {
     pods.forEach((pod: string | string[]) => {
-      if (Array.isArray(pod)) {
-        if (parseInt(pod[0]) > 0) {
-          podsArray.push(
-            <PodName
-              key={pod[1]}
-              pod={pod[1]}
-              ready={false}
-              setCurrentPod={setCurrentPod}
-              setButtonPopup={setButtonPopup}
-            />
-          );
-        } else {
-          podsArray.push(
-            <PodName
-              key={pod[1]}
-              pod={pod[1]}
-              ready={true}
-              setCurrentPod={setCurrentPod}
-              setButtonPopup={setButtonPopup}
-            />
-          );
-        }
-      } else {
-        podsArray.push(
-          <PodName
-            key={pod}
-            pod={pod}
-            ready={true}
-            setCurrentPod={setCurrentPod}
-            setButtonPopup={setButtonPopup}
-          />
-        );
-      }
+      let status;
+      let podName;
+
+      Array.isArray(pod) ? (podName = pod[1]) : (podName = pod);
+      Array.isArray(pod) && parseInt(pod[0]) > 0
+        ? (status = false)
+        : (status = true);
+
+      podsArray.push(
+        <PodName
+          key={podName}
+          pod={podName}
+          ready={status}
+          setCurrentPod={setCurrentPod}
+          setButtonPopup={setButtonPopup}
+        />
+      );
     });
   }
 
+  let dropdown;
+  if (namespaces) {
+    namespaces.length > 0
+      ? (dropdown = (
+          <DropDown
+            namespaces={namespaces}
+            current={page}
+            handleChange={handleChange}
+          />
+        ))
+      : (dropdown = (
+          <div id='dropdown'>
+            <button id='dropdown-but'>None</button>
+          </div>
+        ));
+  }
+
+  //Creates line chart array from line chart data object
+  const lineObject: { [key: string]: any[] } = {
+    totalCpu: [data.cpu, 'Cpu Usage', 'Percent', 'Total CPU % Usage'],
+    totalMem: [
+      data.memory,
+      'Mem Usage',
+      'Kilobytes',
+      'Total Memory Usage (kB)',
+    ],
+    totalRec: [
+      data.reception,
+      'Byte Usage',
+      'Kilobytes',
+      'Netword Received (kB)',
+    ],
+    totalTrans: [
+      data.transmission,
+      'Byte Usage',
+      'Kilobytes',
+      'Network Transmitted (kB)',
+    ],
+    restart: [data.restarts, 'Restarts', 'Restarts', 'Pod Restarts'],
+  };
+
+  const charts: JSX.Element[] = [];
+
+  for (let info in lineObject) {
+    charts.push(
+      <div className='line' id='total-cpu'>
+        <LineChart
+          key={lineObject[info][0]}
+          data={lineObject[info][0]}
+          label={lineObject[info][1]}
+          yAxis={lineObject[info][2]}
+          title={lineObject[info][3]}
+        />
+      </div>
+    );
+  }
   return (
     <div id='main-container' className={theme}>
       <div className='header'>
@@ -166,23 +196,9 @@ const KubPage = ({ namespaces }: KubType) => {
       />
       <div className='data-container'>
         <div id='kube-list-data'>
-          {namespaces ? (
-            namespaces.length > 0 ? (
-              <DropDown
-                namespaces={namespaces}
-                current={page}
-                handleChange={handleChange}
-              />
-            ) : (
-              <div id='dropdown'>
-                <button id='dropdown-but'>None</button>
-              </div>
-            )
-          ) : (
-            <div></div>
-          )}
+          {dropdown}
           <div id='kube-total-pods'>
-            <DoughnutChart
+            <DonutChart
               data={
                 pods[0] === 'Error Fetching Pods'
                   ? 0
@@ -196,48 +212,7 @@ const KubPage = ({ namespaces }: KubType) => {
             {podsArray}
           </div>
         </div>
-        <div className='line-graph'>
-          <div id='total-cpu' className='line'>
-            <LineChart
-              data={data.cpu}
-              label='Percent'
-              yAxis='%'
-              title='Total CPU % Usage'
-            />
-          </div>
-          <div id='total-memory-use' className='line'>
-            <LineChart
-              data={data.memory}
-              label='kB'
-              yAxis='Kilobytes'
-              title='Total Memory Usage (kB)'
-            />
-          </div>
-          <div id='net-rec' className='line'>
-            <LineChart
-              data={data.reception}
-              label='kB'
-              yAxis='Kilobytes'
-              title='Network Received (kB)'
-            />
-          </div>
-          <div id='net-trans' className='line'>
-            <LineChart
-              data={data.transmission}
-              label='kB'
-              yAxis='Kilobytes'
-              title='Network Transmitted (kB)'
-            />
-          </div>
-          <div id='retarts' className='line'>
-            <LineChart
-              data={data.restarts}
-              label='Restarts'
-              yAxis='Restarts'
-              title='Pod Restarts'
-            />
-          </div>
-        </div>
+        <div className='line-graph'>{charts}</div>
       </div>
     </div>
   );

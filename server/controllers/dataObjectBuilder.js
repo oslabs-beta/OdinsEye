@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -37,105 +37,104 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var axios_1 = require("axios");
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
-var end = new Date(Date.now()).toISOString();
+var types_1 = require("../../types");
 var DataObjectBuilder = function (obj) { return __awaiter(void 0, void 0, void 0, function () {
-    var objectData, _a, _b, _i, key, _c, _d, _e, query, response, _f, _g, _h, query, response, data, _j, _k, _l, query, response, err_1;
-    return __generator(this, function (_m) {
-        switch (_m.label) {
+    var objectData, _a, _b, _c, _i, key, _d, _e, _f, _g, query, response, _h, _j, _k, _l, query, response, data, _m, _o, _p, _q, query, response, err_1;
+    return __generator(this, function (_r) {
+        switch (_r.label) {
             case 0:
                 objectData = {};
-                _m.label = 1;
+                _r.label = 1;
             case 1:
-                _m.trys.push([1, 16, , 17]);
-                _a = [];
-                for (_b in obj)
-                    _a.push(_b);
+                _r.trys.push([1, 16, , 17]);
+                _a = obj;
+                _b = [];
+                for (_c in _a)
+                    _b.push(_c);
                 _i = 0;
-                _m.label = 2;
+                _r.label = 2;
             case 2:
-                if (!(_i < _a.length)) return [3 /*break*/, 15];
-                key = _a[_i];
-                if (!(key === "linegraph")) return [3 /*break*/, 6];
-                _c = [];
-                for (_d in obj[key])
-                    _c.push(_d);
-                _e = 0;
-                _m.label = 3;
+                if (!(_i < _b.length)) return [3 /*break*/, 15];
+                _c = _b[_i];
+                if (!(_c in _a)) return [3 /*break*/, 14];
+                key = _c;
+                if (!(key === 'linegraph')) return [3 /*break*/, 6];
+                _d = obj[key];
+                _e = [];
+                for (_f in _d)
+                    _e.push(_f);
+                _g = 0;
+                _r.label = 3;
             case 3:
-                if (!(_e < _c.length)) return [3 /*break*/, 6];
-                query = _c[_e];
-                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                if (!(_g < _e.length)) return [3 /*break*/, 6];
+                _f = _e[_g];
+                if (!(_f in _d)) return [3 /*break*/, 5];
+                query = _f;
+                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
             case 4:
-                response = _m.sent();
+                response = _r.sent();
                 if (response.data.data.result.length === 0) {
                     objectData[query] = [];
                 }
                 else {
                     objectData[query] = [response.data.data.result[0].values];
                 }
-                _m.label = 5;
+                _r.label = 5;
             case 5:
-                _e++;
+                _g++;
                 return [3 /*break*/, 3];
             case 6:
-                if (!(key === "donutint")) return [3 /*break*/, 10];
-                _f = [];
-                for (_g in obj[key])
-                    _f.push(_g);
-                _h = 0;
-                _m.label = 7;
-            case 7:
-                if (!(_h < _f.length)) return [3 /*break*/, 10];
-                query = _f[_h];
-                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
-            case 8:
-                response = _m.sent();
-                data = parseInt(response.data.data.result[0].values[0][1]);
-                objectData[query] = [data];
-                _m.label = 9;
-            case 9:
-                _h++;
-                return [3 /*break*/, 7];
-            case 10:
-                if (!(key === "cpubarchart")) return [3 /*break*/, 14];
+                if (!(key === 'donutint')) return [3 /*break*/, 10];
+                _h = obj[key];
                 _j = [];
-                for (_k in obj[key])
+                for (_k in _h)
                     _j.push(_k);
                 _l = 0;
-                _m.label = 11;
-            case 11:
-                if (!(_l < _j.length)) return [3 /*break*/, 14];
-                query = _j[_l];
-                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
-            case 12:
-                response = _m.sent();
-                objectData[query] = [response.data.data.result[0].values[1][1]];
-                _m.label = 13;
-            case 13:
+                _r.label = 7;
+            case 7:
+                if (!(_l < _j.length)) return [3 /*break*/, 10];
+                _k = _j[_l];
+                if (!(_k in _h)) return [3 /*break*/, 9];
+                query = _k;
+                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
+            case 8:
+                response = _r.sent();
+                data = parseInt(response.data.data.result[0].values[0][1]);
+                objectData[query] = [data];
+                _r.label = 9;
+            case 9:
                 _l++;
+                return [3 /*break*/, 7];
+            case 10:
+                if (!(key === 'cpubarchart')) return [3 /*break*/, 14];
+                _m = obj[key];
+                _o = [];
+                for (_p in _m)
+                    _o.push(_p);
+                _q = 0;
+                _r.label = 11;
+            case 11:
+                if (!(_q < _o.length)) return [3 /*break*/, 14];
+                _p = _o[_q];
+                if (!(_p in _m)) return [3 /*break*/, 13];
+                query = _p;
+                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key][query], "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
+            case 12:
+                response = _r.sent();
+                objectData[query] = [response.data.data.result[0].values[1][1]];
+                _r.label = 13;
+            case 13:
+                _q++;
                 return [3 /*break*/, 11];
             case 14:
                 _i++;
                 return [3 /*break*/, 2];
             case 15: return [3 /*break*/, 17];
             case 16:
-                err_1 = _m.sent();
+                err_1 = _r.sent();
                 return [2 /*return*/, err_1];
             case 17: return [2 /*return*/, objectData];
         }
     });
 }); };
 exports["default"] = DataObjectBuilder;
-// response objects
-// mongo
-// mongoMetrics: response.data.data.result[0].values => []
-// kubernetes
-// namespaceNames, podNames, : response.data.data.result => [] (pushing element.metric.namespace into outputarray)
-// podsNotReadyNames : response.data.data.result[0].values[0][1] => [status, name]
-// getNameSpaceMetrics : restartResponse.data.data.result[0].values => []
-// getPodMetrics : restartResponse.data.data.result[0].values => []
-// dashboard
-// getAllMetrics  : data.data.result[0].values + 
-//  totalPods, notReadyPods, totalNamespaces: data.data.result[0].values[0][1] -> main, donutchart, parsing int
-// cpuUsageOverTotalCpu : data.data.result[0].values[1][1] -> main, cpu barchart

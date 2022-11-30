@@ -1,9 +1,4 @@
-import {
-  createAction,
-  createReducer,
-  createSlice,
-  current,
-} from '@reduxjs/toolkit';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 import { State } from '../types';
 import { addNamespaces } from './getData';
 

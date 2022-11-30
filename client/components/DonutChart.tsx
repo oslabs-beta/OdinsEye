@@ -15,13 +15,13 @@ import { totalmem } from 'os';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-type DoughnutType = {
+type DonutType = {
   data: number[] | number;
   label: string;
 };
 
 //display total number active and non active pods
-const DoughnutChart = ({ data }: DoughnutType) => {
+const DonutChart = ({ data }: DonutType) => {
   const dark = useSelector((state: State) => state.dark);
   let fontColor;
   dark ? (fontColor = '#363946') : (fontColor = 'rgba(136, 217, 230, 0.8)');
@@ -106,4 +106,4 @@ const DoughnutChart = ({ data }: DoughnutType) => {
   }
 };
 
-export default DoughnutChart;
+export default DonutChart;

@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -36,10 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var types_1 = require("../../types");
 var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var axios_1 = require("axios");
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
-var end = new Date(Date.now()).toISOString();
 var kubernetesController = {
     namespaceNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var namespaceQuery, response, array, namespaceArray_1, err_1;
@@ -50,7 +49,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
                     array = response.data.data.result;
@@ -81,7 +80,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
                     array = response.data.data.result;
@@ -118,7 +117,7 @@ var kubernetesController = {
                                     _a.label = 1;
                                 case 1:
                                     _a.trys.push([1, 3, , 4]);
-                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                                 case 2:
                                     response = _a.sent();
                                     if (!response) {
@@ -151,16 +150,16 @@ var kubernetesController = {
         });
     }); },
     getNameSpaceMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var namespaceName, queryObject, _a, err_4;
+        var objectData, namespaceName, queryObject, _a, err_4;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    objectData = {};
                     namespaceName = req.params.namespaceName;
                     queryObject = {
                         linegraph: {
                             restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))"),
                             ready: "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})"),
-                            //cpuQuery : `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`,
                             cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
                             memory: "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
                             reception: "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))"),
@@ -212,7 +211,6 @@ var kubernetesController = {
                     return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
                 case 2:
                     _a.podData = _b.sent();
-                    ;
                     return [2 /*return*/, next()];
                 case 3:
                     err_5 = _b.sent();

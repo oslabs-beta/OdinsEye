@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import KLineChart from './LineChart';
+import LineChart from './LineChart';
 import axios from 'axios';
 const styles = require('../styles/popup.scss');
+import { Data } from '../../types';
 
 type PopupType = {
   podName: string | undefined;
@@ -10,12 +11,12 @@ type PopupType = {
 };
 
 type PopUpDataType = {
-  cpu: any[];
-  memory: any[];
-  ready: any[];
-  reception: any[];
-  restarts: any[];
-  transmission: any[];
+  cpu: Data[];
+  memory: Data[];
+  ready: Data[];
+  reception: Data[];
+  restarts: Data[];
+  transmission: Data[];
 };
 
 const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
@@ -38,7 +39,7 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
       const data = await response.data;
       setData(data);
     } catch (err) {
-      console.log(err);
+      console.log('Error in Popup: ', err);
     }
   };
 
@@ -48,6 +49,44 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
     }
   }, [podName]);
 
+  const lineObject: { [key: string]: any[] } = {
+    totalCpu: [data.cpu, 'Cpu Usage', 'Percent', 'Total CPU % Usage'],
+    totalMem: [
+      data.memory,
+      'Mem Usage',
+      'Kilobytes',
+      'Total Memory Usage (kB)',
+    ],
+    totalRec: [
+      data.reception,
+      'Byte Usage',
+      'Kilobytes',
+      'Netword Received (kB)',
+    ],
+    totalTrans: [
+      data.transmission,
+      'Byte Usage',
+      'Kilobytes',
+      'Network Transmitted (kB)',
+    ],
+    restart: [data.restarts, 'Restarts', 'Restarts', 'Pod Restarts'],
+  };
+
+  const charts: JSX.Element[] = [];
+
+  for (let info in lineObject) {
+    charts.push(
+      <div className='line' id='total-cpu'>
+        <LineChart
+          key={lineObject[info][0]}
+          data={lineObject[info][0]}
+          label={lineObject[info][1]}
+          yAxis={lineObject[info][2]}
+          title={lineObject[info][3]}
+        />
+      </div>
+    );
+  }
   return trigger ? (
     <div id='popup'>
       <div id='popup-inner'>
@@ -56,48 +95,7 @@ const Popup = ({ podName, trigger, setTrigger }: PopupType) => {
           X
         </button>
         <div className='data-container'>
-          <div className='line-graph'>
-            <div id='total-cpu' className='line'>
-              <KLineChart
-                data={data.cpu}
-                label='%'
-                yAxis='%'
-                title='Total CPU % Usage'
-              />
-            </div>
-            <div id='total-memory-use' className='line'>
-              <KLineChart
-                data={data.memory}
-                label='kB'
-                yAxis='kilobytes'
-                title='Total Memory Usage (kB)'
-              />
-            </div>
-            <div id='net-rec' className='line'>
-              <KLineChart
-                data={data.ready}
-                label='kB'
-                yAxis='kilobytes'
-                title='Network Received (kB)'
-              />
-            </div>
-            <div id='net-trans' className='line'>
-              <KLineChart
-                data={data.transmission}
-                label='kB'
-                yAxis='kilobytes'
-                title='Network Transmitted (kB)'
-              />
-            </div>
-            <div id='retarts' className='line'>
-              <KLineChart
-                data={data.restarts}
-                label='Restarts'
-                yAxis='restarts'
-                title='Pod Restarts'
-              />
-            </div>
-          </div>
+          <div className='line-graph'>{charts}</div>
         </div>
       </div>
     </div>

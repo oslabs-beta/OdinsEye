@@ -107,7 +107,6 @@ app.use('*', (req: Request, res: Response) => {
 });
 
 //global error handling
-
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
   const defaultErr: ErrorType = {
     log: 'Express error handler caught unknown middleware error',

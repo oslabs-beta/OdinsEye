@@ -1,14 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import { KubernetesController } from '../../types';
+import { KubernetesController, start, end, req, res, next } from '../../types';
 import { graphDataObject } from '../../types';
 import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 
-const start = new Date(Date.now() - 1440 * 60000).toISOString();
-const end = new Date(Date.now()).toISOString();
-
 const kubernetesController: KubernetesController = {
-  namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
+  namespaceNames: async (req, res, next) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
       const response = await axios.get(
@@ -30,7 +26,7 @@ const kubernetesController: KubernetesController = {
     }
   },
 
-  podNames: async (req: Request, res: Response, next: NextFunction) => {
+  podNames: async (req, res, next) => {
     const namespace = req.query.namespace;
     const podNameQuery = `sum by (pod)(kube_pod_info{namespace="${namespace}"})`;
     try {
@@ -52,11 +48,8 @@ const kubernetesController: KubernetesController = {
       });
     }
   },
-  podsNotReadyNames: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+
+  podsNotReadyNames: async (req, res, next) => {
     const { namespace, podData } = req.query;
     if (Array.isArray(podData)) {
       const promises = podData.map(async (name) => {
@@ -87,26 +80,22 @@ const kubernetesController: KubernetesController = {
     return next();
   },
 
-  getNameSpaceMetrics: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  getNameSpaceMetrics: async (req, res, next) => {
+    const objectData: any = {};
     const { namespaceName } = req.params;
     const queryObject: graphDataObject = {
       linegraph: {
-        restarts : `sum(changes(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"}[5m]))`,
-        ready : `sum(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"})`,
-        //cpuQuery : `sum+by+(${ccNamespaceName})+(rate(container_cpu_usage_seconds_total[10m]))`,
-        cpu : `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${namespaceName}"}[10m]))`,
-        memory : `sum(rate(container_memory_usage_bytes{container="", namespace=~"${namespaceName}"}[10m]))`,
-        reception : `sum(rate(node_network_receive_bytes_total{namespace = "${namespaceName}"}[10m]))`,
-        transmission : `sum(rate(node_network_transmit_bytes_total{namespace = "${namespaceName}"}[10m]))`,
+        restarts: `sum(changes(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"}[5m]))`,
+        ready: `sum(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"})`,
+        cpu: `sum(rate(container_cpu_usage_seconds_total{container="", namespace=~"${namespaceName}"}[10m]))`,
+        memory: `sum(rate(container_memory_usage_bytes{container="", namespace=~"${namespaceName}"}[10m]))`,
+        reception: `sum(rate(node_network_receive_bytes_total{namespace = "${namespaceName}"}[10m]))`,
+        transmission: `sum(rate(node_network_transmit_bytes_total{namespace = "${namespaceName}"}[10m]))`,
       },
       donutint: {
-        notReady : `sum(kube_pod_status_ready{condition="false", namespace = "${namespaceName}"})`,
-      }
-    }
+        notReady: `sum(kube_pod_status_ready{condition="false", namespace = "${namespaceName}"})`,
+      },
+    };
     try {
       res.locals.namespaceData = await DataObjectBuilder(queryObject);
       return next();
@@ -119,20 +108,20 @@ const kubernetesController: KubernetesController = {
     }
   },
 
-  getPodMetrics: async (req: Request, res: Response, next: NextFunction) => {
+  getPodMetrics: async (req, res, next) => {
     const { podName } = req.params;
     const queryObject: graphDataObject = {
       linegraph: {
-        restarts : `sum(changes(kube_pod_status_ready{condition="true", pod = "${podName}"}[5m]))`,
-        ready : `sum(kube_pod_status_ready{condition="false", pod = "${podName}"})`,
-        cpu : `sum(rate(container_cpu_usage_seconds_total{container="", pod=~"${podName}"}[10m]))`,
-        memory : `sum(rate(container_memory_usage_bytes{container="", pod=~"${podName}"}[10m]))`,
-        reception : `sum(rate(node_network_receive_bytes_total{pod = "${podName}"}[10m]))`,
-        transmission : `sum(rate(node_network_transmit_bytes_total{pod = "${podName}"}[10m]))`,
-      }
-    }
+        restarts: `sum(changes(kube_pod_status_ready{condition="true", pod = "${podName}"}[5m]))`,
+        ready: `sum(kube_pod_status_ready{condition="false", pod = "${podName}"})`,
+        cpu: `sum(rate(container_cpu_usage_seconds_total{container="", pod=~"${podName}"}[10m]))`,
+        memory: `sum(rate(container_memory_usage_bytes{container="", pod=~"${podName}"}[10m]))`,
+        reception: `sum(rate(node_network_receive_bytes_total{pod = "${podName}"}[10m]))`,
+        transmission: `sum(rate(node_network_transmit_bytes_total{pod = "${podName}"}[10m]))`,
+      },
+    };
     try {
-      res.locals.podData = await DataObjectBuilder(queryObject);;
+      res.locals.podData = await DataObjectBuilder(queryObject);
       return next();
     } catch (err) {
       return next({
