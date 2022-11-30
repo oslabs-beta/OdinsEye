@@ -1,0 +1,125 @@
+$nav: #1d1b1d;
+$PersianGreen: rgb(51, 153, 137);
+$PacificBlue: rgb(80, 178, 192);
+$OperaMauve: rgb(172, 128, 160);
+$background: rgb(31, 28, 30);
+$fontColor: rgba(136, 217, 230, 0.8);
+$font: 'Playfair Display', serif;
+$theme-map: null;
+
+$themes: (
+  dark: (
+    'bg': $background,
+    'font': $fontColor,
+    'header': $PacificBlue,
+    'box-shadow': rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    'box-shadow2': rgba(51, 153, 137, 0.15) 0px 2px 6px 2px,
+    'drop-hover': rgb(151, 150, 150),
+    'header-back': $background,
+    'chart-back': transparent,
+    'chart-font': rgba(54, 133, 181, 1),
+    'nav-back': $nav,
+    'pod-good': $PersianGreen,
+    'graph-font': $PacificBlue,
+  ),
+  light: (
+    'bg': #c9c5ba,
+    'font': #5d536b,
+    'header': #696773,
+    'box-shadow': #c9c5ba,
+    'box-shadow2': #c9c5ba,
+    'drop-hover': #ceede0,
+    'header-back': #97b1a6,
+    'chart-back': #e5e0d4,
+    'chart-font': #363946,
+    'nav-back': #97b1a6,
+    'nav-font': #272838,
+    'pod-good': #97b1a6,
+    'graph-font': rgb(46, 45, 45),
+  ),
+);
+
+@mixin themify($themes: $themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value,
+          )
+        ) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+#popup {
+  position: fixed;
+  background: rgba(6, 24, 38, 0.7);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+
+  #popup-inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    opacity: 100%;
+    height: calc(100% - 10vh);
+    width: 90%;
+    overflow: scroll;
+    align-content: center;
+    z-index: 1;
+    @include themify($themes) {
+      background-color: themed('nav-back');
+    }
+
+    h2 {
+      position: relative;
+      @include themify($themes) {
+        color: themed('font');
+      }
+      font-weight: bold;
+      font-size: 50px;
+      align-self: center;
+    }
+    .data-container {
+      grid-area: main;
+      display: flex;
+      flex-direction: column;
+    }
+    .close-btn {
+      position: fixed;
+      padding: 5px;
+      right: 4%;
+      top: 50px;
+      background: transparent;
+      @include themify($themes) {
+        color: themed('font');
+      }
+      font-size: 20px;
+      border-style: none;
+      transform: translateX(-90%);
+      &:hover {
+        font-size: 30px;
+        cursor: pointer;
+      }
+    }
+  }
+}

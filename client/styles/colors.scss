@@ -1,0 +1,237 @@
+$nav: #1d1b1d;
+$PersianGreen: rgb(51, 153, 137);
+$PacificBlue: rgb(80, 178, 192);
+$OperaMauve: rgb(172, 128, 160);
+$background: rgb(31, 28, 30);
+$fontColor: rgba(136, 217, 230, 0.8);
+$font: 'Playfair Display', serif;
+$theme-map: null;
+$light-bg: #c9c5ba;
+$light-box: #e5e0d4;
+
+$themes: (
+  dark: (
+    'bg': $background,
+    'scroll-back': $fontColor,
+    'scroll': lighten($background, 20%),
+    'font': $fontColor,
+    'header': $PacificBlue,
+    'box-shadow': rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+    'box-shadow2': rgba(51, 153, 137, 0.15) 0px 2px 6px 2px,
+    'drop-hover': rgb(151, 150, 150),
+    'header-back': $background,
+    'chart-back': transparent,
+    'chart-font': rgba(54, 133, 181, 1),
+    'nav-back': $nav,
+    'pod-good': $PersianGreen,
+    'graph-font': $PacificBlue,
+    'pod-bad': rgb(187, 72, 103),
+  ),
+  light: (
+    'bg': $light-bg,
+    'scroll-back': $light-box,
+    'scroll': darken(#c9c5ba, 10%),
+    'font': #5d536b,
+    'header': #696773,
+    'box-shadow': $light-bg,
+    'box-shadow2': $light-bg,
+    'drop-hover': #ceede0,
+    'header-back': $light-box,
+    'chart-back': $light-box,
+    'chart-font': #363946,
+    'nav-back': #97b1a6,
+    'nav-font': #272838,
+    'pod-good': #97b1a6,
+    'pod-bad': rgb(146, 19, 19),
+    'graph-font': rgb(46, 45, 45),
+  ),
+);
+
+@mixin themify($themes: $themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value,
+          )
+        ) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map-get($theme-map, $key);
+}
+
+body[data-theme='dark'] {
+  background: $background;
+}
+
+body[data-theme='light'] {
+  background: #c9c5ba;
+}
+
+#main-container {
+  @include themify($themes) {
+    background-color: themed('bg');
+  }
+  .header {
+    @include themify($themes) {
+      background-color: themed('header-back');
+      color: themed('header');
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+    }
+  }
+}
+
+//navbar color themes
+#nav-bar {
+  @include themify($themes) {
+    background-color: themed('nav-back');
+    box-shadow: rgba(51, 153, 137, 0.3) 0px 1px 2px 0px,
+      rgba(51, 153, 137, 0.15) 0px 2px 6px 2px;
+    .link {
+      color: themed('font');
+      &:hover {
+        color: $OperaMauve;
+      }
+    }
+    .current {
+      background-color: lighten(themed('nav-back'), 10%);
+    }
+  }
+
+  #eyepatch {
+    @include themify($themes) {
+      &:hover {
+        background-color: themed('nav-back');
+        box-shadow: 0 0 20px 20px themed('nav-back'),
+          /* inner white */ /* middle magenta */ 0 0 100px 30px #0ff; /* outer cyan */
+      }
+      color: themed('font');
+    }
+  }
+}
+
+.data-container {
+  .line {
+    @include themify($themes) {
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+      background-color: themed('chart-back');
+    }
+  }
+
+  .live {
+    @include themify($themes) {
+      box-shadow: themed('box-shadow'), themed('box-shadow2');
+      background-color: themed('chart-back');
+    }
+  }
+  .bar-chart {
+    @include themify($themes) {
+      background-color: themed('chart-back');
+    }
+  }
+  #total-names {
+    @include themify($themes) {
+      color: themed('font');
+    }
+  }
+}
+
+//Main Page list data
+#list-data {
+  @include themify($themes) {
+    background-color: themed('header-back');
+    color: themed('font');
+    box-shadow: themed('box-shadow'), themed('box-shadow2');
+  }
+  #total-names {
+    @include themify($themes) {
+      color: themed('font');
+    }
+  }
+
+  #names-num {
+    @include themify($themes) {
+      -webkit-text-stroke: 1px themed('chart-font');
+      color: themed('chart-font');
+    }
+  }
+}
+
+//Kubernetes page list data
+#kube-list-data {
+  @include themify($themes) {
+    background-color: themed('header-back');
+    color: themed('font');
+    box-shadow: themed('box-shadow') themed('box-shadow2');
+  }
+  #pod-names {
+    @include themify($themes) {
+      .pod-list {
+        color: themed('font');
+        &:hover {
+          color: $OperaMauve;
+          font-size: 20px;
+        }
+      }
+      .pod-list-bad {
+        color: themed('pod-bad');
+        &:hover {
+          color: $OperaMauve;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  #dropdown {
+    #dropdown-but {
+      @include themify($themes) {
+        color: themed('font');
+        &:hover {
+          background-color: themed('drop-hover');
+        }
+      }
+    }
+    .menu {
+      @include themify($themes) {
+        background-color: lighten(themed('header-back'), 10%);
+      }
+    }
+    .menu > li {
+      @include themify($themes) {
+        background-color: transparent;
+        color: themed('font');
+      }
+    }
+
+    .menu > li:hover {
+      color: #1d1b1d;
+      @include themify($themes) {
+        background-color: themed('drop-hover');
+      }
+    }
+  }
+}
+
+//Scrollbar colors
+::-webkit-scrollbar-track {
+  @include themify($themes) {
+    background: themed('scroll-back');
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  @include themify($themes) {
+    background: themed('scroll');
+  }
+}

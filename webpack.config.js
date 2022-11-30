@@ -5,21 +5,21 @@ const e = require('express');
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: './client/index.js',
+  entry: './client/index.tsx',
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 7070,
     historyApiFallback: true,
-    // proxy: {
-    //   '/users': {
-    //     target: 'http://localhost:8080/',
-    //     router: () => 'http://localhost:3000',
-    //   },
-    //   '/transactions': {
-    //     target: 'http://localhost:8080/',
-    //     router: () => 'http://localhost:3000',
-    //   },
-    // },
+    proxy: {
+      '/': {
+        target: 'http://localhost:7070/',
+        router: () => 'http://localhost:3000',
+      },
+      '/api': {
+        target: 'http://localhost:7070/',
+        router: () => 'http://localhost:3000',
+      },
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -46,6 +46,22 @@ module.exports = {
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
 };
