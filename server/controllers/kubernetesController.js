@@ -36,9 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var types_1 = require("../../types");
 var axios_1 = require("axios");
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
-var end = new Date(Date.now()).toISOString();
 var kubernetesController = {
     namespaceNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var namespaceQuery, response, array, namespaceArray_1, err_1;
@@ -49,7 +48,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
                     array = response.data.data.result;
@@ -80,7 +79,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(podNameQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
                     array = response.data.data.result;
@@ -101,23 +100,6 @@ var kubernetesController = {
             }
         });
     }); },
-    // podsNotReady: async (req: Request, res: Response, next: NextFunction) => {
-    //   const readyQuery =
-    //     'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
-    //   try {
-    //     const response = await axios.get(
-    //       `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
-    //     );
-    //     res.locals.ready = response.data;
-    //     return next();
-    //   } catch (err) {
-    //     return next({
-    //       log: `Error in kuberenetesController.podsNotReady: ${err}`,
-    //       status: 500,
-    //       message: 'Error occured while retrieving pods not ready data',
-    //     });
-    //   }
-    // },
     podsNotReadyNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, namespace, podData, promises;
         return __generator(this, function (_b) {
@@ -134,7 +116,7 @@ var kubernetesController = {
                                     _a.label = 1;
                                 case 1:
                                     _a.trys.push([1, 3, , 4]);
-                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                                 case 2:
                                     response = _a.sent();
                                     if (!response) {
@@ -183,42 +165,42 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 9, , 10]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     restartResponse = _a.sent();
                     array1 = restartResponse.data.data.result;
                     restartArray = [];
                     restartArray.push(array1[0].values);
                     objectData.restarts = restartArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 3:
                     readyResponse = _a.sent();
                     array2 = readyResponse.data.data.result;
                     readyArray = [];
                     readyArray.push(array2[0].values);
                     objectData.ready = readyArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(notReadyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(notReadyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 4:
                     notReadyResponse = _a.sent();
                     arrayNot = notReadyResponse.data.data.result[0].values[0][1];
                     // const notReadyArray = [];
                     // notReadyArray.push(arrayNot[0].values);
                     objectData.notReady = parseInt(arrayNot);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 5:
                     cpuResponse = _a.sent();
                     array3 = cpuResponse.data.data.result;
                     cpuArray = [];
                     cpuArray.push(array3[0].values);
                     objectData.cpu = cpuArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 6:
                     memResponse = _a.sent();
                     array4 = memResponse.data.data.result;
                     memArray = [];
                     memArray.push(array4[0].values);
                     objectData.memory = memArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 7:
                     receiveResponse = _a.sent();
                     array5 = receiveResponse.data.data.result;
@@ -230,7 +212,7 @@ var kubernetesController = {
                         receiveArray.push(array5[0].values);
                         objectData.reception = receiveArray;
                     }
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 8:
                     transmitResponse = _a.sent();
                     array6 = transmitResponse.data.data.result;
@@ -274,7 +256,7 @@ var kubernetesController = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 8, , 9]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(restartQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     restartResponse = _a.sent();
                     array1 = restartResponse.data.data.result;
@@ -284,28 +266,28 @@ var kubernetesController = {
                     // }
                     restartArray.push(array1[0].values);
                     objectData.restarts = restartArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(readyQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 3:
                     readyResponse = _a.sent();
                     array2 = readyResponse.data.data.result;
                     readyArray = [];
                     readyArray.push(array2[0].values);
                     objectData.ready = readyArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(cpuQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 4:
                     cpuResponse = _a.sent();
                     array3 = cpuResponse.data.data.result;
                     cpuArray = [];
                     cpuArray.push(array3[0].values);
                     objectData.cpu = cpuArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(memQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 5:
                     memResponse = _a.sent();
                     array4 = memResponse.data.data.result;
                     memArray = [];
                     memArray.push(array4[0].values);
                     objectData.memory = memArray;
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(receiveQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 6:
                     receiveResponse = _a.sent();
                     array5 = receiveResponse.data.data.result;
@@ -317,7 +299,7 @@ var kubernetesController = {
                         receiveArray.push(array5[0].values);
                         objectData.reception = receiveArray;
                     }
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(transmitQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 7:
                     transmitResponse = _a.sent();
                     array6 = transmitResponse.data.data.result;

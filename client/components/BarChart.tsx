@@ -34,7 +34,8 @@ const BarChart = ({ title, url, labels }: BarType) => {
   };
 
   ChartJS.defaults.datasets.bar.barThickness = 35;
-  const [barChartData, setBarChartData] = useState<any>(initialData);
+  const [barChartData, setBarChartData] =
+    useState<ChartData<'bar'>>(initialData);
   const option: ChartOptions<'bar'> = {
     indexAxis: 'y',
     elements: {

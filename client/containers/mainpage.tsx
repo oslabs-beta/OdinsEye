@@ -13,23 +13,14 @@ import { BounceLoader } from 'react-spinners';
 import axios from 'axios';
 import LineChart from '../components/LineChart';
 import LiveChart from '../components/LiveChart';
-import DoughnutChart from '../components/DonutChart';
-
-type MainDataType = {
-  totalCpu: any[];
-  totalMem: any[];
-  totalTransmit: any[];
-  totalReceive: any[];
-  totalPods: number;
-  notReadyPods: number;
-  totalNamespaces: string;
-};
+import DonutChart from '../components/DonutChart';
+import { Data, MainDataType } from '../../types';
 
 const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [loaded, setLoaded] = useState(true);
+  const [loaded, setLoaded] = useState<boolean>(true);
   //the bounce loader will only render the first time the page loads
-  const [firstLoad, setfirstLoad] = useState(false);
+  const [firstLoad, setfirstLoad] = useState<boolean>(false);
   const [data, setData] = useState<MainDataType>({
     totalCpu: [],
     totalMem: [],
@@ -37,7 +28,7 @@ const MainPage = () => {
     totalReceive: [],
     totalPods: 0,
     notReadyPods: 0,
-    totalNamespaces: '',
+    totalNamespaces: 0,
   });
 
   //helper function to grab metrics
@@ -75,6 +66,46 @@ const MainPage = () => {
   }
   let theme: string;
 
+  //Create line charts
+  const lineObject: { [key: string]: any[] } = {
+    totalCpu: [data.totalCpu, 'Cpu Usage', 'Percent', 'Total CPU % Usage'],
+    totalMem: [
+      data.totalMem,
+      'Mem Usage',
+      'Kilobytes',
+      'Total Memory Usage (kB)',
+    ],
+    totalRec: [
+      data.totalReceive,
+      'Byte Usage',
+      'Kilobytes',
+      'Netword Received (kB)',
+    ],
+    totalTrans: [
+      data.totalTransmit,
+      'Byte Usage',
+      'Kilobytes',
+      'Network Transmitted (kB)',
+    ],
+  };
+
+  const charts: JSX.Element[] = [];
+
+  //Object used to generate line objects
+  for (let info in lineObject) {
+    charts.push(
+      <div key={lineObject[info][3]} className='line' id='total-cpu'>
+        <LineChart
+          key={lineObject[info][3] + 'chart'}
+          data={lineObject[info][0]}
+          label={lineObject[info][1]}
+          yAxis={lineObject[info][2]}
+          title={lineObject[info][3]}
+        />
+      </div>
+    );
+  }
+
   return (
     <div id='main-container'>
       <div className='header'>
@@ -110,7 +141,7 @@ const MainPage = () => {
           </div>
           <div id='total-pods'>
             <div id='total-pods'>
-              <DoughnutChart
+              <DonutChart
                 data={[data.totalPods - data.notReadyPods, data.notReadyPods]}
                 label='Total Pods'
               />
@@ -120,6 +151,7 @@ const MainPage = () => {
         <div id='live-data' className='line-graph'>
           <div className='line'>
             <LiveChart
+              key='rec'
               label={'Byte Usage'}
               path={'http://localhost:3000/live/received'}
               title='Live Network Received'
@@ -128,44 +160,14 @@ const MainPage = () => {
           </div>
           <div className='line'>
             <LiveChart
+              key='trans'
               label={'Byte Usage'}
               path={'http://localhost:3000/live/transmit'}
               title='Live Network Transmitted'
               type='Kilobytes'
             />
           </div>
-          <div className='line' id='total-cpu'>
-            <LineChart
-              data={data.totalCpu}
-              label='Cpu Usage'
-              yAxis='Percent'
-              title='Total CPU % Usage'
-            />
-          </div>
-          <div className='line' id='total-memory-use'>
-            <LineChart
-              data={data.totalMem}
-              label='Mem Usage'
-              yAxis='Kilobytes'
-              title='Total Memory Usage (kB)'
-            />
-          </div>
-          <div className='line' id='net-rec'>
-            <LineChart
-              data={data.totalReceive}
-              label='Byte Usage'
-              yAxis='Kilobytes'
-              title='Netword Received (kB)'
-            />
-          </div>
-          <div className='line' id='net-trans'>
-            <LineChart
-              data={data.totalTransmit}
-              label='Byte Usage'
-              yAxis='Kilobytes'
-              title='Netword Transmitted (kB)'
-            />
-          </div>
+          {charts}
         </div>
       </div>
     </div>

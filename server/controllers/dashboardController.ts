@@ -1,11 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { DashboardController } from '../../types';
+import { DashboardController, start, end, res, req, next } from '../../types';
 import axios from 'axios';
 const k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 const client = require('prom-client');
-const start = new Date(Date.now() - 1440 * 60000).toISOString();
-const end = new Date(Date.now()).toISOString();
 
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
@@ -21,8 +18,8 @@ const k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 
 const dashboardController: DashboardController = {
-  getAllMetrics: async (req: Request, res: Response, next: NextFunction) => {
-    try{
+  getAllMetrics: async (req, res, next) => {
+    try {
       const cpuResponse = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=${start}&end=${end}&step=5m`
       );
@@ -47,13 +44,19 @@ const dashboardController: DashboardController = {
       res.locals.dashboard = {
         totalCpu: [await cpuResponse.data.data.result[0].values],
         totalMem: [await memResponse.data.data.result[0].values],
-        totalPods: [parseInt(await podsResponse.data.data.result[0].values[0][1])],
-        notReadyPods: [parseInt(await notReadyPodsResponse.data.data.result[0].values[0][1])],
+        totalPods: [
+          parseInt(await podsResponse.data.data.result[0].values[0][1]),
+        ],
+        notReadyPods: [
+          parseInt(await notReadyPodsResponse.data.data.result[0].values[0][1]),
+        ],
         totalTransmit: [await transmitResponse.data.data.result[0].values],
         totalReceive: [await receiveData.data.data.result[0].values],
-        totalNamespaces: [parseInt(await namespacesResponse.data.data.result[0].values[0][1])]
-      }
-      return next(); 
+        totalNamespaces: [
+          parseInt(await namespacesResponse.data.data.result[0].values[0][1]),
+        ],
+      };
+      return next();
     } catch (err) {
       return next({
         log: `Error in dashboardController.getAllMetrics: ${err}`,
@@ -62,8 +65,8 @@ const dashboardController: DashboardController = {
       });
     }
   },
-  
-  cpuUsageOverTotalCpu: async (req: Request, res: Response, next: NextFunction) => {
+
+  cpuUsageOverTotalCpu: async (req, res, next) => {
     try {
       const totalCpuUage = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=${start}&end=${end}&step=5m`
@@ -80,8 +83,8 @@ const dashboardController: DashboardController = {
       res.locals.cpuUsageOverTotalCpu = {
         cpu: cpuUsageOverTotalCpu.data.data.result[0].values[1][1],
         core: totalCoreInCluster.data.data.result[0].values[1][1],
-        percent: percent.data.data.result[0].values[1][1]
-      }
+        percent: percent.data.data.result[0].values[1][1],
+      };
       return next();
     } catch (err) {
       return next({
@@ -90,7 +93,7 @@ const dashboardController: DashboardController = {
         message: 'Error occured while retrieving dashboard transmit data',
       });
     }
-  }
+  },
 };
 
 export default dashboardController;

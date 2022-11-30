@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { darkMode, currentPage } from '../rootReducer';
+import { darkMode } from '../rootReducer';
 import { State } from '../../types';
 
 const NavBar = () => {

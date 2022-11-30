@@ -1,5 +1,4 @@
 const React = require('react');
-import { useState, useEffect, useRef } from 'react';
 
 type PodNameType = {
   pod: string;
@@ -14,7 +13,6 @@ const PodName = ({
   ready,
   setCurrentPod,
   setButtonPopup,
-
 }: PodNameType) => {
   let className;
   ready ? (className = 'pod-list') : (className = 'pod-list-bad');

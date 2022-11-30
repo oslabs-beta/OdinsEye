@@ -36,9 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var types_1 = require("../../types");
 var axios_1 = require("axios");
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
-var end = new Date(Date.now()).toISOString();
 var mongoController = {
     mongoMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var queryObject, _a, err_1;
@@ -94,7 +93,7 @@ var DataObjectBuilder = function (obj) { return __awaiter(void 0, void 0, void 0
                 _c = _b[_i];
                 if (!(_c in _a)) return [3 /*break*/, 4];
                 key = _c;
-                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key], "&start=").concat(start, "&end=").concat(end, "&step=5m"))];
+                return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(obj[key], "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
             case 3:
                 response = _d.sent();
                 objectData[key] = [response.data.data.result[0].values];

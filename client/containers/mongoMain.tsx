@@ -1,21 +1,10 @@
-const React = require('react');
 import NavBar from '../components/Navbar';
 import axios from 'axios';
 import LineChart from '../components/LineChart';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { currentPage } from '../rootReducer';
-import { useSelector, useDispatch } from 'react-redux';
-import { State } from '../../types';
-
-type MongoDataType = {
-  opcounter: any[];
-  connections: any[];
-  queues: any[];
-  latency: any[];
-  uptime: any[];
-  memory: any[];
-  processes: any[];
-};
+import { useDispatch } from 'react-redux';
+import { MongoDataType } from '../../types';
 
 const MongoPage = () => {
   const dispatch = useDispatch();

@@ -1,12 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { KubernetesController } from '../../types';
+import { KubernetesController, start, end, req, res, next } from '../../types';
 import axios from 'axios';
 
-const start = new Date(Date.now() - 1440 * 60000).toISOString();
-const end = new Date(Date.now()).toISOString();
-
 const kubernetesController: KubernetesController = {
-  namespaceNames: async (req: Request, res: Response, next: NextFunction) => {
+  namespaceNames: async (req, res, next) => {
     const namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
     try {
       const response = await axios.get(
@@ -28,7 +24,7 @@ const kubernetesController: KubernetesController = {
     }
   },
 
-  podNames: async (req: Request, res: Response, next: NextFunction) => {
+  podNames: async (req, res, next) => {
     const namespace = req.query.namespace;
     const podNameQuery = `sum by (pod)(kube_pod_info{namespace="${namespace}"})`;
     try {
@@ -51,29 +47,7 @@ const kubernetesController: KubernetesController = {
     }
   },
 
-  // podsNotReady: async (req: Request, res: Response, next: NextFunction) => {
-  //   const readyQuery =
-  //     'sum+by+(namespace)+(kube_pod_status_ready{condition="false"})';
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:9090/api/v1/query_range?query=${readyQuery}&start=${start}&end=${end}&step=5m`
-  //     );
-  //     res.locals.ready = response.data;
-  //     return next();
-  //   } catch (err) {
-  //     return next({
-  //       log: `Error in kuberenetesController.podsNotReady: ${err}`,
-  //       status: 500,
-  //       message: 'Error occured while retrieving pods not ready data',
-  //     });
-  //   }
-  // },
-
-  podsNotReadyNames: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  podsNotReadyNames: async (req, res, next) => {
     const { namespace, podData } = req.query;
     if (Array.isArray(podData)) {
       const promises = podData.map(async (name) => {
@@ -104,11 +78,7 @@ const kubernetesController: KubernetesController = {
     return next();
   },
 
-  getNameSpaceMetrics: async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
+  getNameSpaceMetrics: async (req, res, next) => {
     const objectData: any = {};
     const { namespaceName } = req.params;
     const restartQuery = `sum(changes(kube_pod_status_ready{condition="true", namespace = "${namespaceName}"}[5m]))`;
@@ -200,7 +170,7 @@ const kubernetesController: KubernetesController = {
     }
   },
 
-  getPodMetrics: async (req: Request, res: Response, next: NextFunction) => {
+  getPodMetrics: async (req, res, next) => {
     const objectData: any = {};
     const { podName } = req.params;
     const ccPodName = podName.replace(/-([a-z])/g, function (g) {

@@ -36,12 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var types_1 = require("../../types");
 var axios_1 = require("axios");
 var k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 var client = require('prom-client');
-var start = new Date(Date.now() - 1440 * 60000).toISOString();
-var end = new Date(Date.now()).toISOString();
 var kc = new k8s.KubeConfig();
 kc.loadFromDefault();
 //CoreV1Api: it allows access to core k8 resources such as services
@@ -62,25 +61,25 @@ var dashboardController = {
             switch (_f.label) {
                 case 0:
                     _f.trys.push([0, 15, , 16]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[10m]))*100&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 1:
                     cpuResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(container_memory_usage_bytes)&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     memResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_pod_info)&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 3:
                     podsResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition=\"false\"})&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(kube_pod_status_ready{condition=\"false\"})&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 4:
                     notReadyPodsResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 5:
                     transmitResponse = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(start, "&end=").concat(end, "&step=10m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_receive_bytes_total[10m]))&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=10m"))];
                 case 6:
                     receiveData = _f.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=count(kube_namespace_created)&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 7:
                     namespacesResponse = _f.sent();
                     _a = res.locals;
@@ -94,11 +93,15 @@ var dashboardController = {
                     _b = parseInt;
                     return [4 /*yield*/, podsResponse.data.data.result[0].values[0][1]];
                 case 10:
-                    _e.totalPods = [_b.apply(void 0, [_f.sent()])];
+                    _e.totalPods = [
+                        _b.apply(void 0, [_f.sent()])
+                    ];
                     _c = parseInt;
                     return [4 /*yield*/, notReadyPodsResponse.data.data.result[0].values[0][1]];
                 case 11:
-                    _e.notReadyPods = [_c.apply(void 0, [_f.sent()])];
+                    _e.notReadyPods = [
+                        _c.apply(void 0, [_f.sent()])
+                    ];
                     return [4 /*yield*/, transmitResponse.data.data.result[0].values];
                 case 12:
                     _e.totalTransmit = [_f.sent()];
@@ -108,7 +111,9 @@ var dashboardController = {
                     _d = parseInt;
                     return [4 /*yield*/, namespacesResponse.data.data.result[0].values[0][1]];
                 case 14:
-                    _a.dashboard = (_e.totalNamespaces = [_d.apply(void 0, [_f.sent()])],
+                    _a.dashboard = (_e.totalNamespaces = [
+                        _d.apply(void 0, [_f.sent()])
+                    ],
                         _e);
                     return [2 /*return*/, next()];
                 case 15:
@@ -128,13 +133,13 @@ var dashboardController = {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 7, , 8]);
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 1:
                     totalCpuUage = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(machine_cpu_cores)&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     totalCore = _a.sent();
-                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=".concat(start, "&end=").concat(end, "&step=5m"))];
+                    return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100&start=".concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 3:
                     percentageOfCore = _a.sent();
                     return [4 /*yield*/, totalCpuUage];
