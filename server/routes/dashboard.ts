@@ -12,16 +12,14 @@ dashboardRouter.get(
   (req: Request, res: Response) => {
     return res.status(200).json(req.app.locals.data);
   }
-); 
+);
 dashboardRouter.get(
   '/getAllMetrics',
   dashboardController.getAllMetrics,
   dataController.dataObjectBuilder,
   (req: Request, res: Response) => {
-    console.log(res.locals.data)
     return res.status(200).json(req.app.locals.data);
   }
 );
-
 
 export default dashboardRouter;
