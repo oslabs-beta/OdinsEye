@@ -28,6 +28,10 @@ export type MongoController = {
   mongoMetrics: RequestHandler;
 };
 
+export type DataController = {
+  dataObjectBuilder: any;
+};
+
 export type graphDataObject = {
   [key: string] : {[key: string] : string}
 };

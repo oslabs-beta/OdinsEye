@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var types_1 = require("../../types");
-var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var axios_1 = require("axios");
 var kubernetesController = {
     namespaceNames: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -48,25 +47,27 @@ var kubernetesController = {
                     namespaceQuery = 'sum+by+(namespace)+(kube_pod_info)';
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
+                    _a.trys.push([1, 4, , 5]);
                     return [4 /*yield*/, axios_1["default"].get("http://localhost:9090/api/v1/query_range?query=".concat(namespaceQuery, "&start=").concat(types_1.start, "&end=").concat(types_1.end, "&step=5m"))];
                 case 2:
                     response = _a.sent();
-                    array = response.data.data.result;
+                    return [4 /*yield*/, response.data.data.result];
+                case 3:
+                    array = _a.sent();
                     namespaceArray_1 = [];
                     array.forEach(function (element) {
                         namespaceArray_1.push(element.metric.namespace);
                     });
                     res.locals.namespaceNames = namespaceArray_1;
                     return [2 /*return*/, next()];
-                case 3:
+                case 4:
                     err_1 = _a.sent();
                     return [2 /*return*/, next({
                             log: "Error in kubernetesController.nameSpaceNames: ".concat(err_1),
                             status: 500,
                             message: 'Error occured while retrieving namespace names data'
                         })];
-                case 4: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     }); },
@@ -150,77 +151,63 @@ var kubernetesController = {
         });
     }); },
     getNameSpaceMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var objectData, namespaceName, queryObject, _a, err_4;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    objectData = {};
-                    namespaceName = req.params.namespaceName;
-                    queryObject = {
-                        linegraph: {
-                            restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))"),
-                            ready: "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})"),
-                            cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
-                            memory: "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
-                            reception: "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))"),
-                            transmission: "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))")
-                        },
-                        donutint: {
-                            notReady: "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})")
-                        }
-                    };
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    _a = res.locals;
-                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
-                case 2:
-                    _a.namespaceData = _b.sent();
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_4 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getMetrics: ".concat(err_4),
-                            status: 500,
-                            message: 'Error occured while retrieving getMetrics data'
-                        })];
-                case 4: return [2 /*return*/];
+        var objectData, namespaceName, queryObject;
+        return __generator(this, function (_a) {
+            objectData = {};
+            namespaceName = req.params.namespaceName;
+            queryObject = {
+                linegraph: {
+                    restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"}[5m]))"),
+                    ready: "sum(kube_pod_status_ready{condition=\"true\", namespace = \"".concat(namespaceName, "\"})"),
+                    cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
+                    memory: "sum(rate(container_memory_usage_bytes{container=\"\", namespace=~\"".concat(namespaceName, "\"}[10m]))"),
+                    reception: "sum(rate(node_network_receive_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))"),
+                    transmission: "sum(rate(node_network_transmit_bytes_total{namespace = \"".concat(namespaceName, "\"}[10m]))")
+                },
+                donutint: {
+                    notReady: "sum(kube_pod_status_ready{condition=\"false\", namespace = \"".concat(namespaceName, "\"})")
+                }
+            };
+            try {
+                req.app.locals.queries = queryObject;
+                return [2 /*return*/, next()];
             }
+            catch (err) {
+                return [2 /*return*/, next({
+                        log: "Error in kuberenetesController.getMetrics: ".concat(err),
+                        status: 500,
+                        message: 'Error occured while retrieving getMetrics data'
+                    })];
+            }
+            return [2 /*return*/];
         });
     }); },
     getPodMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var podName, queryObject, _a, err_5;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    podName = req.params.podName;
-                    queryObject = {
-                        linegraph: {
-                            restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", pod = \"".concat(podName, "\"}[5m]))"),
-                            ready: "sum(kube_pod_status_ready{condition=\"false\", pod = \"".concat(podName, "\"})"),
-                            cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
-                            memory: "sum(rate(container_memory_usage_bytes{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
-                            reception: "sum(rate(node_network_receive_bytes_total{pod = \"".concat(podName, "\"}[10m]))"),
-                            transmission: "sum(rate(node_network_transmit_bytes_total{pod = \"".concat(podName, "\"}[10m]))")
-                        }
-                    };
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    _a = res.locals;
-                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
-                case 2:
-                    _a.podData = _b.sent();
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_5 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in kuberenetesController.getPodMetrics: ".concat(err_5),
-                            status: 500,
-                            message: 'Error occured while retrieving getMetrics data'
-                        })];
-                case 4: return [2 /*return*/];
+        var podName, queryObject;
+        return __generator(this, function (_a) {
+            podName = req.params.podName;
+            queryObject = {
+                linegraph: {
+                    restarts: "sum(changes(kube_pod_status_ready{condition=\"true\", pod = \"".concat(podName, "\"}[5m]))"),
+                    ready: "sum(kube_pod_status_ready{condition=\"false\", pod = \"".concat(podName, "\"})"),
+                    cpu: "sum(rate(container_cpu_usage_seconds_total{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
+                    memory: "sum(rate(container_memory_usage_bytes{container=\"\", pod=~\"".concat(podName, "\"}[10m]))"),
+                    reception: "sum(rate(node_network_receive_bytes_total{pod = \"".concat(podName, "\"}[10m]))"),
+                    transmission: "sum(rate(node_network_transmit_bytes_total{pod = \"".concat(podName, "\"}[10m]))")
+                }
+            };
+            try {
+                req.app.locals.queries = queryObject;
+                return [2 /*return*/, next()];
             }
+            catch (err) {
+                return [2 /*return*/, next({
+                        log: "Error in kuberenetesController.getPodMetrics: ".concat(err),
+                        status: 500,
+                        message: 'Error occured while retrieving getMetrics data'
+                    })];
+            }
+            return [2 /*return*/];
         });
     }); }
 };

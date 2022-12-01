@@ -106,7 +106,7 @@ $font: 'Playfair Display', serif;
 
   .line-graph {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(600px, 0.9fr));
     padding: 20px;
     padding-left: 40px;
   }

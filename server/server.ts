@@ -82,14 +82,12 @@ app.use('/live/transmit', async (req: Request, res: Response) => {
     'Cache-Control': 'no-cache',
   };
   res.writeHead(200, headers);
-  // sendNetTransmit(res);
   const timer = setInterval(async () => {
     const start = new Date(Date.now() - 10000).toISOString();
     const end = new Date(Date.now() - 5000).toISOString();
     const response = await axios.get(
       `http://localhost:9090/api/v1/query_range?query=sum(rate(node_network_transmit_bytes_total[10m]))&start=${start}&end=${end}&step=5m`
     );
-    // console.log(response.data.data.result[0].values);
     const data = response.data.data.result[0].values[0];
     const newData = `data: ${JSON.stringify(data)}\n\n`;
     res.write(newData);

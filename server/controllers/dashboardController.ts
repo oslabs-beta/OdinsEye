@@ -42,7 +42,7 @@ const dashboardController: DashboardController = {
       },
     };
     try {
-      res.locals.dashboard = await DataObjectBuilder(queryObject);
+      req.app.locals.queries = queryObject;
       return next();
     } catch (err) {
       return next({
@@ -63,7 +63,7 @@ const dashboardController: DashboardController = {
       },
     };
     try {
-      res.locals.cpuUsageOverTotalCpu = await DataObjectBuilder(queryObject);
+      req.app.locals.queries = queryObject;
       return next();
     } catch (err) {
       return next({

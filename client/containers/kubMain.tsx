@@ -172,9 +172,9 @@ const KubPage = ({ namespaces }: KubType) => {
 
   for (let info in lineObject) {
     charts.push(
-      <div className='line' id='total-cpu'>
+      <div key={lineObject[info][3]} className='line' id='total-cpu'>
         <LineChart
-          key={lineObject[info][0]}
+          key={lineObject[info][3]}
           data={lineObject[info][0]}
           label={lineObject[info][1]}
           yAxis={lineObject[info][2]}
