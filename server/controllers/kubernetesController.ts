@@ -10,7 +10,7 @@ const kubernetesController: KubernetesController = {
       const response = await axios.get(
         `http://localhost:9090/api/v1/query_range?query=${namespaceQuery}&start=${start}&end=${end}&step=5m`
       );
-      const array = response.data.data.result;
+      const array = await response.data.data.result;
       const namespaceArray: string[] = [];
       array.forEach((element: any) => {
         namespaceArray.push(element.metric.namespace);
@@ -97,7 +97,7 @@ const kubernetesController: KubernetesController = {
       },
     };
     try {
-      res.locals.namespaceData = await DataObjectBuilder(queryObject);
+      req.app.locals.queries = queryObject;
       return next();
     } catch (err) {
       return next({
@@ -121,7 +121,7 @@ const kubernetesController: KubernetesController = {
       },
     };
     try {
-      res.locals.podData = await DataObjectBuilder(queryObject);
+      req.app.locals.queries = queryObject;
       return next();
     } catch (err) {
       return next({

@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var dataObjectBuilder_1 = require("./dataObjectBuilder");
 var k8s = require('@kubernetes/client-node');
 //prometheus client for node.js
 var client = require('prom-client');
@@ -54,71 +53,57 @@ var k8sApi3 = kc.makeApiClient(k8s.NetworkingV1Api);
 client.collectDefaultMetrics();
 var dashboardController = {
     getAllMetrics: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var queryObject, _a, err_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    queryObject = {
-                        linegraph: {
-                            totalCpu: 'sum(rate(container_cpu_usage_seconds_total[10m]))*100',
-                            totalMem: 'sum(container_memory_usage_bytes)',
-                            totalTransmit: 'sum(rate(node_network_transmit_bytes_total[10m]))',
-                            totalReceive: 'sum(rate(node_network_receive_bytes_total[10m]))'
-                        },
-                        donutint: {
-                            totalPods: 'count(kube_pod_info)',
-                            notReadyPods: 'sum(kube_pod_status_ready{condition="false"})',
-                            totalNamespaces: 'count(kube_namespace_created)'
-                        }
-                    };
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    _a = res.locals;
-                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
-                case 2:
-                    _a.dashboard = _b.sent();
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_1 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getAllMetrics: ".concat(err_1),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard all metrics data'
-                        })];
-                case 4: return [2 /*return*/];
+        var queryObject;
+        return __generator(this, function (_a) {
+            queryObject = {
+                linegraph: {
+                    totalCpu: 'sum(rate(container_cpu_usage_seconds_total[10m]))*100',
+                    totalMem: 'sum(container_memory_usage_bytes)',
+                    totalTransmit: 'sum(rate(node_network_transmit_bytes_total[10m]))',
+                    totalReceive: 'sum(rate(node_network_receive_bytes_total[10m]))'
+                },
+                donutint: {
+                    totalPods: 'count(kube_pod_info)',
+                    notReadyPods: 'sum(kube_pod_status_ready{condition="false"})',
+                    totalNamespaces: 'count(kube_namespace_created)'
+                }
+            };
+            try {
+                req.app.locals.queries = queryObject;
+                return [2 /*return*/, next()];
             }
+            catch (err) {
+                return [2 /*return*/, next({
+                        log: "Error in dashboardController.getAllMetrics: ".concat(err),
+                        status: 500,
+                        message: 'Error occured while retrieving dashboard all metrics data'
+                    })];
+            }
+            return [2 /*return*/];
         });
     }); },
     cpuUsageOverTotalCpu: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var queryObject, _a, err_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    queryObject = {
-                        cpubarchart: {
-                            cpu: 'sum(rate(container_cpu_usage_seconds_total[5m]))',
-                            core: 'sum(machine_cpu_cores)',
-                            percent: 'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100'
-                        }
-                    };
-                    _b.label = 1;
-                case 1:
-                    _b.trys.push([1, 3, , 4]);
-                    _a = res.locals;
-                    return [4 /*yield*/, (0, dataObjectBuilder_1["default"])(queryObject)];
-                case 2:
-                    _a.cpuUsageOverTotalCpu = _b.sent();
-                    return [2 /*return*/, next()];
-                case 3:
-                    err_2 = _b.sent();
-                    return [2 /*return*/, next({
-                            log: "Error in dashboardController.getTotalCpu: ".concat(err_2),
-                            status: 500,
-                            message: 'Error occured while retrieving dashboard transmit data'
-                        })];
-                case 4: return [2 /*return*/];
+        var queryObject;
+        return __generator(this, function (_a) {
+            queryObject = {
+                cpubarchart: {
+                    cpu: 'sum(rate(container_cpu_usage_seconds_total[5m]))',
+                    core: 'sum(machine_cpu_cores)',
+                    percent: 'sum(rate(container_cpu_usage_seconds_total[5m]))/sum(machine_cpu_cores)*100'
+                }
+            };
+            try {
+                req.app.locals.queries = queryObject;
+                return [2 /*return*/, next()];
             }
+            catch (err) {
+                return [2 /*return*/, next({
+                        log: "Error in dashboardController.getTotalCpu: ".concat(err),
+                        status: 500,
+                        message: 'Error occured while retrieving dashboard transmit data'
+                    })];
+            }
+            return [2 /*return*/];
         });
     }); }
 };

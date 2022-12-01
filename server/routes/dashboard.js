@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var express = require('express');
 var dashboardController_1 = require("../controllers/dashboardController");
+var dataObjectBuilder_1 = require("../controllers/dataObjectBuilder");
 var dashboardRouter = express.Router();
 // dashboardRouter.get(
 //   '/totalMem',
@@ -49,12 +50,13 @@ var dashboardRouter = express.Router();
 //     return res.status(200).json(res.locals.dashboard);
 //   },
 //mainpage
-dashboardRouter.get('/cpuUsage', dashboardController_1["default"].cpuUsageOverTotalCpu, function (req, res) {
+dashboardRouter.get('/cpuUsage', dashboardController_1["default"].cpuUsageOverTotalCpu, dataObjectBuilder_1["default"].dataObjectBuilder, function (req, res) {
     //namespace metric/value will return multiple of the same values with different time stamp, just need the first one
-    return res.status(200).json(res.locals.cpuUsageOverTotalCpu);
+    return res.status(200).json(req.app.locals.data);
 });
 //mainpage
-dashboardRouter.get('/getAllMetrics', dashboardController_1["default"].getAllMetrics, function (req, res) {
-    return res.status(200).json(res.locals.dashboard);
+dashboardRouter.get('/getAllMetrics', dashboardController_1["default"].getAllMetrics, dataObjectBuilder_1["default"].dataObjectBuilder, function (req, res) {
+    console.log(res.locals.data);
+    return res.status(200).json(req.app.locals.data);
 });
 exports["default"] = dashboardRouter;

@@ -4,7 +4,7 @@ import DataObjectBuilder from './dataObjectBuilder';
 import axios from 'axios';
 
 const mongoController: MongoController = {
-  mongoMetrics: async (req, res, next) => {
+  mongoMetrics: (req, res, next) => {
     const queryObject: graphDataObject = {
       linegraph: {
         opcounter: 'sum(rate(mongodb_ss_opcounters[5m]))',
@@ -17,7 +17,7 @@ const mongoController: MongoController = {
       },
     };
     try {
-      res.locals.mongoData = await DataObjectBuilder(queryObject);
+      req.app.locals.queries = queryObject;
       return next();
     } catch (err) {
       return next({
