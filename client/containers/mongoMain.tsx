@@ -82,62 +82,6 @@ const MongoPage = () => {
       <div className='data-container'>
         <div id='mongo-charts' className='line-graph'>
           {charts}
-          {/* <div id='uptime' className='line'>
-            <LineChart
-              data={data.uptime}
-              label='Uptime'
-              yAxis='Current'
-              title='Current Uptime'
-            />
-          </div>
-          <div id='memory' className='line'>
-            <LineChart
-              data={data.memory}
-              label='Memory'
-              yAxis='Current'
-              title='Current Memory'
-            />
-          </div>
-          <div id='opcounter' className='line'>
-            <LineChart
-              data={data.opcounter}
-              label='Operations'
-              yAxis='Current'
-              title='Current Operations'
-            />
-          </div>
-          <div id='connections' className='line'>
-            <LineChart
-              data={data.connections}
-              label='Connections'
-              yAxis='Current'
-              title='Current Connections'
-            />
-          </div>
-          <div id='queue' className='line'>
-            <LineChart
-              data={data.queues}
-              label='Queue'
-              yAxis='Current'
-              title='Current Queue'
-            />
-          </div>
-          <div id='processes' className='line'>
-            <LineChart
-              data={data.processes}
-              label='Processes'
-              yAxis='Current'
-              title='Current Processes'
-            />
-          </div>
-          <div id='latency' className='line'>
-            <LineChart
-              data={data.queues}
-              label='Latency'
-              yAxis='Latency'
-              title='Current Latency'
-            />
-          </div> */}
         </div>
       </div>
     </div>
