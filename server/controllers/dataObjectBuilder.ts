@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { graphDataObject, start, end } from '../../types';
+import { DataController, start, end } from '../../types';
+import { Request, Response, NextFunction } from 'express';
 
-const DataObjectBuilder = async (
-  obj: graphDataObject
-): Promise<{ [key: string]: string[] } | unknown> => {
+const dataController: DataController = {
+ dataObjectBuilder:  async (res: Response, req: Request, next: NextFunction) => {
   const objectData: { [key: string]: string | number[] } = {};
+  const obj = req.app.locals.queries;
   try {
     for (let key in obj) {
       if (key === 'linegraph') {
@@ -37,10 +38,15 @@ const DataObjectBuilder = async (
         }
       }
     }
+    req.app.locals.data = objectData
+    return next();
   } catch (err) {
-    return err;
+    return next({
+      log: `Error in dataController.dataObjectBuilder: ${err}`,
+      status: 500,
+      message: 'Error occured while creating data object',
+    })
   }
-  return objectData;
-};
-
-export default DataObjectBuilder;
+}
+}
+export default dataController;
